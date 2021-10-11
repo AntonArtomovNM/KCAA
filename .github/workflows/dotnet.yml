@@ -1,0 +1,40 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  PRCheck:
+
+    runs-on: windows-latest
+
+    env:
+      CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install OpenCover
+      run: choco install opencover.portable
+      shell: powershell
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --no-restore
+      
+    - name: Test
+      run: OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test" -output:".\coverage.xml" -filter:"+[KCAA]*"
+
+    - name: Upload coverage to codacy
+      run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r "coverage.xml"
+      shell: bash
