@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KCAA", "KCAA.csproj", "{FA0CBFAC-17A9-4363-A100-5AA6A087D662}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KCAA", "KCAA\KCAA.csproj", "{4E9706C7-3C0A-45CC-8D1B-1F7CDCE7C499}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KCAA.Tests", "KCAA.Tests\KCAA.Tests.csproj", "{90EF2980-4400-47C6-A9F7-72BE70602DC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FA0CBFAC-17A9-4363-A100-5AA6A087D662}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA0CBFAC-17A9-4363-A100-5AA6A087D662}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA0CBFAC-17A9-4363-A100-5AA6A087D662}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA0CBFAC-17A9-4363-A100-5AA6A087D662}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E9706C7-3C0A-45CC-8D1B-1F7CDCE7C499}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E9706C7-3C0A-45CC-8D1B-1F7CDCE7C499}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E9706C7-3C0A-45CC-8D1B-1F7CDCE7C499}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E9706C7-3C0A-45CC-8D1B-1F7CDCE7C499}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90EF2980-4400-47C6-A9F7-72BE70602DC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90EF2980-4400-47C6-A9F7-72BE70602DC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90EF2980-4400-47C6-A9F7-72BE70602DC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90EF2980-4400-47C6-A9F7-72BE70602DC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
