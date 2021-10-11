@@ -2,4 +2,4 @@
 
 Thesis project of the KCAA team
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d1b7bf4cd429497b8fc9e12b4027a33b)](https://app.codacy.com/gh/AntonArtomovNM/KCAA?utm_source=github.com&utm_medium=referral&utm_content=AntonArtomovNM/KCAA&utm_campaign=Badge_Grade_Settings)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/95b788c1ffba41399e659b38b7e8d63a)](https://www.codacy.com/gh/AntonArtomovNM/KCAA/dashboard?utm_source=github.com&utm_medium=referral&utm_content=AntonArtomovNM/KCAA&utm_campaign=Badge_Coverage)
