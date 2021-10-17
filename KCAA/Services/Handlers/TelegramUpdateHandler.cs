@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,11 +7,10 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
-using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
 using KCAA.Services.Interfaces;
 
-namespace KCAA.Services 
+namespace KCAA.Services
 {
     public class TelegramUpdateHandler : ITelegramUpdateHandler
     {
@@ -54,13 +52,16 @@ namespace KCAA.Services
         private async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
         {
             Console.WriteLine($"Receive message type: {message.Type}\nChat id: {message.Chat.Id}\nUsername: {message.From.Username}\nUser id: {message.From.Id}");
-            
+
             if (message.Type != MessageType.Text)
+            {
                 return;
+            }
 
             var action = (message.Text.Split(' ').First()) switch
             {
                 "/help" => DisplayCommands(botClient, message),
+                _ => Task.FromResult(new Message())
             };
             var sentMessage = await action;
             
