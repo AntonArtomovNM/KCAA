@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
 using SimpleInjector;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
@@ -19,6 +20,7 @@ namespace KCAA
         private readonly Container _container = new Container();
         private IConfiguration _configuration;
         private TelegramSettings _telegramSettings;
+        private MongoDBSettings _mongoDBSettings;
 
         public Startup(IConfiguration configuration)
         {
@@ -28,6 +30,7 @@ namespace KCAA
         public void ConfigureServices(IServiceCollection services)
         {
             _telegramSettings = _configuration.GetSection(TelegramSettings.ConfigKey).Get<TelegramSettings>();
+            _mongoDBSettings = _configuration.GetSection(MongoDBSettings.ConfigKey).Get<MongoDBSettings>();
 
             services.AddControllers().AddNewtonsoftJson();
 
@@ -63,17 +66,29 @@ namespace KCAA
 
         private void InitializeContainer()
         {
-            var botClient = GetBotClient();
-            _container.RegisterInstance(botClient);
+            _container.RegisterInstance(InitializeMongoDB());
+
+            _container.RegisterInstance(InitializeBotClient());
 
             _container.Register<ITelegramUpdateHandler, TelegramUpdateHandler>();
         }
 
-        private ITelegramBotClient GetBotClient()
+        private IMongoDatabase InitializeMongoDB()
+        {
+            var settings = MongoClientSettings.FromUrl(new MongoUrl(_mongoDBSettings.ConnectionString));
+            var client = new MongoClient(settings);
+
+            var db = client.GetDatabase(_mongoDBSettings.DatabaseName);
+
+            return db;
+        }
+
+        private ITelegramBotClient InitializeBotClient()
         {
             ITelegramBotClient botClient = new TelegramBotClient(_telegramSettings.BotToken);
 
             botClient.SetMyCommandsAsync(_telegramSettings.BotCommands).GetAwaiter().GetResult();
+
             return botClient;
         }
 
