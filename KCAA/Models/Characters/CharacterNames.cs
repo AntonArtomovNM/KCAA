@@ -1,4 +1,4 @@
-﻿namespace KCAA.Helpers
+﻿namespace KCAA.Models.Characters
 {
     public static class CharacterNames
     {

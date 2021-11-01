@@ -1,4 +1,4 @@
-﻿namespace KCAA.Helpers
+﻿namespace KCAA.Models.Cards
 {
     public static class CardNames
     {
@@ -11,7 +11,7 @@
         public const string Green4 = "g4";
 
         public const string Green5 = "g5";
-        
+
         public const string Blue1 = "b1";
 
         public const string Blue2 = "b2";
@@ -21,7 +21,7 @@
         public const string Blue4 = "b4";
 
         public const string Blue5 = "b5";
-        
+
         public const string Red1 = "r1";
 
         public const string Red2 = "r2";
@@ -31,7 +31,7 @@
         public const string Red4 = "r4";
 
         public const string Red5 = "r5";
-        
+
         public const string Yellow1 = "y1";
 
         public const string Yellow2 = "y2";

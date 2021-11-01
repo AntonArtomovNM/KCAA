@@ -1,0 +1,18 @@
+[
+  {
+    "Name": "assassin",
+    "DisplayName": "Assassin",
+    "Type": 0,
+    "PhotoUri": "Photo1",
+    "Description": "Kills",
+    "Order": 1
+  },
+  {
+    "Name": "thief",
+    "DisplayName": "Thief",
+    "Type": 0,
+    "PhotoUri": "Photo2",
+    "Description": "Steals",
+    "Order": 2
+  }
+]

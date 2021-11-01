@@ -1,0 +1,17 @@
+[
+    {
+      "Name": "g1",
+      "DisplayName": "Green 1",
+      "Type": 3,
+      "PhotoUri": "Photo1",
+      "Cost": 1
+    },
+    {
+      "Name":  "g2",
+      "DisplayName": "Green 2",
+      "Type": 3,
+      "PhotoUri": "Photo2",
+      "Cost": 2
+    }
+ ]
+
