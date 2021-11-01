@@ -12,6 +12,7 @@ using Telegram.Bot.Extensions.Polling;
 using KCAA.Services;
 using KCAA.Settings;
 using KCAA.Services.Interfaces;
+using KCAA.Services.Providers;
 
 namespace KCAA
 {
@@ -67,6 +68,9 @@ namespace KCAA
         private void InitializeContainer()
         {
             _container.RegisterInstance(InitializeMongoDB());
+
+            _container.Register<IPlayerProvider, PlayerProvider>();
+            _container.Register<IRoomProvider, RoomProvider>();
 
             _container.RegisterInstance(InitializeBotClient());
 
