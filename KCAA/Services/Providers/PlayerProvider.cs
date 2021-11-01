@@ -46,7 +46,7 @@ namespace KCAA.Services.Providers
                 .Set(x => x.Score, player.Score)
                 .Set(x => x.Coins, player.Coins)
                 .Set(x => x.Characters, player.Characters)
-                .Set(x => x.Cards, player.Cards)
+                .Set(x => x.Cards, player.CardHand)
                 .Set(x => x.ActiveCards, player.ActiveCards);
 
             _mongoCollection.UpdateOne(GetIdFilter(player.Id), update);

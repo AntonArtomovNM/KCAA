@@ -21,13 +21,11 @@ namespace KCAA.Models.MongoDB
 
         public bool HasCrown { get; set; }
 
-        public int Score { get; set; }
-
         public int Coins { get; set; }
 
         public IEnumerable<string> Characters { get; set; }
 
-        public IEnumerable<string> Cards { get; set; }
+        public IEnumerable<string> CardHand { get; set; }
 
         public IEnumerable<ActiveCardDto> ActiveCards { get; set; }
     }
