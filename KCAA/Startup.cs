@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +10,6 @@ using MongoDB.Driver;
 using SimpleInjector;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
-using KCAA.Services;
 using KCAA.Settings;
 using KCAA.Services.Interfaces;
 using KCAA.Services.Factories;
@@ -20,6 +18,9 @@ using KCAA.Services.Builders;
 using KCAA.Models.Cards;
 using KCAA.Models.Characters;
 using KCAA.Models;
+using KCAA.Services.Providers;
+using KCAA.Extensions;
+using KCAA.Services.TelegramApi;
 
 namespace KCAA
 {
@@ -42,6 +43,8 @@ namespace KCAA
 
             services.AddControllers().AddNewtonsoftJson();
 
+            services.AddHealthChecks().AddMongoDb(_mongoDBSettings.ConnectionString);
+
             services.AddSimpleInjector(_container, options =>
             {
                 options.AddAspNetCore().AddControllerActivation();
@@ -61,10 +64,8 @@ namespace KCAA
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
+                endpoints.MapCustomHealthChecks();
             });
 
             _container.Verify();
@@ -83,8 +84,14 @@ namespace KCAA
             _container.Register<IGameObjectFactory<Card>, CardFactory>(Lifestyle.Singleton);
             _container.Register<IGameObjectFactory<Character>, CharacterFactory>(Lifestyle.Singleton);
 
-            var botClient = GetBotClient();
-            _container.RegisterInstance(botClient);
+            //register mongo db dependencies
+            _container.RegisterInstance(InitializeMongoDB());
+
+            _container.Register<IRoomProvider, RoomProvider>();
+            _container.Register<IPlayerProvider, PlayerProvider>();
+
+            //register telegram dependencies
+            _container.RegisterInstance(InitializeBotClient());
 
             _container.Register<ITelegramUpdateHandler, TelegramUpdateHandler>();
         }
