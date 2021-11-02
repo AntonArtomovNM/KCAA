@@ -1,12 +1,10 @@
 ﻿namespace KCAA.Models
 {
-    public class Character
+    public abstract class GameObject
     {
         public string Name { get; init; }
 
         public string DisplayName { get; init; }
-
-        public int Order { get; init; }
 
         public ColorType Type { get; init; }
 
