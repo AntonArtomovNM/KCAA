@@ -1,17 +1,143 @@
 [
-    {
-      "Name": "g1",
-      "DisplayName": "Green 1",
-      "Type": 3,
-      "PhotoUri": "Photo1",
-      "Cost": 1
-    },
-    {
-      "Name":  "g2",
-      "DisplayName": "Green 2",
-      "Type": 3,
-      "PhotoUri": "Photo2",
-      "Cost": 2
-    }
- ]
+  {
+    "Name": "y1",
+    "DisplayName": "Yellow 1",
+    "Type": 1,
+    "PhotoUri": "g1.jpg",
+    "Cost": 1
+  },
+  {
+    "Name": "y2",
+    "DisplayName": "Yellow 2",
+    "Type": 1,
+    "PhotoUri": "y2.jpg",
+    "Cost": 2
+  },
+  {
+    "Name": "y3",
+    "DisplayName": "Yellow 3",
+    "Type": 1,
+    "PhotoUri": "y3.jpg",
+    "Cost": 3
+  },
+  {
+    "Name": "y4",
+    "DisplayName": "Yellow 4",
+    "Type": 1,
+    "PhotoUri": "y4.jpg",
+    "Cost": 4
+  },
+  {
+    "Name": "y5",
+    "DisplayName": "Yellow 5",
+    "Type": 1,
+    "PhotoUri": "y5.jpg",
+    "Cost": 5
+  },
+  {
+    "Name": "b1",
+    "DisplayName": "Blue 1",
+    "Type": 2,
+    "PhotoUri": "b1.jpg",
+    "Cost": 1
+  },
+  {
+    "Name": "b2",
+    "DisplayName": "Blue 2",
+    "Type": 2,
+    "PhotoUri": "b2.jpg",
+    "Cost": 2
+  },
+  {
+    "Name": "b3",
+    "DisplayName": "Blue 3",
+    "Type": 2,
+    "PhotoUri": "b3.jpg",
+    "Cost": 3
+  },
+  {
+    "Name": "b4",
+    "DisplayName": "Blue 4",
+    "Type": 2,
+    "PhotoUri": "b4.jpg",
+    "Cost": 4
+  },
+  {
+    "Name": "b5",
+    "DisplayName": "Blue 5",
+    "Type": 2,
+    "PhotoUri": "b5.jpg",
+    "Cost": 5
+  },
+  {
+    "Name": "g1",
+    "DisplayName": "Green 1",
+    "Type": 3,
+    "PhotoUri": "g1.jpg",
+    "Cost": 1
+  },
+  {
+    "Name": "g2",
+    "DisplayName": "Green 2",
+    "Type": 3,
+    "PhotoUri": "g2.jpg",
+    "Cost": 2
+  },
+  {
+    "Name": "g3",
+    "DisplayName": "Green 3",
+    "Type": 3,
+    "PhotoUri": "g3.jpg",
+    "Cost": 3
+  },
+  {
+    "Name": "g4",
+    "DisplayName": "Green 4",
+    "Type": 3,
+    "PhotoUri": "g4.jpg",
+    "Cost": 4
+  },
+  {
+    "Name": "g5",
+    "DisplayName": "Green 5",
+    "Type": 3,
+    "PhotoUri": "g5.jpg",
+    "Cost": 5
+  },
+  {
+    "Name": "r1",
+    "DisplayName": "Red 1",
+    "Type": 4,
+    "PhotoUri": "r1.jpg",
+    "Cost": 1
+  },
+  {
+    "Name": "r2",
+    "DisplayName": "Red 2",
+    "Type": 4,
+    "PhotoUri": "r2.jpg",
+    "Cost": 2
+  },
+  {
+    "Name": "r3",
+    "DisplayName": "Red 3",
+    "Type": 4,
+    "PhotoUri": "r3.jpg",
+    "Cost": 3
+  },
+  {
+    "Name": "r4",
+    "DisplayName": "Red 4",
+    "Type": 4,
+    "PhotoUri": "r4.jpg",
+    "Cost": 4
+  },
+  {
+    "Name": "r5",
+    "DisplayName": "Red 5",
+    "Type": 4,
+    "PhotoUri": "r5.jpg",
+    "Cost": 5
+  }
+]
 

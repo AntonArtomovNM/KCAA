@@ -3,7 +3,7 @@
     "Name": "assassin",
     "DisplayName": "Assassin",
     "Type": 0,
-    "PhotoUri": "Photo1",
+    "PhotoUri": "assasin.jpg",
     "Description": "Kills",
     "Order": 1
   },
@@ -11,8 +11,64 @@
     "Name": "thief",
     "DisplayName": "Thief",
     "Type": 0,
-    "PhotoUri": "Photo2",
+    "PhotoUri": "thief.jpg",
     "Description": "Steals",
     "Order": 2
+  },
+  {
+    "Name": "wizard",
+    "DisplayName": "Wizard",
+    "Type": 0,
+    "PhotoUri": "wizard.jpg",
+    "Description": "Spells",
+    "Order": 3
+  },
+  {
+    "Name": "king",
+    "DisplayName": "King",
+    "Type": 1,
+    "PhotoUri": "king.jpg",
+    "Description": "Rules",
+    "Order": 4
+  },
+  {
+    "Name": "bishop",
+    "DisplayName": "Bishop",
+    "Type": 2,
+    "PhotoUri": "bishop.jpg",
+    "Description": "Prays",
+    "Order": 5
+  },
+  {
+    "Name": "dealer",
+    "DisplayName": "Dealer",
+    "Type": 3,
+    "PhotoUri": "dealer.jpg",
+    "Description": "Sells",
+    "Order": 6
+  },
+  {
+    "Name": "architect",
+    "DisplayName": "Architect",
+    "Type": 0,
+    "PhotoUri": "architect.jpg",
+    "Description": "Builds",
+    "Order": 7
+  },
+  {
+    "Name": "ñondottiere",
+    "DisplayName": "Condottiere",
+    "Type": 4,
+    "PhotoUri": "ñondottiere.jpg",
+    "Description": "Destroys",
+    "Order": 8
+  },
+  {
+    "Name": "beggar",
+    "DisplayName": "Beggar",
+    "Type": 0,
+    "PhotoUri": "beggar.jpg",
+    "Description": "Begs",
+    "Order": 9
   }
 ]

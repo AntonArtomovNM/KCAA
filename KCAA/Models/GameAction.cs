@@ -2,6 +2,8 @@
 {
     public abstract class GameAction
     {
-        //TODO: Define class structure
+        public abstract bool IsActive { get; }
+
+        public abstract void Method();
     }
 }
