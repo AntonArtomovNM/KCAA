@@ -10,7 +10,7 @@ using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.ReplyMarkups;
 using KCAA.Services.Interfaces;
 
-namespace KCAA.Services
+namespace KCAA.Services.TelegramApi
 {
     public class TelegramUpdateHandler : ITelegramUpdateHandler
     {
@@ -58,13 +58,13 @@ namespace KCAA.Services
                 return;
             }
 
-            var action = (message.Text.Split(' ').First()) switch
+            var action = message.Text.Split(' ').First() switch
             {
                 "/help" => DisplayCommands(botClient, message),
                 _ => Task.FromResult(new Message())
             };
             var sentMessage = await action;
-            
+
             Console.WriteLine($"The message was sent with id: {sentMessage.MessageId}");
         }
 

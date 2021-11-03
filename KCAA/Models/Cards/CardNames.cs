@@ -52,6 +52,8 @@
 
         public const string Goldmine = "sp-goldmine";
 
+        public const string Library = "sp-library";
+
         public const string DragonGates = "sp-dragon-gates";
 
         public const string ImperialTreasury = "sp-imperial-treasury";
