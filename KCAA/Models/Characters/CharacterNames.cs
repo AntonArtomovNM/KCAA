@@ -6,17 +6,17 @@
 
         public const string Thief = "thief";
 
-        public const string Wizard = "wizard";
+        public const string Magician = "magician";
 
         public const string King = "king";
 
         public const string Bishop = "bishop";
 
-        public const string Dealer = "dealer";
+        public const string Merchant = "merchant";
 
         public const string Architect = "architect";
 
-        public const string Condottiere = "сondottiere";
+        public const string Warlord = "warlord";
 
         public const string Beggar = "beggar";
     }

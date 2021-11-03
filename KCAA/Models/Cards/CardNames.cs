@@ -74,6 +74,6 @@
 
         public const string Monument = "sp-monument";
 
-        public const string MagicSchool = "sp-magic-school";
+        public const string SchoolOfMagic = "sp-school-of-magic";
     }
 }
