@@ -21,6 +21,8 @@ using KCAA.Models;
 using KCAA.Services.Providers;
 using KCAA.Extensions;
 using KCAA.Services.TelegramApi;
+using Telegram.Bot.Types.Enums;
+using KCAA.Services.TelegramApi.TelegramUpdateHandlers;
 
 namespace KCAA
 {
@@ -29,6 +31,7 @@ namespace KCAA
         private readonly Container _container = new();
         private readonly IConfiguration _configuration;
         private TelegramSettings _telegramSettings;
+        private GameSettings _gameSettings;
         private MongoDBSettings _mongoDBSettings;
 
         public Startup(IConfiguration configuration)
@@ -40,6 +43,7 @@ namespace KCAA
         {
             _telegramSettings = _configuration.GetSection(TelegramSettings.ConfigKey).Get<TelegramSettings>();
             _mongoDBSettings = _configuration.GetSection(MongoDBSettings.ConfigKey).Get<MongoDBSettings>();
+            _gameSettings = _configuration.GetSection(GameSettings.ConfigKey).Get<GameSettings>();
 
             services.AddControllers().AddNewtonsoftJson();
 
@@ -70,9 +74,8 @@ namespace KCAA
 
             _container.Verify();
 
-            var gameSettings = _configuration.GetSection(GameSettings.ConfigKey).Get<GameSettings>();
-            RegisterGameObjects<Card>(gameSettings).GetAwaiter().GetResult();
-            RegisterGameObjects<Character>(gameSettings).GetAwaiter().GetResult();
+            RegisterGameObjects<Card>(_gameSettings.CardSettingsPath).GetAwaiter().GetResult();
+            RegisterGameObjects<Character>(_gameSettings.CharacterSettingsPath).GetAwaiter().GetResult();
 
             InitializePolling();
         }
@@ -84,16 +87,31 @@ namespace KCAA
             _container.Register<IGameObjectFactory<Card>, CardFactory>(Lifestyle.Singleton);
             _container.Register<IGameObjectFactory<Character>, CharacterFactory>(Lifestyle.Singleton);
 
+            //register settings
+            _container.RegisterInstance(_telegramSettings);
+            _container.RegisterInstance(_gameSettings);
+
             //register mongo db dependencies
             _container.RegisterInstance(InitializeMongoDB());
 
-            _container.Register<IRoomProvider, RoomProvider>();
+            _container.Register<ILobbyProvider, LobbyProvider>();
             _container.Register<IPlayerProvider, PlayerProvider>();
 
             //register telegram dependencies
             _container.RegisterInstance(InitializeBotClient());
 
-            _container.Register<ITelegramUpdateHandler, TelegramUpdateHandler>();
+            _container.Register<ITelegramUpdateGateway, TelegramUpdateGateway>();
+
+            _container.RegisterInstance<ITelegramHandlerFactory>(new TelegramHandlerFactory
+            {
+                {UpdateType.Message, () => _container.GetInstance<TelegramMessageHandler>() },
+                {UpdateType.MyChatMember, () => _container.GetInstance<TelegramMyChatMemberHandler>() },
+                {UpdateType.Unknown, () => _container.GetInstance<TelegramUnknownUpdateHandler>() }
+            });
+
+            _container.Register<TelegramMessageHandler>();
+            _container.Register<TelegramMyChatMemberHandler>();
+            _container.Register<TelegramUnknownUpdateHandler>();
         }
 
         private IMongoDatabase InitializeMongoDB()
@@ -115,10 +133,10 @@ namespace KCAA
             return botClient;
         }
 
-        private async Task RegisterGameObjects<T>(GameSettings settings) where T: GameObject
+        private async Task RegisterGameObjects<T>(string settingsPath) where T: GameObject
         {
             var builder = _container.GetInstance<IGameObjectBuilder<T>>();
-            var gameObjects = builder.GetObjectFromSettings(settings.CardSettingsPath).GetAwaiter().GetResult();
+            var gameObjects = builder.GetObjectFromSettings(settingsPath).GetAwaiter().GetResult();
 
             var factory = _container.GetInstance<IGameObjectFactory<T>>();
             var registerTasks = gameObjects.Select(x => factory.RegisterGameObject(x));
@@ -129,7 +147,7 @@ namespace KCAA
         private void InitializePolling()
         {
             var botClient = _container.GetInstance<ITelegramBotClient>();
-            var handler = _container.GetInstance<ITelegramUpdateHandler>();
+            var handler = _container.GetInstance<ITelegramUpdateGateway>();
             var cts = new CancellationTokenSource();
 
             botClient.StartReceiving(new DefaultUpdateHandler(handler.HandleUpdateAsync, handler.HandleErrorAsync), cts.Token);

@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\TelegramApi\Helpers\**" />
+    <Content Remove="Services\TelegramApi\Helpers\**" />
+    <EmbeddedResource Remove="Services\TelegramApi\Helpers\**" />
+    <None Remove="Services\TelegramApi\Helpers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="5.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />

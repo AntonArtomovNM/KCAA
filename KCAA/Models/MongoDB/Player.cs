@@ -11,11 +11,10 @@ namespace KCAA.Models.MongoDB
         [BsonRequired]
         public string Name { get; set; }
 
-        [BsonIgnoreIfDefault]
-        public Guid RoomId { get; set; }
+        public Guid LobbyId { get; set; }
 
         [BsonIgnoreIfNull]
-        public string ChatId { get; set; }
+        public long ChatId { get; set; }
 
         public bool IsHost { get; set; }
 

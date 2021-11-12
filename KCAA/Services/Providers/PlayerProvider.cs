@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using KCAA.Models.MongoDB;
 using KCAA.Services.Interfaces;
 using MongoDB.Driver;
@@ -15,50 +16,44 @@ namespace KCAA.Services.Providers
             _mongoCollection = mongoDatabase.GetCollection<Player>(Player.TableName);
         }
 
-        public void CreatePlayer(Player player)
-        {
-            _mongoCollection.InsertOne(player);
-        }
-
         public Player GetPlayerById(Guid playerId)
         {
             return _mongoCollection.Find(GetIdFilter(playerId)).FirstOrDefault();
         }
 
-        public Player GetPlayerByChatId(string chatId)
+        public Player GetPlayerByChatId(long chatId)
         {
             return _mongoCollection.Find(x => x.ChatId == chatId).FirstOrDefault();
         }
 
-        public List<Player> GetPlayersByRoomId(Guid roomId)
+        public List<Player> GetPlayersByLobbyId(Guid roomId)
         {
-            return _mongoCollection.Find(x => x.RoomId == roomId)?.ToList() ?? new List<Player>();
+            return _mongoCollection.Find(x => x.LobbyId == roomId)?.ToList() ?? new List<Player>();
         }
 
-        public void SavePlayer(Player player)
+        public async Task SavePlayer(Player player)
         {
-            var update = Builders<Player>.Update
-                .Set(x => x.Name, player.Name)
-                .Set(x => x.RoomId, player.RoomId)
-                .Set(x => x.ChatId, player.ChatId)
-                .Set(x => x.IsHost, player.IsHost)
-                .Set(x => x.HasCrown, player.HasCrown)
-                .Set(x => x.Coins, player.Coins)
-                .Set(x => x.Characters, player.Characters)
-                .Set(x => x.CardHand, player.CardHand)
-                .Set(x => x.ActiveCards, player.ActiveCards);
-
-            _mongoCollection.UpdateOne(GetIdFilter(player.Id), update);
+            if (player.Id == Guid.Empty)
+            {
+               await _mongoCollection.InsertOneAsync(player);
+            }
+            else
+            {
+                await _mongoCollection.ReplaceOneAsync(GetIdFilter(player.Id), player);
+            }
         }
 
-        public void SavePlayerV2(Player player)
+        public async Task SavePlayers(IEnumerable<Player> players)
         {
-            _mongoCollection.ReplaceOne(GetIdFilter(player.Id), player);
+            foreach (var player in players)
+            {
+                await _mongoCollection.ReplaceOneAsync(GetIdFilter(player.Id), player);
+            }
         }
 
-        public void DeletePlayer(Guid playerId)
+        public async Task DeletePlayer(Guid playerId)
         {
-            _mongoCollection.DeleteOne(x => x.Id == playerId);
+            await _mongoCollection.DeleteOneAsync(GetIdFilter(playerId));
         }
     }
 }
