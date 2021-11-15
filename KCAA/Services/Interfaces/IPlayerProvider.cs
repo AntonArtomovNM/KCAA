@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using KCAA.Models.MongoDB;
 
 namespace KCAA.Services.Interfaces
 {
     public interface IPlayerProvider
     {
-        void CreatePlayer(Player player);
-
         Player GetPlayerById(Guid playerId);
 
-        Player GetPlayerByChatId(string chatId);
+        Player GetPlayerByChatId(long chatId);
 
-        List<Player> GetPlayersByRoomId(Guid roomId);
+        List<Player> GetPlayersByLobbyId(Guid lobbyId);
 
-        void SavePlayer(Player player);
+        Task SavePlayer(Player player);
 
-        void DeletePlayer(Guid playerId);
+        Task SavePlayers(IEnumerable<Player> players);
+
+        Task DeletePlayer(Guid playerId);
     }
 }

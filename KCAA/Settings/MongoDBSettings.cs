@@ -2,7 +2,7 @@
 {
     public class MongoDBSettings
     {
-        public const string ConfigKey = "MongoDBSettings";
+        public static string ConfigKey => "MongoDBSettings";
 
         public string ConnectionString { get; set; }
 

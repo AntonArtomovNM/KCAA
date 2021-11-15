@@ -1,6 +1,6 @@
 ﻿namespace KCAA.Models.MongoDB
 {
-    public enum RoomStatus
+    public enum LobbyStatus
     {
         Configuring,
         CharacterSelection,
