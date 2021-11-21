@@ -8,3 +8,4 @@ This folder contains the documentation for the KCAA Citadels project:
 - [ER diagram](ER-diagram.png)
 - [UML diagram](UML-diagram.png)
 - [Sequence diagram /create_lobby](SequenceDiagram.png)
+- [Deployment diagram](DeploymentDiagram.png)
