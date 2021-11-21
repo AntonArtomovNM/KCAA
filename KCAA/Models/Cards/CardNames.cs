@@ -52,8 +52,6 @@
 
         public static string Goldmine => "sp-goldmine";
 
-        public static string DragonGates => "sp-dragon-gates";
-
         public static string Library => "sp-library";
 
         public static string DragonGates => "sp-dragon-gates";
