@@ -18,6 +18,7 @@
     "KCAA": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "health",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

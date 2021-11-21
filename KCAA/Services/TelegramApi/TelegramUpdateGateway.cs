@@ -1,35 +1,30 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
-using Telegram.Bot.Types.ReplyMarkups;
 using KCAA.Services.Interfaces;
 
-namespace KCAA.Services
+namespace KCAA.Services.TelegramApi
 {
-    public class TelegramUpdateHandler : ITelegramUpdateHandler
+    public class TelegramUpdateGateway : ITelegramUpdateGateway
     {
+        private readonly ITelegramHandlerFactory _telegramHandlerFactory;
+
+        public TelegramUpdateGateway(ITelegramHandlerFactory telegramHandlerFactory)
+        {
+            _telegramHandlerFactory = telegramHandlerFactory;
+        }
+
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            var handler = update.Type switch
-            {
-                // UpdateType.Poll
-                UpdateType.Message => BotOnMessageReceived(botClient, update.Message),
-                UpdateType.EditedMessage => BotOnMessageReceived(botClient, update.EditedMessage),
-                UpdateType.CallbackQuery => BotOnCallbackQueryReceived(botClient, update.CallbackQuery),
-                UpdateType.InlineQuery => BotOnInlineQueryReceived(botClient, update.InlineQuery),
-                UpdateType.ChosenInlineResult => BotOnChosenInlineResultReceived(botClient, update.ChosenInlineResult),
-                _ => UnknownUpdateHandlerAsync(botClient, update)
-            };
+            var handler = _telegramHandlerFactory.GetHandler(update.Type);
 
             try
             {
-                await handler;
+                await handler.Handle(botClient, update);
             }
             catch (Exception exception)
             {
@@ -47,25 +42,6 @@ namespace KCAA.Services
 
             Console.WriteLine(ErrorMessage);
             return Task.CompletedTask;
-        }
-
-        private async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
-        {
-            Console.WriteLine($"Receive message type: {message.Type}\nChat id: {message.Chat.Id}\nUsername: {message.From.Username}\nUser id: {message.From.Id}");
-
-            if (message.Type != MessageType.Text)
-            {
-                return;
-            }
-
-            var action = (message.Text.Split(' ').First()) switch
-            {
-                "/help" => DisplayCommands(botClient, message),
-                _ => Task.FromResult(new Message())
-            };
-            var sentMessage = await action;
-            
-            Console.WriteLine($"The message was sent with id: {sentMessage.MessageId}");
         }
 
         // Process Inline Keyboard callback data
@@ -105,23 +81,6 @@ namespace KCAA.Services
         {
             Console.WriteLine($"Received inline result: {chosenInlineResult.ResultId}");
             return Task.CompletedTask;
-        }
-
-        private Task UnknownUpdateHandlerAsync(ITelegramBotClient botClient, Update update)
-        {
-            Console.WriteLine($"Unknown update type: {update.Type}");
-            return Task.CompletedTask;
-        }
-
-        private async Task<Message> DisplayCommands(ITelegramBotClient botClient, Message message)
-        {
-            var commands = await botClient.GetMyCommandsAsync();
-
-            var usage = string.Join("\n", commands.Select(c => $"/{c.Command} - {c.Description}"));
-
-            return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                        text: usage,
-                                                        replyMarkup: new ReplyKeyboardRemove());
         }
     }
 }

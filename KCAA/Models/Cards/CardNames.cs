@@ -54,6 +54,10 @@
 
         public static string DragonGates => "sp-dragon-gates";
 
+        public static string Library => "sp-library";
+
+        public static string DragonGates => "sp-dragon-gates";
+
         public static string ImperialTreasury => "sp-imperial-treasury";
 
         public static string Capitol => "sp-capitol";

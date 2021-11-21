@@ -10,7 +10,7 @@ namespace KCAA.Services.Builders
 {
     public class GameObjectBuilder<T> : IGameObjectBuilder<T> where T: GameObject
     {
-        public async Task<IEnumerable<T>> GetObjectFromSettings(string filePath)
+        public async Task<IEnumerable<T>> GetObjectsFromSettings(string filePath)
         {
             IEnumerable<T> gameObjects;
 
