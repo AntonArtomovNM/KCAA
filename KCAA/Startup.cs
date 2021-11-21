@@ -136,7 +136,7 @@ namespace KCAA
         private async Task RegisterGameObjects<T>(string settingsPath) where T: GameObject
         {
             var builder = _container.GetInstance<IGameObjectBuilder<T>>();
-            var gameObjects = builder.GetObjectFromSettings(settingsPath).GetAwaiter().GetResult();
+            var gameObjects = await builder.GetObjectsFromSettings(settingsPath);
 
             var factory = _container.GetInstance<IGameObjectFactory<T>>();
             var registerTasks = gameObjects.Select(x => factory.RegisterGameObject(x));
