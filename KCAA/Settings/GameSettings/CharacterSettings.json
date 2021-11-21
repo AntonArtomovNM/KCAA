@@ -4,7 +4,7 @@
     "DisplayName": "Assassin",
     "Type": 0,
     "PhotoUri": "assasin.jpg",
-    "Description": "Announce the title of another character that you wish to murder. The murdered character misses his entire turn.",
+    "Description": "Select a character to murder. This character misses his entire turn.",
     "Order": 1
   },
   {
@@ -12,7 +12,7 @@
     "DisplayName": "Thief",
     "Type": 0,
     "PhotoUri": "thief.jpg",
-    "Description": "Announce the title of a character from whom you wish to steal. When the player who has that character is called upon to take his turn, you first take all of his gold.",
+    "Description": "Select a character to steal from. When the player who has that character is called upon to take his turn, you first take all of his gold.",
     "Order": 2
   },
   {
