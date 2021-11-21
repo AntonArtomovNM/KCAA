@@ -2,22 +2,22 @@
 {
     public static class CharacterNames
     {
-        public const string Assassin = "assassin";
+        public static string Assassin => "assassin";
 
-        public const string Thief = "thief";
+        public static string Thief => "thief";
 
-        public const string Wizard = "wizard";
+        public static string Magician => "magician";
 
-        public const string King = "king";
+        public static string King => "king";
 
-        public const string Bishop = "bishop";
+        public static string Bishop => "bishop";
 
-        public const string Dealer = "dealer";
+        public static string Merchant => "merchant";
 
-        public const string Architect = "architect";
+        public static string Architect => "architect";
 
-        public const string Condottiere = "сondottiere";
+        public static string Warlord => "warlord";
 
-        public const string Beggar = "beggar";
+        public static string Beggar => "beggar";
     }
 }

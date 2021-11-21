@@ -4,7 +4,7 @@
     "DisplayName": "Assassin",
     "Type": 0,
     "PhotoUri": "assasin.jpg",
-    "Description": "Kills",
+    "Description": "Select a character to murder. This character misses his entire turn.",
     "Order": 1
   },
   {
@@ -12,15 +12,15 @@
     "DisplayName": "Thief",
     "Type": 0,
     "PhotoUri": "thief.jpg",
-    "Description": "Steals",
+    "Description": "Select a character to steal from. When the player who has that character is called upon to take his turn, you first take all of his gold.",
     "Order": 2
   },
   {
-    "Name": "wizard",
-    "DisplayName": "Wizard",
+    "Name": "magician",
+    "DisplayName": "Magician",
     "Type": 0,
-    "PhotoUri": "wizard.jpg",
-    "Description": "Spells",
+    "PhotoUri": "magician.jpg",
+    "Description": "At any time during your turn, you have one of two options: change your entire hand of cards with the hand of another player OR fold any number of cards from your hand and then draw an equal number of cards from the deck.",
     "Order": 3
   },
   {
@@ -28,7 +28,7 @@
     "DisplayName": "King",
     "Type": 1,
     "PhotoUri": "king.jpg",
-    "Description": "Rules",
+    "Description": "You receive one gold for each noble (yellow) district in your city. When the King is called, you immediately receive the Crown.",
     "Order": 4
   },
   {
@@ -36,15 +36,15 @@
     "DisplayName": "Bishop",
     "Type": 2,
     "PhotoUri": "bishop.jpg",
-    "Description": "Prays",
+    "Description": "You receive one gold for each religious (blue) district in your city. Your districts may not be destroyed by the Condottiere.",
     "Order": 5
   },
   {
-    "Name": "dealer",
-    "DisplayName": "Dealer",
+    "Name": "merchant",
+    "DisplayName": "Merchant",
     "Type": 3,
-    "PhotoUri": "dealer.jpg",
-    "Description": "Sells",
+    "PhotoUri": "merchant.jpg",
+    "Description": "You receive one gold for each trade (green) district in your city. After you take an action, you receive one additional gold.",
     "Order": 6
   },
   {
@@ -52,15 +52,15 @@
     "DisplayName": "Architect",
     "Type": 0,
     "PhotoUri": "architect.jpg",
-    "Description": "Builds",
+    "Description": "After you take an action, you draw two additional district cards and put both in your hand. You may build up to three districts during your turn.",
     "Order": 7
   },
   {
-    "Name": "ñondottiere",
-    "DisplayName": "Condottiere",
+    "Name": "warlord",
+    "DisplayName": "Warlord",
     "Type": 4,
-    "PhotoUri": "ñondottiere.jpg",
-    "Description": "Destroys",
+    "PhotoUri": "warlord.jpg",
+    "Description": "You receive one gold for each military (red) district in your city. At the end of your turn, you may destroy one district of your choice by paying a number of gold equal to one less than the cost of the district.",
     "Order": 8
   },
   {
@@ -68,7 +68,7 @@
     "DisplayName": "Beggar",
     "Type": 0,
     "PhotoUri": "beggar.jpg",
-    "Description": "Begs",
+    "Description": "You receive one gold for each district that costs one gold.",
     "Order": 9
   }
 ]
