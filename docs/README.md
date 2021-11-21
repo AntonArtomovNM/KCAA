@@ -7,3 +7,4 @@ This folder contains the documentation for the KCAA Citadels project:
 - [Activity diagram (Player's turn)](ActivityDiagram.png)
 - [ER diagram](ER-diagram.png)
 - [UML diagram](UML-diagram.png)
+- [Deployment diagram](DeploymentDiagram.png)
