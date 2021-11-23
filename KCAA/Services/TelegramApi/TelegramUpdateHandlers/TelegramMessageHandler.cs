@@ -10,6 +10,9 @@ using KCAA.Models.MongoDB;
 using KCAA.Services.Interfaces;
 using KCAA.Settings;
 using KCAA.Settings.GameSettings;
+using KCAA.Models.Cards;
+using System.Collections.Generic;
+using KCAA.Models.Characters;
 
 namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 {
@@ -19,17 +22,23 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
         private readonly IPlayerProvider _playerProvider;
         private readonly TelegramSettings _telegramSettings;
         private readonly GameSettings _gameSettings;
+        private readonly IGameObjectFactory<Card> _cardFactory;
+        private readonly IGameObjectFactory<Character> _characterFactory;
 
         public TelegramMessageHandler(
             ILobbyProvider lobbyProvider, 
             IPlayerProvider playerProvider, 
             TelegramSettings telegramSettings,
-            GameSettings gameSettings) 
+            GameSettings gameSettings,
+            IGameObjectFactory<Card> cardFactory,
+            IGameObjectFactory<Character> characterFactory) 
         {
             _lobbyProvider = lobbyProvider;
             _playerProvider = playerProvider;
             _telegramSettings = telegramSettings;
             _gameSettings = gameSettings;
+            _cardFactory = cardFactory;
+            _characterFactory = characterFactory;
         }
 
         public async Task Handle(ITelegramBotClient botClient, Update update)
@@ -48,6 +57,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             {
                 "/create_lobby" => CreateGameLobby(botClient, message.Chat),
                 "/cancel_lobby" => CancelGameLobby(botClient, message.Chat),
+                "/test_display_card" => DisplayCardsTest(botClient, message.Chat.Id),
+                "/test_display_character" => DisplayCharacterTest(botClient, message.Chat.Id),
                 "/start" => HandleBotStart(botClient, text.Last(), message.Chat),
                 "/help" => DisplayCommands(botClient, message.Chat.Id),
                 _ => Task.CompletedTask
@@ -186,6 +197,40 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var usage = string.Join("\n", commands.Select(c => $"/{c.Command} - {c.Description}"));
 
             await botClient.SendTextMessageAsync(chatId, usage);
+        }
+
+        private async Task DisplayCardsTest(ITelegramBotClient botClient, long chatId)
+        {
+            var cards = new List<Card>
+                    {
+                        _cardFactory.GetGameObject(CardNames.Yellow1),
+                        _cardFactory.GetGameObject(CardNames.Blue2),
+                        _cardFactory.GetGameObject(CardNames.Green3),
+                        _cardFactory.GetGameObject(CardNames.Red4),
+                        _cardFactory.GetGameObject(CardNames.DragonGates)
+                    };
+
+            var sendCardsTasks = cards.Select(async x => await botClient.SendCard(chatId, x));
+            await Task.WhenAll(sendCardsTasks);
+        }
+
+        private async Task DisplayCharacterTest(ITelegramBotClient botClient, long chatId)
+        {
+            var characters = new List<Character>
+                    {
+                        _characterFactory.GetGameObject(CharacterNames.Architect),
+                        _characterFactory.GetGameObject(CharacterNames.Assassin),
+                        _characterFactory.GetGameObject(CharacterNames.Beggar),
+                        _characterFactory.GetGameObject(CharacterNames.Bishop),
+                        _characterFactory.GetGameObject(CharacterNames.King),
+                        _characterFactory.GetGameObject(CharacterNames.Magician),
+                        _characterFactory.GetGameObject(CharacterNames.Merchant),
+                        _characterFactory.GetGameObject(CharacterNames.Thief),
+                        _characterFactory.GetGameObject(CharacterNames.Warlord)
+                    };
+
+            var sendCharactersTasks = characters.Select(async x => await botClient.SendCharacter(chatId, x));
+            await Task.WhenAll(sendCharactersTasks);
         }
     }
 }
