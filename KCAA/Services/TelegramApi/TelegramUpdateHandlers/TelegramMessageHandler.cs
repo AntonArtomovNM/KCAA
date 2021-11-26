@@ -13,6 +13,7 @@ using KCAA.Settings.GameSettings;
 using KCAA.Models.Cards;
 using System.Collections.Generic;
 using KCAA.Models.Characters;
+using System.Text;
 
 namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 {
@@ -55,71 +56,59 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var text = message.Text.Split(' ', '@');
             var action = text.First() switch
             {
-                "/create_lobby" => CreateGameLobby(botClient, message.Chat),
-                "/cancel_lobby" => CancelGameLobby(botClient, message.Chat),
+                "/create_lobby" => HandleCreateLobby(botClient, message.Chat.Id),
+                "/cancel_lobby" => HandleCancelLobby(botClient, message.Chat.Id),
+                "/start_game" => HandleGameStart(botClient, message.Chat.Id),
+                "/start" => HandleBotStart(botClient, text.Last(), message.Chat),
+                "/help" => botClient.DisplayBotCommands(message.Chat.Id),
                 "/test_display_card" => DisplayCardsTest(botClient, message.Chat.Id),
                 "/test_display_character" => DisplayCharacterTest(botClient, message.Chat.Id),
-                "/start" => HandleBotStart(botClient, text.Last(), message.Chat),
-                "/help" => DisplayCommands(botClient, message.Chat.Id),
                 _ => Task.CompletedTask
             };
             await action;
         }
 
-        private async Task CreateGameLobby(ITelegramBotClient botClient, Chat chat)
+        private async Task HandleCreateLobby(ITelegramBotClient botClient, long chatId)
         {
             //if it's a user chat
-            if (chat.Id > 0)
+            if (chatId > 0)
             {
-                await botClient.SendTextMessageAsync(chat.Id, BotMessages.CommandOnlyForGroupsError);
+                await botClient.SendTextMessageAsync(chatId, BotMessages.CommandOnlyForGroupsError);
                 return;
             }
 
-            var lobby = _lobbyProvider.GetLobbyByChatId(chat.Id);
+            var lobby = _lobbyProvider.GetLobbyByChatId(chatId);
 
             if (lobby != null)
             {
-                await botClient.SendTextMessageAsync(chat.Id, BotMessages.LobbyAlreadyCreatedError);
+                await botClient.SendTextMessageAsync(chatId, BotMessages.LobbyAlreadyCreatedError);
                 return;
             }
 
             lobby = new Lobby
             {
-                ChatId = chat.Id
+                //TODO: Add character and card deck
+                TelegramMetadata = new TelegramMetadata
+                {
+                    ChatId = chatId
+                }
             };
 
             await _lobbyProvider.CreateLobby(lobby);
 
-            var buttons = new[]
-            {
-                new []
-                {
-                    InlineKeyboardButton.WithUrl("Join", $"{_telegramSettings.BotLink}?start={chat.Id}")
-                }
-            };
-            await botClient.SendInlineKeyboard(chat.Id, BotMessages.LobbyRegistrationMessage, buttons);
+            await DisplayJoinLobbyMessage(botClient, lobby);
         }
 
-        private async Task CancelGameLobby(ITelegramBotClient botClient, Chat chat)
+        private async Task HandleCancelLobby(ITelegramBotClient botClient, long chatId)
         {
-            //if it's a user chat
-            if (chat.Id > 0)
+            Lobby lobby;
+            try
             {
-                await botClient.SendTextMessageAsync(chat.Id, BotMessages.CommandOnlyForGroupsError);
-                return;
+                lobby = GetConfiguringLobby(chatId);
             }
-
-            var lobby = _lobbyProvider.GetLobbyByChatId(chat.Id);
-
-            if (lobby == null)
+            catch (ArgumentException ex)
             {
-                await botClient.SendTextMessageAsync(chat.Id, BotMessages.LobbyNotFoundError);
-                return;
-            }
-
-            if (lobby.Status != LobbyStatus.Configuring)
-            {
-                await botClient.SendTextMessageAsync(chat.Id, BotMessages.GameIsRunningError);
+                await botClient.SendTextMessageAsync(chatId, ex.Message);
                 return;
             }
 
@@ -134,7 +123,31 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             await _playerProvider.SavePlayers(players);
 
-            await botClient.SendTextMessageAsync(chat.Id, BotMessages.LobbyCanceledMessage);
+            await botClient.PutTextMessage(lobby.TelegramMetadata.ChatId, lobby.TelegramMetadata.LobbyInfoMessageId, BotMessages.LobbyCanceledMessage);
+        }
+
+        private async Task HandleGameStart(ITelegramBotClient botClient, long chatId)
+        {
+            Lobby lobby;
+            try
+            {
+                lobby = GetConfiguringLobby(chatId);
+            }
+            catch (ArgumentException ex)
+            {
+                await botClient.SendTextMessageAsync(chatId, ex.Message);
+                return;
+            }
+
+            if (lobby.PlayersCount < _gameSettings.MinPlayersAmount)
+            {
+                await botClient.SendTextMessageAsync(chatId, string.Format(BotMessages.NotEnoughPlayers, _gameSettings.MinPlayersAmount));
+                return;
+            }
+
+            await StartGame(botClient, lobby);
+
+            await _lobbyProvider.SaveLobby(lobby);
         }
 
         private async Task HandleBotStart(ITelegramBotClient botClient, string payload, Chat chat)
@@ -173,6 +186,86 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 return BotMessages.LobbyIsFullError;
             }
 
+            await CreateAndSavePlayer(playerChat, lobby, existingPlayer);
+
+            if (lobby.PlayersCount == _gameSettings.MaxPlayersAmount)
+            {
+                await StartGame(botClient, lobby);
+            }
+            else
+            {
+                await DisplayJoinLobbyMessage(botClient, lobby);
+            }
+
+            var groupChat = await botClient.GetChatAsync(groupChatId);
+
+            return string.Format(BotMessages.LobbyJoinedMessage, groupChat.Title);
+        }
+
+        private async Task StartGame(ITelegramBotClient botClient, Lobby lobby)
+        {
+            lobby.Status = LobbyStatus.CharacterSelection;
+
+            var message = await botClient.PutTextMessage(lobby.TelegramMetadata.ChatId, lobby.TelegramMetadata.LobbyInfoMessageId, BotMessages.GameStartMessage);
+
+            lobby.TelegramMetadata.LobbyInfoMessageId = message.MessageId;
+            await _lobbyProvider.SaveLobby(lobby);
+        }
+
+        private async Task DisplayJoinLobbyMessage(ITelegramBotClient botClient, Lobby lobby)
+        {
+            var tgMetadata = lobby.TelegramMetadata;
+
+            var lobbyStrBuilder = new StringBuilder();
+            lobbyStrBuilder.AppendLine(BotMessages.LobbyRegistrationMessage);
+            lobbyStrBuilder.AppendLine($"Players: {lobby.PlayersCount}/{_gameSettings.MaxPlayersAmount}");
+
+            var players = _playerProvider.GetPlayersByLobbyId(lobby.Id);
+
+            foreach (var player in players)
+            {
+                lobbyStrBuilder.AppendLine("• " + player.Name);
+            }
+
+            var buttons = new[]
+            {
+                new []
+                {
+                    InlineKeyboardButton.WithUrl("Join", $"{_telegramSettings.BotLink}?start={lobby.TelegramMetadata.ChatId}")
+                }
+            };
+
+            var sentMessage = await botClient.PutInlineKeyboard(tgMetadata.ChatId, tgMetadata.LobbyInfoMessageId, lobbyStrBuilder.ToString(), buttons);
+
+            lobby.TelegramMetadata.LobbyInfoMessageId = sentMessage.MessageId;
+            await _lobbyProvider.SaveLobby(lobby);
+        }
+
+        private Lobby GetConfiguringLobby(long chatId)
+        {
+            //if it's a user chat
+            if (chatId > 0)
+            {
+                throw new ArgumentException(BotMessages.CommandOnlyForGroupsError);
+            }
+
+            var lobby = _lobbyProvider.GetLobbyByChatId(chatId);
+
+            if (lobby == null)
+            {
+                throw new ArgumentException(BotMessages.LobbyNotFoundError);
+            }
+
+            if (lobby.Status != LobbyStatus.Configuring)
+            {
+                throw new ArgumentException(BotMessages.GameIsRunningError);
+            }
+
+            return lobby;
+        }
+
+        private async Task CreateAndSavePlayer(Chat playerChat, Lobby lobby, Player existingPlayer)
+        {
             var player = new Player
             {
                 Id = existingPlayer?.Id ?? Guid.Empty,
@@ -184,19 +277,6 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _playerProvider.SavePlayer(player);
 
             lobby.PlayersCount++;
-            await _lobbyProvider.SaveLobby(lobby);
-
-            var groupChat = await botClient.GetChatAsync(groupChatId);
-
-            return string.Format(BotMessages.LobbyJoinedMessage, groupChat.Title);
-        }
-
-        private async Task DisplayCommands(ITelegramBotClient botClient, long chatId)
-        {
-            var commands = await botClient.GetMyCommandsAsync();
-            var usage = string.Join("\n", commands.Select(c => $"/{c.Command} - {c.Description}"));
-
-            await botClient.SendTextMessageAsync(chatId, usage);
         }
 
         private async Task DisplayCardsTest(ITelegramBotClient botClient, long chatId)

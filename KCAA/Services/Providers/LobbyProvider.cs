@@ -21,7 +21,7 @@ namespace KCAA.Services.Providers
 
         public Lobby GetLobbyByChatId(long chatId)
         {
-            return _mongoCollection.Find(x => x.ChatId == chatId).FirstOrDefault();
+            return _mongoCollection.Find(x => x.TelegramMetadata.ChatId == chatId).FirstOrDefault();
         }
 
         public async Task SaveLobby(Lobby lobby)
@@ -36,7 +36,7 @@ namespace KCAA.Services.Providers
 
         public async Task DeleteLobbyByChatId(long chatId)
         {
-            await _mongoCollection.DeleteOneAsync(x => x.ChatId == chatId);
+            await _mongoCollection.DeleteOneAsync(x => x.TelegramMetadata.ChatId == chatId);
         }
     }
 }

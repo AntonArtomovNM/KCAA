@@ -14,11 +14,44 @@ namespace KCAA.Extensions
 {
     public static class TelegramBotClientExtentions
     {
-        public static async Task<Message> SendInlineKeyboard(this ITelegramBotClient botClient, long chatId, string message, IEnumerable<IEnumerable<InlineKeyboardButton>> buttons)
+        public static async Task<Message> PutTextMessage(this ITelegramBotClient botClient, long chatId, int messageId, string text)
+        {
+            Message message;
+            try
+            {
+                message = await botClient.EditMessageTextAsync(chatId, messageId, text);
+            }
+            catch
+            {
+                message = await botClient.SendTextMessageAsync(chatId, text);
+            }
+
+            return message;
+        }
+
+        public static async Task<Message> PutInlineKeyboard(this ITelegramBotClient botClient, long chatId, int messageId, string text, IEnumerable<IEnumerable<InlineKeyboardButton>> buttons)
         {
             var inlineKeyboard = new InlineKeyboardMarkup(buttons);
 
-            return await botClient.SendTextMessageAsync(chatId, message, replyMarkup: inlineKeyboard);
+            Message message;
+            try
+            {
+                message = await botClient.EditMessageTextAsync(chatId, messageId, text, replyMarkup: inlineKeyboard);
+            }
+            catch
+            {
+                message = await botClient.SendTextMessageAsync(chatId, text, replyMarkup: inlineKeyboard);
+            }
+
+            return message;
+        }
+
+        public static async Task DisplayBotCommands(this ITelegramBotClient botClient, long chatId)
+        {
+            var commands = await botClient.GetMyCommandsAsync();
+            var usage = string.Join("\n", commands.Select(c => $"/{c.Command} - {c.Description}"));
+
+            await botClient.SendTextMessageAsync(chatId, usage);
         }
 
         public static async Task<Message> SendCard(this ITelegramBotClient botClient, long chatId, Card card)
