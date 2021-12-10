@@ -18,8 +18,8 @@ namespace KCAA.Models.MongoDB
 
         public int PlayersCount { get; set; }
 
-        [BsonIgnoreIfDefault]
-        public long ChatId { get; set; }
+        [BsonIgnoreIfNull]
+        public TelegramMetadata TelegramMetadata { get; set; }
 
         public Lobby()
         {

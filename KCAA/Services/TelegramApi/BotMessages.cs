@@ -10,6 +10,8 @@
 
         public static string LobbyCanceledMessage => "Lobby registration is canceled";
 
+        public static string GameStartMessage => "Poehali!";
+
         public static string CommandOnlyForGroupsError => "This command can only be used in a group chat";
 
         public static string LobbyAlreadyCreatedError => "The lobby is already created";
@@ -19,6 +21,8 @@
         public static string LobbyNotFoundError => "This group doesn`t have an active lobby";
 
         public static string LobbyIsFullError => "Sorry, but lobby is already full";
+
+        public static string NotEnoughPlayers => "You need at least {0} players to start the game";
 
         public static string GameIsRunningError => "Game is already running";
     }
