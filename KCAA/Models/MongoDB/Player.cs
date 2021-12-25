@@ -11,7 +11,7 @@ namespace KCAA.Models.MongoDB
         [BsonRequired]
         public string Name { get; set; }
 
-        public Guid LobbyId { get; set; }
+        public string LobbyId { get; set; } = Guid.Empty.ToString();
 
         [BsonIgnoreIfNull]
         public long ChatId { get; set; }

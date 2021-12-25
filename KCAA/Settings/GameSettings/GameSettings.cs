@@ -4,6 +4,8 @@
     {
         public static string ConfigKey => "GameSettings";
 
+        public string GameApiUrl { get; set; }
+
         public string CardSettingsPath { get; set; }
 
         public string CharacterSettingsPath { get; set; }

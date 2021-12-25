@@ -8,7 +8,7 @@ namespace KCAA.Services.Providers
     {
         private readonly FilterDefinitionBuilder<T> _filterBuilder = Builders<T>.Filter;
 
-        protected FilterDefinition<T> GetIdFilter(Guid id)
+        protected FilterDefinition<T> GetIdFilter(string id)
         {
             return _filterBuilder.Eq(x => x.Id, id);
         }

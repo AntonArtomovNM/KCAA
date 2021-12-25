@@ -2,11 +2,11 @@
 {
     public enum ColorType
     {
-        None,
-        Yellow,
-        Blue,
-        Green,
-        Red,
-        Purple
+        None = 0,
+        Yellow = 1,
+        Blue = 2,
+        Green = 3,
+        Red = 4,
+        Purple = 5
     }
 }

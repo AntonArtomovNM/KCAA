@@ -29,7 +29,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             {
                 if (myChatMember.OldChatMember.Status == ChatMemberStatus.Left)
                 {
-                    await botClient.SendTextMessageAsync(chatId, BotMessages.GreetingsMessage);
+                    await botClient.SendTextMessageAsync(chatId, GameMessages.GreetingsMessage);
                 }
                 else if (myChatMember.NewChatMember.Status == ChatMemberStatus.Left)
                 {

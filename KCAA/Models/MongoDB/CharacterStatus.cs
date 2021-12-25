@@ -2,8 +2,8 @@
 {
     public enum CharacterStatus
     {
-        Awailable,
-        SecretlyRemoved,
-        Removed
+        Awailable = 0,
+        SecretlyRemoved = 1,
+        Removed = 2
     }
 }
