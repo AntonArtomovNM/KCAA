@@ -2,7 +2,7 @@
 
 namespace KCAA.Models.MongoDB
 {
-    public class ActiveCardDto : MongoDbObject
+    public class ActiveCardDto
     {
         [BsonRequired]
         public string Name { get; set; }

@@ -2,45 +2,45 @@
 {
     public static class CardNames
     {
-        public static string Green1 => "g1";
+        public static string Green1 => "Green1";
 
-        public static string Green2 => "g2";
+        public static string Green2 => "Green2";
 
-        public static string Green3 => "g3";
+        public static string Green3 => "Green3";
 
-        public static string Green4 => "g4";
+        public static string Green4 => "Green4";
 
-        public static string Green5 => "g5";
+        public static string Green5 => "Green5";
 
-        public static string Blue1 => "b1";
+        public static string Blue1 => "Blue1";
 
-        public static string Blue2 => "b2";
+        public static string Blue2 => "Blue2";
 
-        public static string Blue3 => "b3";
+        public static string Blue3 => "Blue3";
 
-        public static string Blue4 => "b4";
+        public static string Blue4 => "Blue4";
 
-        public static string Blue5 => "b5";
+        public static string Blue5 => "Blue5";
 
-        public static string Red1 => "r1";
+        public static string Red1 => "Red1";
 
-        public static string Red2 => "r2";
+        public static string Red2 => "Red2";
 
-        public static string Red3 => "r3";
+        public static string Red3 => "Red3";
 
-        public static string Red4 => "r4";
+        public static string Red4 => "Red4";
 
-        public static string Red5 => "r5";
+        public static string Red5 => "Red5";
 
-        public static string Yellow1 => "y1";
+        public static string Yellow1 => "Yellow1";
 
-        public static string Yellow2 => "y2";
+        public static string Yellow2 => "Yellow2";
 
-        public static string Yellow3 => "y3";
+        public static string Yellow3 => "Yellow3";
 
-        public static string Yellow4 => "y4";
+        public static string Yellow4 => "Yellow4";
 
-        public static string Yellow5 => "y5";
+        public static string Yellow5 => "Yellow5";
 
         public static string SecretHideout => "sp-secret-hideout";
 

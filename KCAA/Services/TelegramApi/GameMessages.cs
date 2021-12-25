@@ -1,6 +1,6 @@
 ﻿namespace KCAA.Services.TelegramApi
 {
-    public static class BotMessages
+    public static class GameMessages
     {
         public static string GreetingsMessage => "Ohayo Pokko";
 
@@ -8,7 +8,7 @@
 
         public static string LobbyJoinedMessage => "You've joined the lobby in {0}";
 
-        public static string LobbyCanceledMessage => "Lobby registration is canceled";
+        public static string LobbyCanceledMessage => "Lobby is canceled";
 
         public static string GameStartMessage => "Poehali!";
 
@@ -25,5 +25,7 @@
         public static string NotEnoughPlayers => "You need at least {0} players to start the game";
 
         public static string GameIsRunningError => "Game is already running";
+
+        public static string GameNotStartedError => "Game is not yet started";
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using MongoDB.Driver;
 using KCAA.Services.Interfaces;
 using KCAA.Models.MongoDB;
@@ -19,9 +21,21 @@ namespace KCAA.Services.Providers
             await _mongoCollection.InsertOneAsync(lobby);
         }
 
-        public Lobby GetLobbyByChatId(long chatId)
+        public async Task<Lobby> GetLobbyById(string lobbyId)
         {
-            return _mongoCollection.Find(x => x.TelegramMetadata.ChatId == chatId).FirstOrDefault();
+            return (await _mongoCollection.FindAsync(x => x.Id == lobbyId)).FirstOrDefault();
+        }
+
+        public async Task<Lobby> GetLobbyByChatId(long chatId)
+        {
+            return (await _mongoCollection.FindAsync(x => x.TelegramMetadata.ChatId == chatId)).FirstOrDefault();
+        }
+
+        public async Task UpdateLobby<T>(string lobbyId, Expression<Func<Lobby, T>> updateFunc, T value)
+        {
+            var update = Builders<Lobby>.Update.Set(updateFunc, value);
+
+            await _mongoCollection.UpdateOneAsync(GetIdFilter(lobbyId), update);
         }
 
         public async Task SaveLobby(Lobby lobby)

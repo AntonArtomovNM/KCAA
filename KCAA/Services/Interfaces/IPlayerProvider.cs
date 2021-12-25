@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using KCAA.Models.MongoDB;
 
@@ -7,16 +6,16 @@ namespace KCAA.Services.Interfaces
 {
     public interface IPlayerProvider
     {
-        Player GetPlayerById(Guid playerId);
+        Task<Player> GetPlayerById(string playerId);
 
-        Player GetPlayerByChatId(long chatId);
+        Task<Player> GetPlayerByChatId(long chatId);
 
-        List<Player> GetPlayersByLobbyId(Guid lobbyId);
+        Task<List<Player>> GetPlayersByLobbyId(string lobbyId);
 
         Task SavePlayer(Player player);
 
         Task SavePlayers(IEnumerable<Player> players);
 
-        Task DeletePlayer(Guid playerId);
+        Task DeletePlayer(string playerId);
     }
 }

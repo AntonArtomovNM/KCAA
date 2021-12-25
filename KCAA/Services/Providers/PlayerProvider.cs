@@ -16,26 +16,27 @@ namespace KCAA.Services.Providers
             _mongoCollection = mongoDatabase.GetCollection<Player>(Player.TableName);
         }
 
-        public Player GetPlayerById(Guid playerId)
+        public async Task<Player> GetPlayerById(string playerId)
         {
-            return _mongoCollection.Find(GetIdFilter(playerId)).FirstOrDefault();
+            return (await _mongoCollection.FindAsync(GetIdFilter(playerId))).FirstOrDefault();
         }
 
-        public Player GetPlayerByChatId(long chatId)
+        public async Task<Player> GetPlayerByChatId(long chatId)
         {
-            return _mongoCollection.Find(x => x.ChatId == chatId).FirstOrDefault();
+            return (await _mongoCollection.FindAsync(x => x.ChatId == chatId)).FirstOrDefault();
         }
 
-        public List<Player> GetPlayersByLobbyId(Guid roomId)
+        public async Task<List<Player>> GetPlayersByLobbyId(string lobbyId)
         {
-            return _mongoCollection.Find(x => x.LobbyId == roomId)?.ToList() ?? new List<Player>();
+            return (await _mongoCollection.FindAsync(x => x.LobbyId == lobbyId))?.ToList() ?? new List<Player>();
         }
 
         public async Task SavePlayer(Player player)
         {
-            if (player.Id == Guid.Empty)
+            if (string.IsNullOrWhiteSpace(player.Id))
             {
-               await _mongoCollection.InsertOneAsync(player);
+                player.Id = Guid.NewGuid().ToString();
+                await _mongoCollection.InsertOneAsync(player);
             }
             else
             {
@@ -51,7 +52,7 @@ namespace KCAA.Services.Providers
             }
         }
 
-        public async Task DeletePlayer(Guid playerId)
+        public async Task DeletePlayer(string playerId)
         {
             await _mongoCollection.DeleteOneAsync(GetIdFilter(playerId));
         }

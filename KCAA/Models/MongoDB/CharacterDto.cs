@@ -2,9 +2,9 @@
 
 namespace KCAA.Models.MongoDB
 {
-    public class CharacterDto : MongoDbObject
+    public class CharacterDto
     {
-        [BsonRequired]
+        [BsonId]
         public string Name { get; set; }
 
         [BsonRequired]
@@ -12,5 +12,12 @@ namespace KCAA.Models.MongoDB
 
         [BsonRequired]
         public CharacterEffect Effect { get; set; }
+
+        public CharacterDto(string name)
+        {
+            Name = name;
+            Status = CharacterStatus.Awailable;
+            Effect = CharacterEffect.None;
+        }
     }
 }

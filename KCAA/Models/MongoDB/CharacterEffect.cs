@@ -2,8 +2,8 @@
 {
     public enum CharacterEffect
     {
-        None,
-        Killed,
-        Robbed
+        None = 0,
+        Killed = 1,
+        Robbed = 2
     }
 }

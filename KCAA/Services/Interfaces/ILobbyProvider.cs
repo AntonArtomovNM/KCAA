@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using KCAA.Models.MongoDB;
 
 namespace KCAA.Services.Interfaces
@@ -7,8 +9,18 @@ namespace KCAA.Services.Interfaces
     {
         Task CreateLobby(Lobby lobby);
 
-        Lobby GetLobbyByChatId(long chatId);
+        Task<Lobby> GetLobbyById(string lobbyId);
 
+        Task<Lobby> GetLobbyByChatId(long chatId);
+
+        /// <summary>
+        /// For updating a specific field
+        /// </summary>
+        Task UpdateLobby<T>(string lobbyId, Expression<Func<Lobby, T>> updateFunc, T value);
+
+        /// <summary>
+        /// For updating all fields
+        /// </summary>
         Task SaveLobby(Lobby lobby);
 
         Task DeleteLobby(Lobby lobby);

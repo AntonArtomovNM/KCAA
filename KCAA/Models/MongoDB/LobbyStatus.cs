@@ -2,9 +2,8 @@
 {
     public enum LobbyStatus
     {
-        Configuring,
-        CharacterSelection,
-        Playing,
-        Ended
+        Configuring = 0,
+        CharacterSelection = 1,
+        Playing = 2
     }
 }
