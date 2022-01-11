@@ -118,8 +118,6 @@ namespace KCAA.Controllers
                 case < 7:
                     RemoveCharacter(lobby.CharacterDeck, CharacterStatus.Removed);
                     break;
-                default:
-                    break;
             }
         }
 
