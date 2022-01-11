@@ -1,6 +1,6 @@
 ﻿namespace KCAA.Models
 {
-    public abstract class GameObject
+    public abstract class CardObject
     {
         public string Name { get; init; }
 

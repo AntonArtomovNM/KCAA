@@ -44,18 +44,6 @@ namespace KCAA.Services.TelegramApi
             return Task.CompletedTask;
         }
 
-        // Process Inline Keyboard callback data
-        private async Task BotOnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
-        {
-            await botClient.AnswerCallbackQueryAsync(
-                callbackQueryId: callbackQuery.Id,
-                text: $"Received {callbackQuery.Data}");
-
-            await botClient.SendTextMessageAsync(
-                chatId: callbackQuery.Message.Chat.Id,
-                text: $"Received {callbackQuery.Data}");
-        }
-
         private async Task BotOnInlineQueryReceived(ITelegramBotClient botClient, InlineQuery inlineQuery)
         {
             Console.WriteLine($"Received inline query from: {inlineQuery.From.Id}");

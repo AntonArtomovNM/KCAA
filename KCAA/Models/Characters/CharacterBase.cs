@@ -1,6 +1,6 @@
 ﻿namespace KCAA.Models.Characters
 {
-    public class Character : GameObject
+    public class CharacterBase : CardObject
     {
         public int Order { get; init; }
     }

@@ -5,13 +5,13 @@ using KCAA.Services.Interfaces;
 
 namespace KCAA.Services.Factories
 {
-    public class CharacterFactory : IGameObjectFactory<Character>
+    public class CharacterFactory : ICardFactory<CharacterBase>
     {
-        private readonly Dictionary<string, Character> characters = new();
+        private readonly Dictionary<string, CharacterBase> characters = new();
 
-        public Character GetGameObject(string name) => characters[name];
+        public CharacterBase GetCard(string name) => characters[name];
 
-        public Task RegisterGameObject(Character character)
+        public Task RegisterCard(CharacterBase character)
         {
             characters.Add(character.Name, character);
 

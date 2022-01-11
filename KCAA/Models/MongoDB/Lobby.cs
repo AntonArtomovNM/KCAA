@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace KCAA.Models.MongoDB
@@ -9,10 +8,10 @@ namespace KCAA.Models.MongoDB
         public static string TableName => "lobby";
 
         [BsonRequired]
-        public IEnumerable<string> CardDeck { get; set; }
+        public List<string> QuarterDeck { get; set; }
 
         [BsonRequired]
-        public IEnumerable<CharacterDto> CharacterDeck { get; set; }
+        public List<Character> CharacterDeck { get; set; }
 
         [BsonRequired]
         public LobbyStatus Status { get; set; }
@@ -20,7 +19,7 @@ namespace KCAA.Models.MongoDB
         public int PlayersCount { get; set; }
 
         [BsonIgnoreIfNull]
-        public TelegramMetadata TelegramMetadata { get; set; }
+        public LobbyTelegramMetadata TelegramMetadata { get; set; }
 
         public Lobby()
         {

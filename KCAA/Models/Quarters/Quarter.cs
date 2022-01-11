@@ -1,6 +1,6 @@
-﻿namespace KCAA.Models.Cards
+﻿namespace KCAA.Models.Quarters
 {
-    public class Card : GameObject
+    public class Quarter : CardObject
     {
         public int Cost { get; init; }
 

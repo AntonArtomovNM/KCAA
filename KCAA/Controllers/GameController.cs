@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using KCAA.Models;
 using KCAA.Models.Characters;
@@ -68,16 +69,69 @@ namespace KCAA.Controllers
                 return BadRequest(string.Format(GameMessages.NotEnoughPlayers, _gameSettings.MinPlayersAmount));
             }
 
-            lobby.Status = LobbyStatus.CharacterSelection;
-            lobby.CardDeck = GenerateCardDeck();
+            lobby.QuarterDeck = GenerateQuarterDeck();
             lobby.CharacterDeck = GenerateCharacterDeck();
+            //TODO: Add cards to players
+            StartCharacterSelection(lobby);
 
             await _lobbyProvider.SaveLobby(lobby);
 
             return Ok(GameMessages.GameStartMessage);
         }
 
-        private IEnumerable<string> GenerateCardDeck()
+        [HttpPost]
+        [Route("{lobbyId}/character_selection")]
+        public async Task<IActionResult> CharacterSelection(string lobbyId)
+        {
+            var lobby = await _lobbyProvider.GetLobbyById(lobbyId);
+
+            if (lobby == null)
+            {
+                return NotFound(GameMessages.LobbyNotFoundError);
+            }
+
+            var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
+
+            var player = players.Where(p => !p.CharacterHand.Any()).OrderBy(p => p.CSOrder).FirstOrDefault();
+
+            if (player != null)
+            {
+                return Ok(player.Id);
+            }
+
+            lobby.Status = LobbyStatus.Playing;
+            await _lobbyProvider.UpdateLobby(lobbyId, l => l.Status, lobby.Status);
+            return Accepted();
+        }
+
+        private void StartCharacterSelection(Lobby lobby)
+        {
+            lobby.Status = LobbyStatus.CharacterSelection;
+            RemoveCharacter(lobby.CharacterDeck, CharacterStatus.SecretlyRemoved);
+
+            switch (lobby.PlayersCount)
+            {
+                case < 5:
+                    RemoveCharacter(lobby.CharacterDeck, CharacterStatus.Removed);
+                    RemoveCharacter(lobby.CharacterDeck, CharacterStatus.Removed);
+                    break;
+                case < 7:
+                    RemoveCharacter(lobby.CharacterDeck, CharacterStatus.Removed);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        private void RemoveCharacter(List<Character> characters, CharacterStatus status)
+        {
+            var rand = new Random();
+            characters = characters.Where(c => c.Status == CharacterStatus.Awailable).ToList();
+            characters[rand.Next(characters.Count)].Status = status;
+        }
+
+        private List<string> GenerateQuarterDeck()
         {
             var deck = new List<string>();
 
@@ -92,9 +146,9 @@ namespace KCAA.Controllers
             return deck;
         }
 
-        private IEnumerable<CharacterDto> GenerateCharacterDeck()
+        private List<Character> GenerateCharacterDeck()
         {
-            return new List<CharacterDto>
+            return new List<Character>
             {
                 new (CharacterNames.Assassin),
                 new (CharacterNames.Thief),

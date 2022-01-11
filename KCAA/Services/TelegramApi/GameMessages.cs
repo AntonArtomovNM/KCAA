@@ -27,5 +27,9 @@
         public static string GameIsRunningError => "Game is already running";
 
         public static string GameNotStartedError => "Game is not yet started";
+
+        public static string CharacterSelectionError => "Too late((";
+
+        public static string NotInGameError => "You`re not currently in the game";
     }
 }

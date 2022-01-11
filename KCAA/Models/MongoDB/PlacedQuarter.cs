@@ -2,7 +2,7 @@
 
 namespace KCAA.Models.MongoDB
 {
-    public class ActiveCardDto
+    public class PlacedQuarter
     {
         [BsonRequired]
         public string Name { get; set; }

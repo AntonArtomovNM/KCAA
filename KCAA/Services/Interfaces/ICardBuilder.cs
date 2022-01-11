@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace KCAA.Services.Interfaces
 {
-    public interface IGameObjectBuilder<T> 
+    public interface ICardBuilder<T> 
     {
-        Task<IEnumerable<T>> GetObjectsFromSettings(string filePath);
+        Task<IEnumerable<T>> GetCardsFromSettings(string filePath);
     }
 }
