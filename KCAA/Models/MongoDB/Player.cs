@@ -13,19 +13,24 @@ namespace KCAA.Models.MongoDB
 
         public string LobbyId { get; set; } = Guid.Empty.ToString();
 
-        [BsonIgnoreIfNull]
-        public long ChatId { get; set; }
-
         public bool IsHost { get; set; }
 
         public bool HasCrown { get; set; }
 
+        /// <summary>
+        /// Character selection order
+        /// </summary>
+        public int CSOrder { get; set; }
+
         public int Coins { get; set; }
 
-        public IEnumerable<string> Characters { get; set; }
+        public List<string> CharacterHand { get; set; } = new List<string>();
 
-        public IEnumerable<string> CardHand { get; set; }
+        public List<string> QuarterHand { get; set; } = new List<string>();
 
-        public IEnumerable<ActiveCardDto> ActiveCards { get; set; }
+        public List<PlacedQuarter> ActiveQuarters { get; set; }
+
+        [BsonIgnoreIfNull]
+        public PlayerTelegramMetadata TelegramMetadata { get; set; }
     }
 }

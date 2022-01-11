@@ -2,9 +2,9 @@
 
 namespace KCAA.Models.MongoDB
 {
-    public class TelegramMetadata : MongoDbObject
+    public class LobbyTelegramMetadata
     {
-        [BsonIgnoreIfDefault]
+        [BsonId]
         public long ChatId { get; set; }
 
         [BsonIgnoreIfDefault]

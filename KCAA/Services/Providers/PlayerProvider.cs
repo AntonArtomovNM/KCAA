@@ -23,7 +23,7 @@ namespace KCAA.Services.Providers
 
         public async Task<Player> GetPlayerByChatId(long chatId)
         {
-            return (await _mongoCollection.FindAsync(x => x.ChatId == chatId)).FirstOrDefault();
+            return (await _mongoCollection.FindAsync(x => x.TelegramMetadata.ChatId == chatId)).FirstOrDefault();
         }
 
         public async Task<List<Player>> GetPlayersByLobbyId(string lobbyId)

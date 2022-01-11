@@ -1,5 +1,5 @@
 ﻿using KCAA.Models;
-using KCAA.Models.Cards;
+using KCAA.Models.Quarters;
 using KCAA.Models.Characters;
 using System;
 using System.Collections.Generic;
@@ -54,52 +54,63 @@ namespace KCAA.Extensions
             await botClient.SendTextMessageAsync(chatId, usage);
         }
 
-        public static async Task<Message> SendCard(this ITelegramBotClient botClient, long chatId, Card card)
+        public static async Task<Message> SendQuarter(this ITelegramBotClient botClient, long chatId, Quarter quarter)
         {
-            var cardStats = $@"{GetCardTitleByColor(card.DisplayName, card.Type)}
-Cost: {GetCardCost(card.Cost)}
-{card.Description}";
+            var quarterStats = $@"{GetQuarterTitleByColor(quarter.DisplayName, quarter.Type)}
+Cost: {GetQuarterCost(quarter.Cost)}
+{quarter.Description}";
 
-            //var cardPick = new InputOnlineFile(card.PhotoUri);
-            var cardPick = new InputOnlineFile(@"https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg");
+            var cardPick = new InputOnlineFile(quarter.PhotoUri);
 
             Message resultMessage;
             try
             {
-                resultMessage = await botClient.SendPhotoAsync(chatId, cardPick, cardStats);
+                resultMessage = await botClient.SendPhotoAsync(chatId, cardPick, quarterStats);
             }
             catch(Exception ex)
             {
-                resultMessage = await botClient.SendTextMessageAsync(chatId, cardStats);
+                resultMessage = await botClient.SendTextMessageAsync(chatId, quarterStats);
                 Console.WriteLine($"An error occurred during sending photo: {ex}");
             }
 
             return resultMessage;
         }
 
-        public static async Task<Message> SendCharacter(this ITelegramBotClient botClient, long chatId, Character character)
+        public static async Task<Message> SendCharacter(this ITelegramBotClient botClient, long chatId, CharacterBase character, IEnumerable<InlineKeyboardButton> buttons = null)
         {
             var characterStats = $@"{GetCharacterTitleByColor(character.DisplayName, character.Type)}
 {character.Description}";
 
-            //var cardPick = new InputOnlineFile(card.PhotoUri);
-            var characterPick = new InputOnlineFile(@"https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9");
+            var cardPick = new InputOnlineFile(character.PhotoUri);
+
+            InlineKeyboardMarkup inlineKeyboard = null;
+            if (buttons != null) 
+            {
+                inlineKeyboard = new InlineKeyboardMarkup(buttons);
+            }
 
             Message resultMessage;
             try
             {
-                resultMessage = await botClient.SendPhotoAsync(chatId, characterPick, characterStats);
+                resultMessage = await botClient.SendPhotoAsync(chatId, cardPick, characterStats, replyMarkup: inlineKeyboard);
             }
             catch (Exception ex)
             {
-                resultMessage = await botClient.SendTextMessageAsync(chatId, characterStats);
+                resultMessage = await botClient.SendTextMessageAsync(chatId, characterStats, replyMarkup: inlineKeyboard);
                 Console.WriteLine($"An error occurred during sending photo: {ex}");
             }
 
             return resultMessage;
         }
 
-        private static string GetCardTitleByColor(string title, ColorType type)
+        public static async Task<Message[]> SendCardGroup(this ITelegramBotClient botClient, long chatId, IEnumerable<CardObject> cards)
+        {
+            var mediaGroup = cards.Select(c => new InputMediaPhoto(new InputMedia(c.PhotoUri)) { Caption = c.DisplayName });
+
+            return await botClient.SendMediaGroupAsync(chatId, mediaGroup);
+        }
+
+        private static string GetQuarterTitleByColor(string title, ColorType type)
         {
             return type switch
             {
@@ -112,7 +123,7 @@ Cost: {GetCardCost(card.Cost)}
             };
         }
 
-        private static string GetCardCost(int cost)
+        private static string GetQuarterCost(int cost)
         {
             return string.Concat(Enumerable.Repeat("🟡", cost));
         }

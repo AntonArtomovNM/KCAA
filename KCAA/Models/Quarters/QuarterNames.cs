@@ -1,6 +1,6 @@
-﻿namespace KCAA.Models.Cards
+﻿namespace KCAA.Models.Quarters
 {
-    public static class CardNames
+    public static class QuarterNames
     {
         public static string Green1 => "Green1";
 

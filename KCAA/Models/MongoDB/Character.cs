@@ -1,8 +1,9 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using KCAA.Models.Characters;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace KCAA.Models.MongoDB
 {
-    public class CharacterDto
+    public class Character
     {
         [BsonId]
         public string Name { get; set; }
@@ -13,7 +14,10 @@ namespace KCAA.Models.MongoDB
         [BsonRequired]
         public CharacterEffect Effect { get; set; }
 
-        public CharacterDto(string name)
+        [BsonIgnore]
+        public CharacterBase CharacterBase { get; set; }
+
+        public Character(string name)
         {
             Name = name;
             Status = CharacterStatus.Awailable;

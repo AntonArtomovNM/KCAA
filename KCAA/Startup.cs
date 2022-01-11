@@ -15,7 +15,7 @@ using KCAA.Services.Interfaces;
 using KCAA.Services.Factories;
 using KCAA.Settings.GameSettings;
 using KCAA.Services.Builders;
-using KCAA.Models.Cards;
+using KCAA.Models.Quarters;
 using KCAA.Models.Characters;
 using KCAA.Models;
 using KCAA.Services.Providers;
@@ -74,18 +74,18 @@ namespace KCAA
 
             _container.Verify();
 
-            RegisterGameObjects<Card>(_gameSettings.CardSettingsPath).GetAwaiter().GetResult();
-            RegisterGameObjects<Character>(_gameSettings.CharacterSettingsPath).GetAwaiter().GetResult();
+            RegisterGameObjects<Quarter>(_gameSettings.QuarterSettingsPath).GetAwaiter().GetResult();
+            RegisterGameObjects<CharacterBase>(_gameSettings.CharacterSettingsPath).GetAwaiter().GetResult();
 
             InitializePolling();
         }
 
         private void InitializeContainer()
         {
-            _container.Register(typeof(IGameObjectBuilder<>), typeof(GameObjectBuilder<>));
+            _container.Register(typeof(ICardBuilder<>), typeof(CardBuilder<>));
 
-            _container.Register<IGameObjectFactory<Card>, CardFactory>(Lifestyle.Singleton);
-            _container.Register<IGameObjectFactory<Character>, CharacterFactory>(Lifestyle.Singleton);
+            _container.Register<ICardFactory<Quarter>, QuarterFactory>(Lifestyle.Singleton);
+            _container.Register<ICardFactory<CharacterBase>, CharacterFactory>(Lifestyle.Singleton);
 
             //register settings
             _container.RegisterInstance(_telegramSettings);
@@ -105,11 +105,13 @@ namespace KCAA
             _container.RegisterInstance<ITelegramHandlerFactory>(new TelegramHandlerFactory
             {
                 {UpdateType.Message, () => _container.GetInstance<TelegramMessageHandler>() },
+                {UpdateType.CallbackQuery, () => _container.GetInstance<TelegramCallbackQueryHandler>() },
                 {UpdateType.MyChatMember, () => _container.GetInstance<TelegramMyChatMemberHandler>() },
                 {UpdateType.Unknown, () => _container.GetInstance<TelegramUnknownUpdateHandler>() }
             });
 
             _container.Register<TelegramMessageHandler>();
+            _container.Register<TelegramCallbackQueryHandler>();
             _container.Register<TelegramMyChatMemberHandler>();
             _container.Register<TelegramUnknownUpdateHandler>();
         }
@@ -133,13 +135,13 @@ namespace KCAA
             return botClient;
         }
 
-        private async Task RegisterGameObjects<T>(string settingsPath) where T: GameObject
+        private async Task RegisterGameObjects<T>(string settingsPath) where T: CardObject
         {
-            var builder = _container.GetInstance<IGameObjectBuilder<T>>();
-            var gameObjects = await builder.GetObjectsFromSettings(settingsPath);
+            var builder = _container.GetInstance<ICardBuilder<T>>();
+            var gameObjects = await builder.GetCardsFromSettings(settingsPath);
 
-            var factory = _container.GetInstance<IGameObjectFactory<T>>();
-            var registerTasks = gameObjects.Select(x => factory.RegisterGameObject(x));
+            var factory = _container.GetInstance<ICardFactory<T>>();
+            var registerTasks = gameObjects.Select(x => factory.RegisterCard(x));
 
             await Task.WhenAll(registerTasks);
         }
