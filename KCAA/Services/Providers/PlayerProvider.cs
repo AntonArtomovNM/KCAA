@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using KCAA.Models.MongoDB;
+using KCAA.Models.Quarters;
 using KCAA.Services.Interfaces;
 using MongoDB.Driver;
 
@@ -10,15 +12,24 @@ namespace KCAA.Services.Providers
     public class PlayerProvider : MongoDbProviderBase<Player>, IPlayerProvider
     {
         private readonly IMongoCollection<Player> _mongoCollection;
+        private readonly ICardFactory<Quarter> _quarterFactory;
 
-        public PlayerProvider(IMongoDatabase mongoDatabase)
+        public PlayerProvider(IMongoDatabase mongoDatabase, ICardFactory<Quarter> quarterFactory)
         {
             _mongoCollection = mongoDatabase.GetCollection<Player>(Player.TableName);
+            _quarterFactory = quarterFactory;
         }
 
-        public async Task<Player> GetPlayerById(string playerId)
+        public async Task<Player> GetPlayerById(string playerId, bool loadPlacedQuarters = false)
         {
-            return (await _mongoCollection.FindAsync(GetIdFilter(playerId))).FirstOrDefault();
+            var player = (await _mongoCollection.FindAsync(GetIdFilter(playerId))).FirstOrDefault();
+            
+            if (loadPlacedQuarters && player?.PlacedQuarters != null)
+            {
+                SetPlacedQuarters(player);
+            }
+
+            return player;
         }
 
         public async Task<Player> GetPlayerByChatId(long chatId)
@@ -26,9 +37,16 @@ namespace KCAA.Services.Providers
             return (await _mongoCollection.FindAsync(x => x.TelegramMetadata.ChatId == chatId)).FirstOrDefault();
         }
 
-        public async Task<List<Player>> GetPlayersByLobbyId(string lobbyId)
+        public async Task<List<Player>> GetPlayersByLobbyId(string lobbyId, bool loadPlacedQuarters = false)
         {
-            return (await _mongoCollection.FindAsync(x => x.LobbyId == lobbyId))?.ToList() ?? new List<Player>();
+            var players = (await _mongoCollection.FindAsync(x => x.LobbyId == lobbyId))?.ToList() ?? new List<Player>();
+
+            if (loadPlacedQuarters)
+            {
+                players.AsParallel().WithDegreeOfParallelism(2).ForAll(p => SetPlacedQuarters(p));
+            }
+
+            return players;
         }
 
         public async Task SavePlayer(Player player)
@@ -55,6 +73,11 @@ namespace KCAA.Services.Providers
         public async Task DeletePlayer(string playerId)
         {
             await _mongoCollection.DeleteOneAsync(GetIdFilter(playerId));
+        }
+
+        private void SetPlacedQuarters(Player player)
+        {
+            player.PlacedQuarters.AsParallel().WithDegreeOfParallelism(5).ForAll(q => q.QuarterBase = _quarterFactory.GetCard(q.Name));
         }
     }
 }

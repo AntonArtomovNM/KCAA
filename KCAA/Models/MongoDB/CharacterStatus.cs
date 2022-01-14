@@ -3,7 +3,8 @@
     public enum CharacterStatus
     {
         Awailable = 0,
-        SecretlyRemoved = 1,
-        Removed = 2
+        Selected = 1,
+        SecretlyRemoved = 2,
+        Removed = 3
     }
 }

@@ -28,7 +28,7 @@ namespace KCAA.Models.MongoDB
 
         public List<string> QuarterHand { get; set; } = new List<string>();
 
-        public List<PlacedQuarter> ActiveQuarters { get; set; }
+        public List<PlacedQuarter> PlacedQuarters { get; set; } = new List<PlacedQuarter>();
 
         [BsonIgnoreIfNull]
         public PlayerTelegramMetadata TelegramMetadata { get; set; }
