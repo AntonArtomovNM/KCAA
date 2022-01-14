@@ -12,6 +12,6 @@
 
         public string Description { get; init; }
 
-        public GameAction Action { get; set; }
+        public string GameAction { get; set; }
     }
 }
