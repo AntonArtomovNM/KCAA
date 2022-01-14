@@ -9,5 +9,7 @@ namespace KCAA.Models.MongoDB
         public long ChatId { get; set; }
 
         public List<int> CharacterInfoMessageIds { get; set; } = new List<int>();
+
+        public int GameActionKeyboardId { get; set; }
     }
 }

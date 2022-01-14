@@ -12,6 +12,8 @@
 
         public static string GameStartMessage => "Poehali!";
 
+        public static string ChooseResourcesMessage => "Choose resources: {0} " + GameSymbolConstants.Coin + " or {1}" + GameSymbolConstants.Card;
+
         public static string CommandOnlyForGroupsError => "This command can only be used in a group chat";
 
         public static string LobbyAlreadyCreatedError => "The lobby is already created";
@@ -22,14 +24,28 @@
 
         public static string LobbyIsFullError => "Sorry, but lobby is already full";
 
-        public static string NotEnoughPlayers => "You need at least {0} players to start the game";
+        public static string NotEnoughPlayersError => "You need at least {0} players to start the game";
 
         public static string GameIsRunningError => "Game is already running";
 
         public static string GameNotStartedError => "Game is not yet started";
 
-        public static string CharacterSelectionError => "Too late((";
+        public static string IdrakError => "Too late((";
+
+        public static string NotValidLobbyStateError => "Not valid lobby state";
 
         public static string NotInGameError => "You`re not currently in the game";
+
+        public static string PlayerNotFoundError => "Player not found";
+
+        public static string CharacterNotFoundError => "Character not found";
+
+        public static string GetPlayerTurnMessage(string characterName, int coinAmount, int cardAmount)
+        {
+            return $@"It's your turn!
+
+{characterName}
+{GameSymbolConstants.Coin}: {coinAmount} | {GameSymbolConstants.Card}: {cardAmount}";
+        }
     }
 }

@@ -9,6 +9,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
+using KCAA.Services.TelegramApi;
 
 namespace KCAA.Extensions
 {
@@ -105,6 +106,11 @@ Cost: {GetQuarterCost(quarter.Cost)}
 
         public static async Task<Message[]> SendCardGroup(this ITelegramBotClient botClient, long chatId, IEnumerable<CardObject> cards)
         {
+            if (cards == null || !cards.Any()) 
+            {
+                return new Message[0];
+            }
+
             var mediaGroup = cards.Select(c => new InputMediaPhoto(new InputMedia(c.PhotoUri)) { Caption = c.DisplayName });
 
             return await botClient.SendMediaGroupAsync(chatId, mediaGroup);
@@ -125,7 +131,7 @@ Cost: {GetQuarterCost(quarter.Cost)}
 
         private static string GetQuarterCost(int cost)
         {
-            return string.Concat(Enumerable.Repeat("🟡", cost));
+            return string.Concat(Enumerable.Repeat(GameSymbolConstants.Coin, cost));
         }
 
         private static string GetCharacterTitleByColor(string title, ColorType type)

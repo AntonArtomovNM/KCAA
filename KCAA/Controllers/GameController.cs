@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using KCAA.Models;
-using KCAA.Models.Characters;
 using KCAA.Models.MongoDB;
 using KCAA.Services.Interfaces;
 using KCAA.Services.TelegramApi;
@@ -17,12 +16,17 @@ namespace KCAA.Controllers
         private readonly ILobbyProvider _lobbyProvider;
         private readonly IPlayerProvider _playerProvider;
         private readonly GameSettings _gameSettings;
+        private readonly Random _random;
 
-        public GameController(ILobbyProvider lobbyProvider, IPlayerProvider playerProvider, GameSettings gameSettings)
+        public GameController(
+            ILobbyProvider lobbyProvider, 
+            IPlayerProvider playerProvider, 
+            GameSettings gameSettings)
         {
             _lobbyProvider = lobbyProvider;
             _playerProvider = playerProvider;
             _gameSettings = gameSettings;
+            _random = new Random();
         }
 
         [HttpDelete]
@@ -66,12 +70,13 @@ namespace KCAA.Controllers
             }
             if (lobby.PlayersCount < _gameSettings.MinPlayersAmount)
             {
-                return BadRequest(string.Format(GameMessages.NotEnoughPlayers, _gameSettings.MinPlayersAmount));
+                return BadRequest(string.Format(GameMessages.NotEnoughPlayersError, _gameSettings.MinPlayersAmount));
             }
 
-            lobby.QuarterDeck = GenerateQuarterDeck();
-            lobby.CharacterDeck = GenerateCharacterDeck();
-            //TODO: Add cards to players
+            lobby.GenerateBasicQuarterDeck();
+            lobby.GenerateCharacterDeck();
+            
+            await GiveStartingResources(lobby);
             StartCharacterSelection(lobby);
 
             await _lobbyProvider.SaveLobby(lobby);
@@ -79,7 +84,7 @@ namespace KCAA.Controllers
             return Ok(GameMessages.GameStartMessage);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("{lobbyId}/character_selection")]
         public async Task<IActionResult> CharacterSelection(string lobbyId)
         {
@@ -88,6 +93,11 @@ namespace KCAA.Controllers
             if (lobby == null)
             {
                 return NotFound(GameMessages.LobbyNotFoundError);
+            }
+
+            if (lobby.Status != LobbyStatus.CharacterSelection)
+            {
+                return BadRequest(GameMessages.NotValidLobbyStateError);
             }
 
             var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
@@ -102,6 +112,65 @@ namespace KCAA.Controllers
             lobby.Status = LobbyStatus.Playing;
             await _lobbyProvider.UpdateLobby(lobbyId, l => l.Status, lobby.Status);
             return Accepted();
+        }
+
+        [HttpGet]
+        [Route("{lobbyId}/play")]
+        public async Task<IActionResult> GetNextPlayerTurn(string lobbyId)
+        {
+            var lobby = await _lobbyProvider.GetLobbyById(lobbyId);
+
+            if (lobby == null)
+            {
+                return NotFound(GameMessages.LobbyNotFoundError);
+            }
+
+            if (lobby.Status != LobbyStatus.Playing)
+            {
+                return BadRequest(GameMessages.NotValidLobbyStateError);
+            }
+
+            var character = lobby.CharacterDeck
+                .Where(c => c.Status == CharacterStatus.Selected)
+                .OrderBy(c => c.CharacterBase.Order)
+                .FirstOrDefault();
+
+            if (character == null)
+            {
+                return NotFound(GameMessages.CharacterNotFoundError);
+            }
+
+            var player = (await _playerProvider.GetPlayersByLobbyId(lobby.Id)).Find(p => p.CharacterHand.Contains(character.Name));
+
+            if (player == null)
+            {
+                return NotFound(GameMessages.PlayerNotFoundError);
+            }
+
+            var turnDto = new PlayerTurnDto
+            {
+                PlayerId = player.Id,
+                Character = character.CharacterBase
+            };
+
+            return Ok(turnDto);
+        }
+
+        private async Task GiveStartingResources(Lobby lobby)
+        {
+            var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
+
+            foreach (var p in players)
+            {
+                for (int i = 0; i < _gameSettings.StartingQuertersAmount; i++)
+                {
+                    var quarter = lobby.DrawQuarter();
+                    p.QuarterHand.Add(quarter);
+                }
+                p.Coins = _gameSettings.StartingCoinsAmount;
+
+                await _playerProvider.SavePlayer(p);
+            };
         }
 
         private void StartCharacterSelection(Lobby lobby)
@@ -121,43 +190,10 @@ namespace KCAA.Controllers
             }
         }
 
-
         private void RemoveCharacter(List<Character> characters, CharacterStatus status)
         {
-            var rand = new Random();
             characters = characters.Where(c => c.Status == CharacterStatus.Awailable).ToList();
-            characters[rand.Next(characters.Count)].Status = status;
-        }
-
-        private List<string> GenerateQuarterDeck()
-        {
-            var deck = new List<string>();
-
-            for (int i = 1; i < 5; i++)
-            {
-                for (int j = 1; j <= 5; j++)
-                {
-                    deck.Add($"{Enum.GetName(typeof(ColorType), i)}{j}");
-                }
-            }
-
-            return deck;
-        }
-
-        private List<Character> GenerateCharacterDeck()
-        {
-            return new List<Character>
-            {
-                new (CharacterNames.Assassin),
-                new (CharacterNames.Thief),
-                new (CharacterNames.Magician),
-                new (CharacterNames.King),
-                new (CharacterNames.Bishop),
-                new (CharacterNames.Merchant),
-                new (CharacterNames.Architect),
-                new (CharacterNames.Warlord),
-                new (CharacterNames.Beggar)
-            };
+            characters[_random.Next(characters.Count)].Status = status;
         }
     }
 }

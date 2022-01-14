@@ -13,5 +13,13 @@
         public int MaxPlayersAmount { get; set; }
 
         public int MinPlayersAmount { get; set; }
+
+        public int StartingCoinsAmount { get; set; }
+
+        public int StartingQuertersAmount { get; set; }
+
+        public int CoinsPerTurn { get; set; }
+
+        public int QuertersPerTurn { get; set; }
     }
 }

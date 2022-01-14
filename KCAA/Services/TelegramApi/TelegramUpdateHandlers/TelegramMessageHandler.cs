@@ -61,7 +61,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 "/end_game" => HandleCancelLobby(message.Chat.Id, cancelMidGame: true),
                 "/start" => HandleBotStart(text.Last(), message.Chat),
                 "/help" => _botClient.DisplayBotCommands(message.Chat.Id),
-                "/my_hand" => DisplayHand(message.From.Id),
+                "/my_hand" => DisplayHand(message.From.Id), //TODO: Remake as inline keyboard
                 _ => Task.CompletedTask
             };
             await action;
