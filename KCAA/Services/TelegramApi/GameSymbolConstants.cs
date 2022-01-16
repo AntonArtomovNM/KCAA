@@ -5,5 +5,7 @@
         public static string Coin => "🟡";
 
         public static string Card => "🎴";
+
+        public static string Score => "🏆";
     }
 }

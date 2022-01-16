@@ -55,7 +55,7 @@ namespace KCAA.Extensions
             await botClient.SendTextMessageAsync(chatId, usage);
         }
 
-        public static async Task<Message> SendQuarter(this ITelegramBotClient botClient, long chatId, Quarter quarter)
+        public static async Task<Message> SendQuarter(this ITelegramBotClient botClient, long chatId, Quarter quarter, InlineKeyboardButton button = null)
         {
             var quarterStats = $@"{GetQuarterTitleByColor(quarter.DisplayName, quarter.Type)}
 Cost: {GetQuarterCost(quarter.Cost)}
@@ -63,29 +63,40 @@ Cost: {GetQuarterCost(quarter.Cost)}
 
             var cardPick = new InputOnlineFile(quarter.PhotoUri);
 
+            InlineKeyboardMarkup inlineKeyboard = null;
+            if (button != null)
+            {
+                inlineKeyboard = new InlineKeyboardMarkup(button);
+            }
+
             Message resultMessage;
             try
             {
-                resultMessage = await botClient.SendPhotoAsync(chatId, cardPick, quarterStats);
+                resultMessage = await botClient.SendPhotoAsync(chatId, cardPick, quarterStats, replyMarkup: inlineKeyboard);
             }
             catch(Exception ex)
             {
-                resultMessage = await botClient.SendTextMessageAsync(chatId, quarterStats);
-                Console.WriteLine($"An error occurred during sending photo: {ex}");
+                resultMessage = await botClient.SendTextMessageAsync(chatId, quarterStats, replyMarkup: inlineKeyboard);
+                Console.WriteLine($"An error occurred during sending quarter photo: {ex}");
             }
 
             return resultMessage;
         }
 
-        public static async Task<Message> SendCharacter(this ITelegramBotClient botClient, long chatId, CharacterBase character, IEnumerable<InlineKeyboardButton> buttons = null)
+        public static async Task<Message> SendCharacterWithItsDescription(this ITelegramBotClient botClient, long chatId, CharacterBase character, IEnumerable<IEnumerable<InlineKeyboardButton>> buttons = null)
         {
             var characterStats = $@"{GetCharacterTitleByColor(character.DisplayName, character.Type)}
 {character.Description}";
 
+            return await SendCharacterWithMessage(botClient, chatId, character, characterStats, buttons);
+        }
+
+        public static async Task<Message> SendCharacterWithMessage(this ITelegramBotClient botClient, long chatId, CharacterBase character, string tgMessage, IEnumerable<IEnumerable<InlineKeyboardButton>> buttons = null)
+        {
             var cardPick = new InputOnlineFile(character.PhotoUri);
 
             InlineKeyboardMarkup inlineKeyboard = null;
-            if (buttons != null) 
+            if (buttons != null)
             {
                 inlineKeyboard = new InlineKeyboardMarkup(buttons);
             }
@@ -93,12 +104,12 @@ Cost: {GetQuarterCost(quarter.Cost)}
             Message resultMessage;
             try
             {
-                resultMessage = await botClient.SendPhotoAsync(chatId, cardPick, characterStats, replyMarkup: inlineKeyboard);
+                resultMessage = await botClient.SendPhotoAsync(chatId, cardPick, tgMessage, replyMarkup: inlineKeyboard);
             }
             catch (Exception ex)
             {
-                resultMessage = await botClient.SendTextMessageAsync(chatId, characterStats, replyMarkup: inlineKeyboard);
-                Console.WriteLine($"An error occurred during sending photo: {ex}");
+                resultMessage = await botClient.SendTextMessageAsync(chatId, tgMessage, replyMarkup: inlineKeyboard);
+                Console.WriteLine($"An error occurred during sending character photo: {ex}");
             }
 
             return resultMessage;

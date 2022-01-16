@@ -12,5 +12,10 @@ namespace KCAA.Models.MongoDB
 
         [BsonIgnore]
         public Quarter QuarterBase { get; set; }
+
+        public PlacedQuarter(string name)
+        {
+            Name = name;
+        }
     }
 }

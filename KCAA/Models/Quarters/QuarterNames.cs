@@ -2,45 +2,45 @@
 {
     public static class QuarterNames
     {
-        public static string Green1 => "Green1";
+        public static string Green1 => "G1";
 
-        public static string Green2 => "Green2";
+        public static string Green2 => "G2";
 
-        public static string Green3 => "Green3";
+        public static string Green3 => "G3";
 
-        public static string Green4 => "Green4";
+        public static string Green4 => "G4";
 
-        public static string Green5 => "Green5";
+        public static string Green5 => "G5";
 
-        public static string Blue1 => "Blue1";
+        public static string Blue1 => "B1";
 
-        public static string Blue2 => "Blue2";
+        public static string Blue2 => "B2";
 
-        public static string Blue3 => "Blue3";
+        public static string Blue3 => "B3";
 
-        public static string Blue4 => "Blue4";
+        public static string Blue4 => "B4";
 
-        public static string Blue5 => "Blue5";
+        public static string Blue5 => "B5";
 
-        public static string Red1 => "Red1";
+        public static string Red1 => "R1";
 
-        public static string Red2 => "Red2";
+        public static string Red2 => "R2";
 
-        public static string Red3 => "Red3";
+        public static string Red3 => "R3";
 
-        public static string Red4 => "Red4";
+        public static string Red4 => "R4";
 
-        public static string Red5 => "Red5";
+        public static string Red5 => "R5";
 
-        public static string Yellow1 => "Yellow1";
+        public static string Yellow1 => "w1";
 
-        public static string Yellow2 => "Yellow2";
+        public static string Yellow2 => "Y2";
 
-        public static string Yellow3 => "Yellow3";
+        public static string Yellow3 => "Y3";
 
-        public static string Yellow4 => "Yellow4";
+        public static string Yellow4 => "Y4";
 
-        public static string Yellow5 => "Yellow5";
+        public static string Yellow5 => "Y5";
 
         public static string SecretHideout => "sp-secret-hideout";
 

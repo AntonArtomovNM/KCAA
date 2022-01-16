@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using KCAA.Models.MongoDB;
 
@@ -11,6 +13,8 @@ namespace KCAA.Services.Interfaces
         Task<Player> GetPlayerByChatId(long chatId);
 
         Task<List<Player>> GetPlayersByLobbyId(string lobbyId, bool loadPlacedQuarters = false);
+
+        Task UpdatePlayer<T>(string playerId, Expression<Func<Player, T>> updateFunc, T value);
 
         Task SavePlayer(Player player);
 

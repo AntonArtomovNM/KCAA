@@ -8,7 +8,7 @@ namespace KCAA.Models.MongoDB
         [BsonId]
         public long ChatId { get; set; }
 
-        public List<int> CharacterInfoMessageIds { get; set; } = new List<int>();
+        public List<int> CardMessageIds { get; set; } = new List<int>();
 
         public int GameActionKeyboardId { get; set; }
     }
