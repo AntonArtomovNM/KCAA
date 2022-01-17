@@ -127,7 +127,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             if (response.IsSuccessStatusCode)
             {
-                await _botClient.DeleteMessageAsync(chatId, lobby.TelegramMetadata.LobbyInfoMessageId);
+                await _botClient.TryDeleteMessage(chatId, lobby.TelegramMetadata.LobbyInfoMessageId);
             }
             
             await _botClient.SendTextMessageAsync(lobby.TelegramMetadata.ChatId, responseMessage);
@@ -293,6 +293,20 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var result = (await _botClient.SendCardGroup(playerChatId, characters)).ToList();
             result.AddRange(await _botClient.SendCardGroup(playerChatId, quarters));
+        }
+
+        static async Task<Message> SendReplyKeyboard(ITelegramBotClient botClient, long chatId)
+        {
+            ReplyKeyboardMarkup replyKeyboardMarkup = new(
+                new[]
+                {
+                        new KeyboardButton[] { "My-Hand" }
+                })
+            {
+                ResizeKeyboard = true
+            };
+
+            return await botClient.SendTextMessageAsync(chatId, "My-Hand", replyMarkup: replyKeyboardMarkup);
         }
     }
 }

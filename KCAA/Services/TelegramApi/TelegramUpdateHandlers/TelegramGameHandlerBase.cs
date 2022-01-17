@@ -64,7 +64,11 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                     }
                 };
 
-                var responseMessage = await botClient.SendCharacterWithItsDescription(player.TelegramMetadata.ChatId, character.CharacterBase, buttons);
+                var responseMessage = await botClient.SendCharacter(
+                    player.TelegramMetadata.ChatId,
+                    character.CharacterBase,
+                    character.CharacterBase.Description,
+                    buttons);
 
                 player.TelegramMetadata.CardMessageIds.Add(responseMessage.MessageId);
             }
@@ -96,7 +100,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var player = await _playerProvider.GetPlayerById(content.PlayerId);
 
-            var tgMessage = GameMessages.GetPlayerTurnMessage(content.Character.DisplayName, player.Coins, player.QuarterHand.Count, player.Score)
+            var tgMessage = GameMessages.GetPlayerTurnMessage(player.Coins, player.QuarterHand.Count, player.Score)
                 + "\n\n" + string.Format(GameMessages.ChooseResourcesMessage, _gameSettings.CoinsPerTurn, _gameSettings.QuertersPerTurn);
 
             var buttons = new List<List<InlineKeyboardButton>>
@@ -112,7 +116,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 }
             };
 
-            var responseMessage = await botClient.PutInlineKeyboard(player.TelegramMetadata.ChatId, player.TelegramMetadata.GameActionKeyboardId, tgMessage, buttons);
+            var responseMessage = await botClient.SendCharacter(player.TelegramMetadata.ChatId, content.Character, tgMessage, buttons);
             player.TelegramMetadata.GameActionKeyboardId = responseMessage.MessageId;
 
             await _playerProvider.UpdatePlayer(player.Id, p => p.TelegramMetadata, player.TelegramMetadata);

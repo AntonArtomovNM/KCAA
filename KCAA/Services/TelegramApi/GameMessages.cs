@@ -44,11 +44,11 @@
 
         public static string NoQuartersToAffordError => "You`re too poor to afford any quarter from hand";
 
-        public static string GetPlayerTurnMessage(string characterName, int coinAmount, int cardAmount, int score)
+        public static string GetPlayerTurnMessage(int coinAmount, int cardAmount, int score)
         {
-            return $@"Your turn:
+            return $@"
+Your turn!
 
-{characterName}
 {GameSymbolConstants.Coin}: {coinAmount} | {GameSymbolConstants.Card}: {cardAmount} | {GameSymbolConstants.Score}: {score}";
         }
 
