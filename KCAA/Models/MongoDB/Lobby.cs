@@ -56,7 +56,7 @@ namespace KCAA.Models.MongoDB
                 {
                     for (int j = 1; j <= 5; j++)
                     {
-                        QuarterDeck.Add($"{Enum.GetName(typeof(ColorType), i)}{j}");
+                        QuarterDeck.Add($"{Enum.GetName(typeof(ColorType), i).First()}{j}");
                     }
                 }
             }

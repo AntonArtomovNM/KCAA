@@ -1,139 +1,139 @@
 [
   {
-    "Name": "Yellow1",
+    "Name": "Y1",
     "DisplayName": "Yellow 1",
     "Type": 1,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 1
   },
   {
-    "Name": "Yellow2",
+    "Name": "Y2",
     "DisplayName": "Yellow 2",
     "Type": 1,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 2
   },
   {
-    "Name": "Yellow3",
+    "Name": "Y3",
     "DisplayName": "Yellow 3",
     "Type": 1,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 3
   },
   {
-    "Name": "Yellow4",
+    "Name": "Y4",
     "DisplayName": "Yellow 4",
     "Type": 1,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 4
   },
   {
-    "Name": "Yellow5",
+    "Name": "Y5",
     "DisplayName": "Yellow 5",
     "Type": 1,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 5
   },
   {
-    "Name": "Blue1",
+    "Name": "B1",
     "DisplayName": "Blue 1",
     "Type": 2,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 1
   },
   {
-    "Name": "Blue2",
+    "Name": "B2",
     "DisplayName": "Blue 2",
     "Type": 2,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 2
   },
   {
-    "Name": "Blue3",
+    "Name": "B3",
     "DisplayName": "Blue 3",
     "Type": 2,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 3
   },
   {
-    "Name": "Blue4",
+    "Name": "B4",
     "DisplayName": "Blue 4",
     "Type": 2,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 4
   },
   {
-    "Name": "Blue5",
+    "Name": "B5",
     "DisplayName": "Blue 5",
     "Type": 2,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 5
   },
   {
-    "Name": "Green1",
+    "Name": "G1",
     "DisplayName": "Green 1",
     "Type": 3,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 1
   },
   {
-    "Name": "Green2",
+    "Name": "G2",
     "DisplayName": "Green 2",
     "Type": 3,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 2
   },
   {
-    "Name": "Green3",
+    "Name": "G3",
     "DisplayName": "Green 3",
     "Type": 3,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 3
   },
   {
-    "Name": "Green4",
+    "Name": "G4",
     "DisplayName": "Green 4",
     "Type": 3,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 4
   },
   {
-    "Name": "Green5",
+    "Name": "G5",
     "DisplayName": "Green 5",
     "Type": 3,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 5
   },
   {
-    "Name": "Red1",
+    "Name": "R1",
     "DisplayName": "Red 1",
     "Type": 4,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 1
   },
   {
-    "Name": "Red2",
+    "Name": "R2",
     "DisplayName": "Red 2",
     "Type": 4,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 2
   },
   {
-    "Name": "Red3",
+    "Name": "R3",
     "DisplayName": "Red 3",
     "Type": 4,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 3
   },
   {
-    "Name": "Red4",
+    "Name": "R4",
     "DisplayName": "Red 4",
     "Type": 4,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 4
   },
   {
-    "Name": "Red5",
+    "Name": "R5",
     "DisplayName": "Red 5",
     "Type": 4,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",

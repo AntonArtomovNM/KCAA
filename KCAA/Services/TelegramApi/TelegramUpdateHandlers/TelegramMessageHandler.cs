@@ -86,7 +86,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             lobby = new Lobby
             {
-                Id = Guid.NewGuid().ToString(),
+                //id used in telegram callback query cannot include '-' 
+                Id = Guid.NewGuid().ToString().Replace("-", ""),
                 TelegramMetadata = new LobbyTelegramMetadata
                 {
                     ChatId = chatId

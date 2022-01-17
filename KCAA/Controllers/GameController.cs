@@ -75,11 +75,14 @@ namespace KCAA.Controllers
 
             lobby.GenerateBasicQuarterDeck();
             lobby.GenerateCharacterDeck();
-            
-            await GiveStartingResources(lobby);
-            StartCharacterSelection(lobby);
+
+            var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
+
+            GiveStartingResources(lobby, players);
+            StartCharacterSelection(lobby, players);
 
             await _lobbyProvider.SaveLobby(lobby);
+            await _playerProvider.SavePlayers(players);
 
             return Ok(GameMessages.GameStartMessage);
         }
@@ -110,12 +113,15 @@ namespace KCAA.Controllers
             }
 
             lobby.Status = LobbyStatus.Playing;
+            players.AsParallel().WithDegreeOfParallelism(5).ForAll(p => p.GameActions.Add(GameAction.BuildQuarter));
+
             await _lobbyProvider.UpdateLobby(lobbyId, l => l.Status, lobby.Status);
+            await _playerProvider.SavePlayers(players);
             return Accepted();
         }
 
-        [HttpGet]
-        [Route("{lobbyId}/play")]
+        [HttpPost]
+        [Route("{lobbyId}/next_turn")]
         public async Task<IActionResult> GetNextPlayerTurn(string lobbyId)
         {
             var lobby = await _lobbyProvider.GetLobbyById(lobbyId);
@@ -131,16 +137,23 @@ namespace KCAA.Controllers
             }
 
             var character = lobby.CharacterDeck
-                .Where(c => c.Status == CharacterStatus.Selected)
+                .Where(c => c.Status == CharacterStatus.Selected && c.Effect != CharacterEffect.Killed)
                 .OrderBy(c => c.CharacterBase.Order)
                 .FirstOrDefault();
 
+            var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
+
+            // if no characters left selected, the turn cycle is over and we need to start character selection again
             if (character == null)
             {
-                return NotFound(GameMessages.CharacterNotFoundError);
+                StartCharacterSelection(lobby, players);
+                await _lobbyProvider.SaveLobby(lobby);
+                await _playerProvider.SavePlayers(players);
+
+                return Accepted("Starting next character selection");
             }
 
-            var player = (await _playerProvider.GetPlayersByLobbyId(lobby.Id)).Find(p => p.CharacterHand.Contains(character.Name));
+            var player = players.Find(p => p.CharacterHand.Contains(character.Name));
 
             if (player == null)
             {
@@ -156,25 +169,36 @@ namespace KCAA.Controllers
             return Ok(turnDto);
         }
 
-        private async Task GiveStartingResources(Lobby lobby)
+        private void GiveStartingResources(Lobby lobby, IEnumerable<Player> players)
         {
-            var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
-
-            foreach (var p in players)
+            foreach (var player in players)
             {
                 for (int i = 0; i < _gameSettings.StartingQuertersAmount; i++)
                 {
                     var quarter = lobby.DrawQuarter();
-                    p.QuarterHand.Add(quarter);
+                    player.QuarterHand.Add(quarter);
                 }
-                p.Coins = _gameSettings.StartingCoinsAmount;
-
-                await _playerProvider.SavePlayer(p);
+                player.Coins = _gameSettings.StartingCoinsAmount;
             };
         }
 
-        private void StartCharacterSelection(Lobby lobby)
+        private void StartCharacterSelection(Lobby lobby, IEnumerable<Player> players)
         {
+            //Clearing character statuses and effects
+            lobby.CharacterDeck.AsParallel().WithDegreeOfParallelism(3).ForAll(c =>
+            {
+                c.Status = CharacterStatus.Awailable;
+                c.Effect = CharacterEffect.None;
+            });
+
+            //Deleating selected character and actions for players
+            players.AsParallel().WithDegreeOfParallelism(3).ForAll(p =>
+            {
+                p.CharacterHand.Clear();
+                p.GameActions.Clear();
+            });
+
+            //Removing some characters from the pool
             lobby.Status = LobbyStatus.CharacterSelection;
             RemoveCharacter(lobby.CharacterDeck, CharacterStatus.SecretlyRemoved);
 

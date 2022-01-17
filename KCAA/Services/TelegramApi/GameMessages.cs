@@ -14,6 +14,8 @@
 
         public static string ChooseResourcesMessage => "Choose resources: {0} " + GameSymbolConstants.Coin + " or {1}" + GameSymbolConstants.Card;
 
+        public static string ChooseActionMessage => "Choose action:";
+
         public static string CommandOnlyForGroupsError => "This command can only be used in a group chat";
 
         public static string LobbyAlreadyCreatedError => "The lobby is already created";
@@ -40,12 +42,15 @@
 
         public static string CharacterNotFoundError => "Character not found";
 
-        public static string GetPlayerTurnMessage(string characterName, int coinAmount, int cardAmount)
+        public static string NoQuartersToAffordError => "You`re too poor to afford any quarter from hand";
+
+        public static string GetPlayerTurnMessage(string characterName, int coinAmount, int cardAmount, int score)
         {
-            return $@"It's your turn!
+            return $@"Your turn:
 
 {characterName}
-{GameSymbolConstants.Coin}: {coinAmount} | {GameSymbolConstants.Card}: {cardAmount}";
+{GameSymbolConstants.Coin}: {coinAmount} | {GameSymbolConstants.Card}: {cardAmount} | {GameSymbolConstants.Score}: {score}";
         }
+
     }
 }

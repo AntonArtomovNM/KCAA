@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using KCAA.Models.MongoDB;
 using KCAA.Models.Quarters;
@@ -49,11 +50,18 @@ namespace KCAA.Services.Providers
             return players;
         }
 
+        public async Task UpdatePlayer<T>(string playerId, Expression<Func<Player, T>> updateFunc, T value)
+        {
+            var update = Builders<Player>.Update.Set(updateFunc, value);
+
+            await _mongoCollection.UpdateOneAsync(GetIdFilter(playerId), update);
+        }
+
         public async Task SavePlayer(Player player)
         {
             if (string.IsNullOrWhiteSpace(player.Id))
             {
-                player.Id = Guid.NewGuid().ToString();
+                player.Id = Guid.NewGuid().ToString().Replace("-", "");
                 await _mongoCollection.InsertOneAsync(player);
             }
             else

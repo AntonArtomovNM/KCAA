@@ -24,11 +24,15 @@ namespace KCAA.Models.MongoDB
 
         public int Coins { get; set; }
 
+        public int Score { get; set; }
+
         public List<string> CharacterHand { get; set; } = new List<string>();
 
         public List<string> QuarterHand { get; set; } = new List<string>();
 
         public List<PlacedQuarter> PlacedQuarters { get; set; } = new List<PlacedQuarter>();
+
+        public List<string> GameActions = new List<string>();
 
         [BsonIgnoreIfNull]
         public PlayerTelegramMetadata TelegramMetadata { get; set; }
