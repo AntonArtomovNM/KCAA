@@ -47,6 +47,16 @@ namespace KCAA.Extensions
             return message;
         }
 
+        public static async Task TryDeleteMessage(this ITelegramBotClient botClient, long chatId, int messageId)
+        {
+            //handling case when message is already deleted
+            try
+            {
+                await botClient.DeleteMessageAsync(chatId, messageId);
+            }
+            catch { }
+        }
+
         public static async Task DisplayBotCommands(this ITelegramBotClient botClient, long chatId)
         {
             var commands = await botClient.GetMyCommandsAsync();
@@ -83,16 +93,11 @@ Cost: {GetQuarterCost(quarter.Cost)}
             return resultMessage;
         }
 
-        public static async Task<Message> SendCharacterWithItsDescription(this ITelegramBotClient botClient, long chatId, CharacterBase character, IEnumerable<IEnumerable<InlineKeyboardButton>> buttons = null)
+        public static async Task<Message> SendCharacter(this ITelegramBotClient botClient, long chatId, CharacterBase character, string text, IEnumerable<IEnumerable<InlineKeyboardButton>> buttons = null)
         {
-            var characterStats = $@"{GetCharacterTitleByColor(character.DisplayName, character.Type)}
-{character.Description}";
+            var tgmessage = $@"{GetCharacterTitleByColor(character.DisplayName, character.Type)}
+{text}";
 
-            return await SendCharacterWithMessage(botClient, chatId, character, characterStats, buttons);
-        }
-
-        public static async Task<Message> SendCharacterWithMessage(this ITelegramBotClient botClient, long chatId, CharacterBase character, string tgMessage, IEnumerable<IEnumerable<InlineKeyboardButton>> buttons = null)
-        {
             var cardPick = new InputOnlineFile(character.PhotoUri);
 
             InlineKeyboardMarkup inlineKeyboard = null;
@@ -104,11 +109,11 @@ Cost: {GetQuarterCost(quarter.Cost)}
             Message resultMessage;
             try
             {
-                resultMessage = await botClient.SendPhotoAsync(chatId, cardPick, tgMessage, replyMarkup: inlineKeyboard);
+                resultMessage = await botClient.SendPhotoAsync(chatId, cardPick, tgmessage, replyMarkup: inlineKeyboard);
             }
             catch (Exception ex)
             {
-                resultMessage = await botClient.SendTextMessageAsync(chatId, tgMessage, replyMarkup: inlineKeyboard);
+                resultMessage = await botClient.SendTextMessageAsync(chatId, tgmessage, replyMarkup: inlineKeyboard);
                 Console.WriteLine($"An error occurred during sending character photo: {ex}");
             }
 

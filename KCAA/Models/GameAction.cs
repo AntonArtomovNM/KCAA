@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using KCAA.Services.TelegramApi;
+using System.Collections.Generic;
 
 namespace KCAA.Models
 {
@@ -10,6 +11,8 @@ namespace KCAA.Models
 
         public const string EndTurn = "endTurn";
 
+        public const string Kill = "kill";
+
         static GameAction()
         {
             _displayNames = SetNames();
@@ -20,6 +23,7 @@ namespace KCAA.Models
         private static Dictionary<string, string> SetNames() => new()
         {
             { EndTurn, "End turn" },
+            { Kill, $"Kill {GameSymbolConstants.Killed}" },
             { BuildQuarter, "Build quarter" }
         };
     }

@@ -6,7 +6,7 @@
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
     "Description": "Select a character to murder. This character misses his entire turn.",
     "Order": 1,
-    "GameAction":  "Kill"
+    "GameAction": "kill"
   },
   {
     "Name": "thief",
@@ -15,7 +15,7 @@
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
     "Description": "Select a character to steal from. When the player who has that character is called upon to take his turn, you first take all of his gold.",
     "Order": 2,
-    "GameAction": "Steal"
+    "GameAction": "steal"
   },
   {
     "Name": "magician",
