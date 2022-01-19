@@ -164,10 +164,12 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var characterName = data[2];
             var gameAction = data[3];
+            var additionalData = data.ElementAtOrDefault(4);
 
             var action = gameAction switch
             {
                 GameAction.BuildQuarter => SendBuildQuarterKeyboard(chatId, player, characterName, gameAction),
+                GameAction.TakeRevenue => HandleTakeRevenue(chatId, player, characterName, gameAction,additionalData),
                 GameAction.Kill => SendKillCharacterKeyboard(chatId, lobby, player, characterName, gameAction),
                 _ => Task.Run(() => Console.WriteLine($"Game action {gameAction} was not found"))
             };
@@ -175,7 +177,6 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             try
             {
                 await action;
-
             }
             catch (ArgumentException ex)
             {
@@ -306,6 +307,23 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await DisplayAvailableGameActions(chatId, lobbyId, characterName);
         }
 
+
+        private async Task HandleTakeRevenue(long chatId, Player player, string characterName, string gameAction, string revenue)
+        {
+            player.GameActions.Remove(gameAction);
+
+            if (int.TryParse(revenue, out var revenueAmount))
+            {
+                player.Coins += revenueAmount;
+
+                await _playerProvider.UpdatePlayer(player.Id, p => p.Coins, player.Coins);
+            }
+
+            await _playerProvider.UpdatePlayer(player.Id, p => p.GameActions, player.GameActions);
+
+            await DisplayAvailableGameActions(chatId, player.LobbyId, characterName);
+        }
+
         private async Task SendBuildQuarterKeyboard(long chatId, Player player, string characterName, string gameAction)
         {
             var quarters = player.QuarterHand.Select(x => _quarterFactory.GetCard(x)).Where(x => x.Cost <= player.Coins);
@@ -365,7 +383,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             try
             {
-                tuple = await TryGetPlayerAndLobby(chatId, lobbyId);
+                tuple = await TryGetPlayerAndLobby(chatId, lobbyId, loadPlacedQuarters: true);
             }
             catch (Exception ex)
             {
@@ -376,38 +394,61 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var player = tuple.Item1;
             var lobby = tuple.Item2;
 
-            var character = lobby.CharacterDeck.Find(x => x.Name == characterName);
+            var character = lobby.CharacterDeck.Find(x => x.Name == characterName).CharacterBase;
 
             var tgMessage = GameMessages.GetPlayerTurnMessage(player.Coins, player.QuarterHand.Count, player.Score) + "\n\n" + GameMessages.ChooseActionMessage;
 
-            var buttons = new List<List<InlineKeyboardButton>>();
-            foreach (var gameAction in player.GameActions)
-            {
-                if (!string.IsNullOrWhiteSpace(gameAction))
-                {
-                    buttons.Add(new List<InlineKeyboardButton>
-                    {
-                        InlineKeyboardButton.WithCallbackData(
-                            GameAction.GetActionDisplayName(gameAction), 
-                            $"ga_{lobby.Id}_{characterName}_{gameAction}")
-                    });
-                }
-            }
+            var buttons = GetGameActionButtons(character, player, lobby);
             buttons.Add(new List<InlineKeyboardButton>
             {
                 InlineKeyboardButton.WithCallbackData(
-                    GameAction.GetActionDisplayName(GameAction.EndTurn), 
+                    GameAction.GetActionDisplayName(GameAction.EndTurn),
                     $"endTurn_{lobby.Id}_{characterName}")
             });
 
-            var message = await _botClient.SendCharacter(chatId, character.CharacterBase, tgMessage, buttons);
+            var message = await _botClient.SendCharacter(chatId, character, tgMessage, buttons);
             player.TelegramMetadata.GameActionKeyboardId = message.MessageId;
             await _playerProvider.UpdatePlayer(player.Id, p => p.TelegramMetadata, player.TelegramMetadata);
         }
 
-        private async Task<(Player, Lobby)> TryGetPlayerAndLobby(long chatId, string lobbyId)
+        private static List<List<InlineKeyboardButton>> GetGameActionButtons(CharacterBase character, Player player, Lobby lobby)
         {
-            var player = await _playerProvider.GetPlayerByChatId(chatId);
+            var buttons = new List<List<InlineKeyboardButton>>();
+
+            foreach (var gameAction in player.GameActions)
+            {
+                if (!string.IsNullOrWhiteSpace(gameAction))
+                {
+                    var actionDisplayName = GameAction.GetActionDisplayName(gameAction);
+                    var callbackData = $"ga_{lobby.Id}_{character.Name}_{gameAction}";
+
+                    if (gameAction == GameAction.TakeRevenue)
+                    {
+                        var revenueAmount = player.PlacedQuarters.Where(q => q.QuarterBase.Type == character.Type).Count();
+                        
+                        //No need to display action with no outcome
+                        if (revenueAmount == 0)
+                        {
+                            continue;
+                        }
+                        
+                        actionDisplayName += $" ({revenueAmount})";
+                        callbackData += $"_{revenueAmount}";
+                    }
+
+                    buttons.Add(new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(actionDisplayName, callbackData)
+                    });
+                }
+            }
+
+            return buttons;
+        }
+
+        private async Task<(Player, Lobby)> TryGetPlayerAndLobby(long chatId, string lobbyId, bool loadPlacedQuarters = false)
+        {
+            var player = await _playerProvider.GetPlayerByChatId(chatId, loadPlacedQuarters);
 
             if (player == null)
             {

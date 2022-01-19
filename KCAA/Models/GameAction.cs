@@ -11,6 +11,8 @@ namespace KCAA.Models
 
         public const string EndTurn = "endTurn";
 
+        public const string TakeRevenue = "takeRevenue";
+
         public const string Kill = "kill";
 
         public const string Steal = "steal";
@@ -26,6 +28,7 @@ namespace KCAA.Models
         {
             { EndTurn, "End turn" },
             { BuildQuarter, "Build quarter" },
+            { TakeRevenue, "Take revenue" },
             { Kill, $"Kill {GameSymbolConstants.Killed}" },
             { Steal, "Steal"}
         };
