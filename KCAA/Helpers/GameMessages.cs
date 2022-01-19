@@ -1,4 +1,4 @@
-﻿namespace KCAA.Services.TelegramApi
+﻿namespace KCAA.Helpers
 {
     public static class GameMessages
     {
@@ -12,7 +12,7 @@
 
         public static string GameStartMessage => "Poehali!";
 
-        public static string ChooseResourcesMessage => "Choose resources: {0} " + GameSymbolConstants.Coin + " or {1}" + GameSymbolConstants.Card;
+        public static string ChooseResourcesMessage => $"Choose resources: coins {GameSymbolConstants.Coin} or quarter cards {GameSymbolConstants.Card}";
 
         public static string ChooseActionMessage => "Choose action:";
 
@@ -40,7 +40,7 @@
 
         public static string PlayerNotFoundError => "Player not found";
 
-        public static string CharacterNotFoundError => "Character not found";
+        public static string LobbyOrPlayerNotFoundError => "Error occurred during player or lobby retrieval";
 
         public static string NoQuartersToAffordError => "You`re too poor to afford any quarter from hand";
 

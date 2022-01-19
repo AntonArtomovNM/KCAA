@@ -1,4 +1,4 @@
-﻿namespace KCAA.Services.TelegramApi
+﻿namespace KCAA.Helpers
 {
     public static class GameSymbolConstants
     {
@@ -10,6 +10,6 @@
 
         public static string Cancel => "🚫";
 
-        public static string Killed => "🗡";
+        public static string Killed => "🗡️";
     }
 }

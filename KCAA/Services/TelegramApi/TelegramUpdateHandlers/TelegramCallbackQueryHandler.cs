@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using KCAA.Extensions;
+using KCAA.Helpers;
 using KCAA.Models;
+using KCAA.Models.Characters;
 using KCAA.Models.MongoDB;
 using KCAA.Models.Quarters;
 using KCAA.Services.Interfaces;
@@ -101,7 +103,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error occurred during player or lobby retrival: {ex}");
+                Console.WriteLine($"{GameMessages.LobbyOrPlayerNotFoundError}: {ex}");
                 return;
             }
 
@@ -119,19 +121,25 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                     {
                         player.QuarterHand.Add(lobby.DrawQuarter());
                     }
-                    await _playerProvider.UpdatePlayer(player.Id, p => p.QuarterHand, player.QuarterHand);
+
+                    if (characterName == CharacterNames.Merchant)
+                    {
+                        player.Coins += _gameSettings.CoinsPerTurn / 2;
+                    }
                     break;
 
                 default:
                     player.Coins += amount;
-                    await _playerProvider.UpdatePlayer(player.Id, p => p.Coins, player.Coins);
                     break;
             }
+
+            await _playerProvider.UpdatePlayer(player.Id, p => p.QuarterHand, player.QuarterHand);
+            await _playerProvider.UpdatePlayer(player.Id, p => p.Coins, player.Coins);
 
             await _lobbyProvider.UpdateLobby(lobby.Id, x => x.QuarterDeck, lobby.QuarterDeck);
 
             await _botClient.TryDeleteMessage(chatId, player.TelegramMetadata.GameActionKeyboardId);
-            await DisplayAwailableGameActions(chatId, lobby.Id, characterName);
+            await DisplayAvailableGameActions(chatId, lobby.Id, characterName);
         }
 
         private async Task HandleChooseGameAction(long chatId, string[] data)
@@ -145,7 +153,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error occurred during player or lobby retrival: {ex}");
+                Console.WriteLine($"{GameMessages.LobbyOrPlayerNotFoundError}: {ex}");
                 return;
             }
 
@@ -172,7 +180,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             catch (ArgumentException ex)
             {
                 await _botClient.SendTextMessageAsync(chatId, ex.Message);
-                await DisplayAwailableGameActions(chatId, player.LobbyId, characterName);
+                await DisplayAvailableGameActions(chatId, player.LobbyId, characterName);
             }
         }
 
@@ -187,7 +195,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error occurred during player or lobby retrival: {ex}");
+                Console.WriteLine($"{GameMessages.LobbyOrPlayerNotFoundError}: {ex}");
                 return;
             }
 
@@ -208,7 +216,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             await _playerProvider.SavePlayer(player);
 
-            await DisplayAwailableGameActions(chatId, lobbyId, characterName);
+            await DisplayAvailableGameActions(chatId, lobbyId, characterName);
         }
 
         private async Task HandleKillCharacter(long chatId, string[] data)
@@ -222,7 +230,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error occurred during player or lobby retrival: {ex}");
+                Console.WriteLine($"{GameMessages.LobbyOrPlayerNotFoundError}: {ex}");
                 return;
             }
 
@@ -240,7 +248,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             await _playerProvider.SavePlayer(player);
             await _lobbyProvider.UpdateLobby(lobbyId, x => x.CharacterDeck, lobby.CharacterDeck);
-            await DisplayAwailableGameActions(chatId, lobbyId, characterName);
+            await DisplayAvailableGameActions(chatId, lobbyId, characterName);
         }
 
         private async Task HandleEndTurn(long chatId, string[] data)
@@ -254,7 +262,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error occurred during player or lobby retrival: {ex}");
+                Console.WriteLine($"{GameMessages.LobbyOrPlayerNotFoundError}: {ex}");
                 return;
             }
 
@@ -283,7 +291,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error occurred during player or lobby retrival: {ex}");
+                Console.WriteLine($"{GameMessages.LobbyOrPlayerNotFoundError}: {ex}");
                 return;
             }
 
@@ -295,7 +303,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             player.TelegramMetadata.CardMessageIds.Clear();
             await _playerProvider.UpdatePlayer(player.Id, p => p.TelegramMetadata, player.TelegramMetadata);
 
-            await DisplayAwailableGameActions(chatId, lobbyId, characterName);
+            await DisplayAvailableGameActions(chatId, lobbyId, characterName);
         }
 
         private async Task SendBuildQuarterKeyboard(long chatId, Player player, string characterName, string gameAction)
@@ -351,7 +359,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _playerProvider.UpdatePlayer(player.Id, p => p.TelegramMetadata, player.TelegramMetadata);
         }
 
-        private async Task DisplayAwailableGameActions(long chatId, string lobbyId, string characterName)
+        private async Task DisplayAvailableGameActions(long chatId, string lobbyId, string characterName)
         {
             (Player, Lobby) tuple;
 
@@ -361,7 +369,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error occurred during player or lobby retrival: {ex}");
+                Console.WriteLine($"{GameMessages.LobbyOrPlayerNotFoundError}: {ex}");
                 return;
             }
 
@@ -370,8 +378,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var character = lobby.CharacterDeck.Find(x => x.Name == characterName);
 
-            var tgMessage = GameMessages.GetPlayerTurnMessage(player.Coins, player.QuarterHand.Count, player.Score)
-                + "\n\n" + GameMessages.ChooseActionMessage;
+            var tgMessage = GameMessages.GetPlayerTurnMessage(player.Coins, player.QuarterHand.Count, player.Score) + "\n\n" + GameMessages.ChooseActionMessage;
 
             var buttons = new List<List<InlineKeyboardButton>>();
             foreach (var gameAction in player.GameActions)
