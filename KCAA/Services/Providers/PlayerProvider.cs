@@ -33,9 +33,16 @@ namespace KCAA.Services.Providers
             return player;
         }
 
-        public async Task<Player> GetPlayerByChatId(long chatId)
+        public async Task<Player> GetPlayerByChatId(long chatId, bool loadPlacedQuarters = false)
         {
-            return (await _mongoCollection.FindAsync(x => x.TelegramMetadata.ChatId == chatId)).FirstOrDefault();
+            var player = (await _mongoCollection.FindAsync(x => x.TelegramMetadata.ChatId == chatId)).FirstOrDefault();
+
+            if (loadPlacedQuarters && player?.PlacedQuarters != null)
+            {
+                SetPlacedQuarters(player);
+            }
+
+            return player;
         }
 
         public async Task<List<Player>> GetPlayersByLobbyId(string lobbyId, bool loadPlacedQuarters = false)

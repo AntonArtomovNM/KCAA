@@ -31,7 +31,8 @@
     "Type": 1,
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
     "Description": "You receive one gold for each noble (yellow) district in your city. When the King is called, you immediately receive the Crown.",
-    "Order": 4
+    "Order": 4,
+    "GameAction": "takeRevenue"
   },
   {
     "Name": "bishop",
@@ -39,7 +40,8 @@
     "Type": 2,
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
     "Description": "You receive one gold for each religious (blue) district in your city. Your districts may not be destroyed by the Condottiere.",
-    "Order": 5
+    "Order": 5,
+    "GameAction": "takeRevenue"
   },
   {
     "Name": "merchant",
@@ -47,7 +49,8 @@
     "Type": 3,
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
     "Description": "You receive one gold for each trade (green) district in your city. After you take an action, you receive one additional gold.",
-    "Order": 6
+    "Order": 6,
+    "GameAction": "takeRevenue"
   },
   {
     "Name": "architect",
@@ -63,7 +66,8 @@
     "Type": 4,
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
     "Description": "You receive one gold for each military (red) district in your city. At the end of your turn, you may destroy one district of your choice by paying a number of gold equal to one less than the cost of the district.",
-    "Order": 8
+    "Order": 8,
+    "GameAction": "takeRevenue"
   },
   {
     "Name": "beggar",

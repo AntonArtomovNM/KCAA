@@ -10,7 +10,7 @@ namespace KCAA.Services.Interfaces
     {
         Task<Player> GetPlayerById(string playerId, bool loadPlacedQuarters = false);
 
-        Task<Player> GetPlayerByChatId(long chatId);
+        Task<Player> GetPlayerByChatId(long chatId, bool loadPlacedQuarters = false);
 
         Task<List<Player>> GetPlayersByLobbyId(string lobbyId, bool loadPlacedQuarters = false);
 
