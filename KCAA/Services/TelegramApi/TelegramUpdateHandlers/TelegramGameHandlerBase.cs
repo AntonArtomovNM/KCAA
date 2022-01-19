@@ -9,6 +9,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using KCAA.Helpers;
+using KCAA.Models.Characters;
 using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -98,25 +100,45 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var content = await response.Content.ReadAsAsync<PlayerTurnDto>();
 
+            await SendChooseResourses(botClient, lobbyId, content);
+        }
+
+        private async Task SendChooseResourses(ITelegramBotClient botClient, string lobbyId, PlayerTurnDto content)
+        {
             var player = await _playerProvider.GetPlayerById(content.PlayerId);
 
-            var tgMessage = GameMessages.GetPlayerTurnMessage(player.Coins, player.QuarterHand.Count, player.Score)
-                + "\n\n" + string.Format(GameMessages.ChooseResourcesMessage, _gameSettings.CoinsPerTurn, _gameSettings.QuertersPerTurn);
+            var tgMessage = $"{GameMessages.GetPlayerTurnMessage(player.Coins, player.QuarterHand.Count, player.Score)}\n\n{GameMessages.ChooseResourcesMessage}";
+
+            var coinsAmount = _gameSettings.CoinsPerTurn;
+            var cardsAmount = _gameSettings.QuertersPerTurn;
+
+            var coinsString = string.Concat(Enumerable.Repeat(GameSymbolConstants.Coin, coinsAmount));
+            var cardsString = string.Concat(Enumerable.Repeat(GameSymbolConstants.Card, cardsAmount));
+
+            var additionalResourses = ""; 
+
+            if (content.Character.Name == CharacterNames.Merchant)
+            {
+                var bonusGold = _gameSettings.CoinsPerTurn / 2;
+                coinsAmount += bonusGold;
+                additionalResourses = string.Concat(Enumerable.Repeat(GameSymbolConstants.Coin, bonusGold));
+            }
 
             var buttons = new List<List<InlineKeyboardButton>>
             {
                 new List<InlineKeyboardButton>
                 {
                     InlineKeyboardButton.WithCallbackData(
-                        $"{string.Concat(Enumerable.Repeat("🟡", _gameSettings.CoinsPerTurn))}",
-                        $"takeRes_{lobbyId}_{content.Character.Name}_{ResourceType.Coin}_{_gameSettings.CoinsPerTurn}"),
+                        $"{coinsString}{additionalResourses}",
+                        $"takeRes_{lobbyId}_{content.Character.Name}_{ResourceType.Coin}_{coinsAmount}"),
                     InlineKeyboardButton.WithCallbackData(
-                        $"{string.Concat(Enumerable.Repeat("🎴", _gameSettings.QuertersPerTurn))}",
-                        $"takeRes_{lobbyId}_{content.Character.Name}_{ResourceType.Card}_{_gameSettings.QuertersPerTurn}"),
+                        $"{cardsString}{additionalResourses}",
+                        $"takeRes_{lobbyId}_{content.Character.Name}_{ResourceType.Card}_{cardsAmount}"),
                 }
             };
 
-            var responseMessage = await botClient.SendCharacter(player.TelegramMetadata.ChatId, content.Character, tgMessage, buttons);
+            var responseMessage =
+                await botClient.SendCharacter(player.TelegramMetadata.ChatId, content.Character, tgMessage, buttons);
             player.TelegramMetadata.GameActionKeyboardId = responseMessage.MessageId;
 
             await _playerProvider.UpdatePlayer(player.Id, p => p.TelegramMetadata, player.TelegramMetadata);

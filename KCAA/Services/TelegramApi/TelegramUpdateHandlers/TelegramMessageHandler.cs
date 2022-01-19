@@ -14,6 +14,7 @@ using KCAA.Models.Quarters;
 using KCAA.Models.Characters;
 using System.Text;
 using System.Net.Http;
+using KCAA.Helpers;
 
 namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 {
