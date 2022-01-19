@@ -161,6 +161,16 @@ namespace KCAA.Controllers
                 return NotFound(GameMessages.PlayerNotFoundError);
             }
 
+            if (character.Effect == CharacterEffect.Robbed)
+            {
+                var thief = players.Find(p => p.CharacterHand.Contains("thief"));
+                thief.Coins += player.Coins;
+                player.Coins = 0;
+
+                await _playerProvider.SavePlayer(thief);
+                await _playerProvider.SavePlayer(player);
+            }
+
             var turnDto = new PlayerTurnDto
             {
                 PlayerId = player.Id,

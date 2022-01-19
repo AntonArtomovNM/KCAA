@@ -50,6 +50,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 "cancel" => HandleCancelAction(callbackQuery.Message.Chat.Id, data),
                 GameAction.BuildQuarter => HandleBuildQuarter(callbackQuery.Message.Chat.Id, data),
                 GameAction.Kill => HandleKillCharacter(callbackQuery.Message.Chat.Id, data),
+                GameAction.Steal => HandleStealCharacter(callbackQuery.Message.Chat.Id, data),
                 _ => Task.CompletedTask
             };
             await action;
@@ -169,6 +170,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             {
                 GameAction.BuildQuarter => SendBuildQuarterKeyboard(chatId, player, characterName, gameAction),
                 GameAction.Kill => SendKillCharacterKeyboard(chatId, lobby, player, characterName, gameAction),
+                GameAction.Steal => SendStealCharacterKeyboard(chatId, lobby, player, characterName, gameAction),
                 _ => Task.Run(() => Console.WriteLine($"Game action {gameAction} was not found"))
             };
 
@@ -245,6 +247,38 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             lobby.CharacterDeck.Find(x => x.Name == targetName).Effect = CharacterEffect.Killed;
             player.GameActions.Remove(GameAction.Kill);
+
+            await _playerProvider.SavePlayer(player);
+            await _lobbyProvider.UpdateLobby(lobbyId, x => x.CharacterDeck, lobby.CharacterDeck);
+            await DisplayAvailableGameActions(chatId, lobbyId, characterName);
+        }
+
+        private async Task HandleStealCharacter(long chatId, string[] data)
+        {
+            var lobbyId = data[1];
+            (Player, Lobby) tuple;
+
+            try
+            {
+                tuple = await TryGetPlayerAndLobby(chatId, lobbyId);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{GameMessages.LobbyOrPlayerNotFoundError}: {ex}");
+                return;
+            }
+
+            var player = tuple.Item1;
+            var lobby = tuple.Item2;
+
+            player.TelegramMetadata.CardMessageIds.AsParallel().WithDegreeOfParallelism(5).ForAll(async id => await _botClient.TryDeleteMessage(chatId, id));
+            player.TelegramMetadata.CardMessageIds.Clear();
+
+            var characterName = data[2];
+            var targetName = data[3];
+
+            lobby.CharacterDeck.Find(x => x.Name == targetName).Effect = CharacterEffect.Robbed;
+            player.GameActions.Remove(GameAction.Steal);
 
             await _playerProvider.SavePlayer(player);
             await _lobbyProvider.UpdateLobby(lobbyId, x => x.CharacterDeck, lobby.CharacterDeck);
@@ -351,6 +385,30 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                     }
                 };
                 return await _botClient.SendCharacter(chatId, x.CharacterBase, "", btnkill);
+            });
+
+            var messageIds = (await Task.WhenAll(sendMessageTasks)).Select(m => m.MessageId);
+            player.TelegramMetadata.CardMessageIds.AddRange(messageIds);
+
+            await _playerProvider.UpdatePlayer(player.Id, p => p.TelegramMetadata, player.TelegramMetadata);
+        }
+
+        private async Task SendStealCharacterKeyboard(long chatId, Lobby lobby, Player player, string characterName, string gameAction)
+        {
+            var characterOptions = lobby.CharacterDeck.Where(x => x.Status != CharacterStatus.Removed && !player.CharacterHand.Contains(x.Name));
+
+            var sendMessageTasks = characterOptions.Select(async x =>
+            {
+                var btnsteal = new List<List<InlineKeyboardButton>>
+                {
+                    new List<InlineKeyboardButton>
+                    {
+                        InlineKeyboardButton.WithCallbackData(
+                        GameAction.GetActionDisplayName(gameAction),
+                        $"{gameAction}_{player.LobbyId}_{characterName}_{x.Name}")
+                    }
+                };
+                return await _botClient.SendCharacter(chatId, x.CharacterBase, "", btnsteal);
             });
 
             var messageIds = (await Task.WhenAll(sendMessageTasks)).Select(m => m.MessageId);
