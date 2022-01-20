@@ -256,6 +256,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
         private async Task HandleStealCharacter(long chatId, string[] data)
         {
+            //TODO combine with HandleKillCharacter
             var lobbyId = data[1];
             (Player, Lobby) tuple;
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using KCAA.Helpers;
 using KCAA.Models;
+using KCAA.Models.Characters;
 using KCAA.Models.MongoDB;
 using KCAA.Services.Interfaces;
 using KCAA.Services.TelegramApi;
@@ -163,7 +164,7 @@ namespace KCAA.Controllers
 
             if (character.Effect == CharacterEffect.Robbed)
             {
-                var thief = players.Find(p => p.CharacterHand.Contains("thief"));
+                var thief = players.Find(p => p.CharacterHand.Contains(CharacterNames.Thief));
                 thief.Coins += player.Coins;
                 player.Coins = 0;
 
