@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using KCAA.Helpers;
 using KCAA.Models;
+using KCAA.Models.Characters;
 using KCAA.Models.MongoDB;
 using KCAA.Services.Interfaces;
 using KCAA.Services.TelegramApi;
@@ -159,6 +160,16 @@ namespace KCAA.Controllers
             if (player == null)
             {
                 return NotFound(GameMessages.PlayerNotFoundError);
+            }
+
+            if (character.Effect == CharacterEffect.Robbed)
+            {
+                var thief = players.Find(p => p.CharacterHand.Contains(CharacterNames.Thief));
+                thief.Coins += player.Coins;
+                player.Coins = 0;
+
+                await _playerProvider.UpdatePlayer(thief.Id, x => x.Coins, thief.Coins);
+                await _playerProvider.UpdatePlayer(player.Id, x => x.Coins, player.Coins);
             }
 
             var turnDto = new PlayerTurnDto
