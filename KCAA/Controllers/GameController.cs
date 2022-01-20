@@ -167,8 +167,8 @@ namespace KCAA.Controllers
                 thief.Coins += player.Coins;
                 player.Coins = 0;
 
-                await _playerProvider.SavePlayer(thief);
-                await _playerProvider.SavePlayer(player);
+                await _playerProvider.UpdatePlayer(thief.Id, x => x.Coins, thief.Coins);
+                await _playerProvider.UpdatePlayer(player.Id, x => x.Coins, player.Coins);
             }
 
             var turnDto = new PlayerTurnDto
