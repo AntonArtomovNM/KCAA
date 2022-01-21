@@ -29,7 +29,7 @@ namespace KCAA.Models
             { EndTurn, "End turn" },
             { BuildQuarter, "Build quarter" },
             { TakeRevenue, "Take revenue" },
-            { Kill, $"Kill {GameSymbolConstants.Killed}" },
+            { Kill, $"Kill {GameSymbols.Killed}" },
             { Steal, "Steal"}
         };
     }

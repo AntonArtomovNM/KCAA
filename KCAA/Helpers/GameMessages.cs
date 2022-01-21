@@ -12,9 +12,13 @@
 
         public static string GameStartMessage => "Poehali!";
 
-        public static string ChooseResourcesMessage => $"Choose resources: coins {GameSymbolConstants.Coin} or quarter cards {GameSymbolConstants.Card}";
+        public static string ChooseResourcesMessage => $"Choose resources: coins {GameSymbols.Coin} or quarter cards {GameSymbols.Card}";
 
         public static string ChooseActionMessage => "Choose action:";
+
+        public static string MyHandMessage => "Press \"My-Hand\" button to view all your cards and coins";
+
+        public static string FarewellMessage => "Thanks for playing!";
 
         public static string CommandOnlyForGroupsError => "This command can only be used in a group chat";
 
@@ -44,12 +48,11 @@
 
         public static string NoQuartersToAffordError => "You`re too poor to afford any quarter from hand";
 
-        public static string GetPlayerTurnMessage(int coinAmount, int cardAmount, int score)
-        {
-            return $@"
-Your turn!
+        public static string MyHandClose => $"Close {GameSymbols.Close}";
 
-{GameSymbolConstants.Coin}: {coinAmount} | {GameSymbolConstants.Card}: {cardAmount} | {GameSymbolConstants.Score}: {score}";
+        public static string GetPlayerInfoMessage(int coinAmount, int cardAmount, int placedAmount, int score)
+        {
+            return $"{GameSymbols.Coin}: {coinAmount} | {GameSymbols.Card}: {cardAmount} | {GameSymbols.PlacedQuarter}: {placedAmount} | {GameSymbols.Score}: {score}";
         }
 
     }

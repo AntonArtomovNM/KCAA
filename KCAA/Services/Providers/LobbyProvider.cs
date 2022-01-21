@@ -73,7 +73,7 @@ namespace KCAA.Services.Providers
 
         private void SetCharacterDeck(Lobby lobby)
         {
-            lobby.CharacterDeck.AsParallel().WithDegreeOfParallelism(5).ForAll(dto => dto.CharacterBase = _characterFactory.GetCard(dto.Name));
+            lobby.CharacterDeck.AsParallel().WithDegreeOfParallelism(3).ForAll(dto => dto.CharacterBase = _characterFactory.GetCard(dto.Name));
         }
     }
 }

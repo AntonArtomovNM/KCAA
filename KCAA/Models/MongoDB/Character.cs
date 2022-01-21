@@ -14,7 +14,6 @@ namespace KCAA.Models.MongoDB
         [BsonRequired]
         public CharacterEffect Effect { get; set; }
 
-        //TODO: Replace with private field and properties
         [BsonIgnore]
         public CharacterBase CharacterBase { get; set; } 
 

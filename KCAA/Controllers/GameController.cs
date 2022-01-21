@@ -115,7 +115,7 @@ namespace KCAA.Controllers
             }
 
             lobby.Status = LobbyStatus.Playing;
-            players.AsParallel().WithDegreeOfParallelism(5).ForAll(p => p.GameActions.Add(GameAction.BuildQuarter));
+            players.AsParallel().WithDegreeOfParallelism(3).ForAll(p => p.GameActions.Add(GameAction.BuildQuarter));
 
             await _lobbyProvider.UpdateLobby(lobbyId, l => l.Status, lobby.Status);
             await _playerProvider.SavePlayers(players);

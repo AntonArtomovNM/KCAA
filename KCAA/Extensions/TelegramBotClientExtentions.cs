@@ -57,6 +57,12 @@ namespace KCAA.Extensions
             }
             catch { }
         }
+        public static async Task TryDeleteMessages(this ITelegramBotClient botClient, long chatId, IEnumerable<int> messageIds)
+        {
+            var deleteTasks = messageIds.AsParallel().WithDegreeOfParallelism(3).Select(id => botClient.TryDeleteMessage(chatId, id));
+            await Task.WhenAll(deleteTasks);
+        }
+
 
         public static async Task DisplayBotCommands(this ITelegramBotClient botClient, long chatId)
         {
@@ -121,14 +127,17 @@ Cost: {GetQuarterCost(quarter.Cost)}
             return resultMessage;
         }
 
-        public static async Task<Message[]> SendCardGroup(this ITelegramBotClient botClient, long chatId, IEnumerable<CardObject> cards)
+        public static async Task<Message[]> SendCardGroup(this ITelegramBotClient botClient, long chatId, IEnumerable<CardObject> cards, string captionExtention = "")
         {
             if (cards == null || !cards.Any()) 
             {
                 return new Message[0];
             }
 
-            var mediaGroup = cards.Select(c => new InputMediaPhoto(new InputMedia(c.PhotoUri)) { Caption = c.DisplayName });
+            var mediaGroup = cards.Select(c => new InputMediaPhoto(new InputMedia(c.PhotoUri))
+            {
+                Caption = $"{c.DisplayName} ({captionExtention})"
+            }) ;
 
             return await botClient.SendMediaGroupAsync(chatId, mediaGroup);
         }
@@ -148,7 +157,7 @@ Cost: {GetQuarterCost(quarter.Cost)}
 
         private static string GetQuarterCost(int cost)
         {
-            return string.Concat(Enumerable.Repeat(GameSymbolConstants.Coin, cost));
+            return string.Concat(Enumerable.Repeat(GameSymbols.Coin, cost));
         }
 
         private static string GetCharacterTitleByColor(string title, ColorType type)
