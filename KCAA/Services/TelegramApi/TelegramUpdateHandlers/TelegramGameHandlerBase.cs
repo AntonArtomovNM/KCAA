@@ -60,7 +60,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             {
                 var buttons = new List<List<InlineKeyboardButton>>
                 {
-                    new List<InlineKeyboardButton>
+                    new()
                     {
                         InlineKeyboardButton.WithCallbackData($"Choose {character.CharacterBase.DisplayName}!", $"chooseCharacter_{lobbyId}_{character.Name}")
                     }
@@ -107,13 +107,13 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
         {
             var player = await _playerProvider.GetPlayerById(content.PlayerId);
 
-            var tgMessage = $"{GameMessages.GetPlayerTurnMessage(player.Coins, player.QuarterHand.Count, player.Score)}\n\n{GameMessages.ChooseResourcesMessage}";
+            var tgMessage = $"\n{GameMessages.GetPlayerInfoMessage(player.Coins, player.QuarterHand.Count, player.PlacedQuarters.Count, player.Score)}\n\n{GameMessages.ChooseResourcesMessage}";
 
             var coinsAmount = _gameSettings.CoinsPerTurn;
             var cardsAmount = _gameSettings.QuertersPerTurn;
 
-            var coinsString = string.Concat(Enumerable.Repeat(GameSymbolConstants.Coin, coinsAmount));
-            var cardsString = string.Concat(Enumerable.Repeat(GameSymbolConstants.Card, cardsAmount));
+            var coinsString = string.Concat(Enumerable.Repeat(GameSymbols.Coin, coinsAmount));
+            var cardsString = string.Concat(Enumerable.Repeat(GameSymbols.Card, cardsAmount));
 
             var additionalResourses = ""; 
 
@@ -121,7 +121,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             {
                 var bonusGold = _gameSettings.CoinsPerTurn / 2;
                 coinsAmount += bonusGold;
-                additionalResourses = string.Concat(Enumerable.Repeat(GameSymbolConstants.Coin, bonusGold));
+                additionalResourses = string.Concat(Enumerable.Repeat(GameSymbols.Coin, bonusGold));
             }
 
             var buttons = new List<List<InlineKeyboardButton>>

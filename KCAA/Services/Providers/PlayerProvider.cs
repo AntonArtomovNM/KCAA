@@ -92,7 +92,7 @@ namespace KCAA.Services.Providers
 
         private void SetPlacedQuarters(Player player)
         {
-            player.PlacedQuarters.AsParallel().WithDegreeOfParallelism(5).ForAll(q => q.QuarterBase = _quarterFactory.GetCard(q.Name));
+            player.PlacedQuarters.AsParallel().WithDegreeOfParallelism(3).ForAll(q => q.QuarterBase = _quarterFactory.GetCard(q.Name));
         }
     }
 }

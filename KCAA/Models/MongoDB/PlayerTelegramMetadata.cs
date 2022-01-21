@@ -10,6 +10,8 @@ namespace KCAA.Models.MongoDB
 
         public List<int> CardMessageIds { get; set; } = new List<int>();
 
+        public List<int> MyHandIds { get; set; } = new List<int>();
+
         public int GameActionKeyboardId { get; set; }
     }
 }

@@ -1,142 +1,142 @@
 [
   {
     "Name": "Y1",
-    "DisplayName": "Yellow 1",
+    "DisplayName": "Servant's house",
     "Type": 1,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://static.dw.com/image/56337785_401.jpg",
     "Cost": 1
   },
   {
     "Name": "Y2",
-    "DisplayName": "Yellow 2",
+    "DisplayName": "Compound",
     "Type": 1,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://static.dw.com/image/56337785_401.jpg",
     "Cost": 2
   },
   {
     "Name": "Y3",
-    "DisplayName": "Yellow 3",
+    "DisplayName": "Manor",
     "Type": 1,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://static.dw.com/image/56337785_401.jpg",
     "Cost": 3
   },
   {
     "Name": "Y4",
-    "DisplayName": "Yellow 4",
+    "DisplayName": "Castle",
     "Type": 1,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://static.dw.com/image/56337785_401.jpg",
     "Cost": 4
   },
   {
     "Name": "Y5",
-    "DisplayName": "Yellow 5",
+    "DisplayName": "Palace",
     "Type": 1,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://static.dw.com/image/56337785_401.jpg",
     "Cost": 5
   },
   {
     "Name": "B1",
-    "DisplayName": "Blue 1",
+    "DisplayName": "Temple",
     "Type": 2,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://arthive.net/res/media/img/oy1000/article/cef/707898@2x.jpg",
     "Cost": 1
   },
   {
     "Name": "B2",
-    "DisplayName": "Blue 2",
+    "DisplayName": "Church",
     "Type": 2,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://arthive.net/res/media/img/oy1000/article/cef/707898@2x.jpg",
     "Cost": 2
   },
   {
     "Name": "B3",
-    "DisplayName": "Blue 3",
+    "DisplayName": "Monastery",
     "Type": 2,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://arthive.net/res/media/img/oy1000/article/cef/707898@2x.jpg",
     "Cost": 3
   },
   {
     "Name": "B4",
-    "DisplayName": "Blue 4",
+    "DisplayName": "Chapel",
     "Type": 2,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://arthive.net/res/media/img/oy1000/article/cef/707898@2x.jpg",
     "Cost": 4
   },
   {
     "Name": "B5",
-    "DisplayName": "Blue 5",
+    "DisplayName": "Cathedral",
     "Type": 2,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://arthive.net/res/media/img/oy1000/article/cef/707898@2x.jpg",
     "Cost": 5
   },
   {
     "Name": "G1",
-    "DisplayName": "Green 1",
+    "DisplayName": "Tavern",
     "Type": 3,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://blizko.by/ckeditor_assets/pictures/30682/content_dsc_0007.jpg",
     "Cost": 1
   },
   {
     "Name": "G2",
-    "DisplayName": "Green 2",
+    "DisplayName": "Market",
     "Type": 3,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://blizko.by/ckeditor_assets/pictures/30682/content_dsc_0007.jpg",
     "Cost": 2
   },
   {
     "Name": "G3",
-    "DisplayName": "Green 3",
+    "DisplayName": "Docks",
     "Type": 3,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://blizko.by/ckeditor_assets/pictures/30682/content_dsc_0007.jpg",
     "Cost": 3
   },
   {
     "Name": "G4",
-    "DisplayName": "Green 4",
+    "DisplayName": "Harbor",
     "Type": 3,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://blizko.by/ckeditor_assets/pictures/30682/content_dsc_0007.jpg",
     "Cost": 4
   },
   {
     "Name": "G5",
-    "DisplayName": "Green 5",
+    "DisplayName": "Town Hall",
     "Type": 3,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://blizko.by/ckeditor_assets/pictures/30682/content_dsc_0007.jpg",
     "Cost": 5
   },
   {
     "Name": "R1",
-    "DisplayName": "Red 1",
+    "DisplayName": "Watchtower",
     "Type": 4,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://upload.wikimedia.org/wikipedia/commons/9/9a/%D0%A4%D0%BB%D0%B0%D0%B3_%D0%A1%D0%A1%D0%A1%D0%A0_%D0%BE%D1%82_18_%D0%B0%D0%BF%D1%80%D0%B5%D0%BB%D1%8F_1924_%D0%B3%D0%BE%D0%B4%D0%B0.png",
     "Cost": 1
   },
   {
     "Name": "R2",
-    "DisplayName": "Red 2",
+    "DisplayName": "Prison",
     "Type": 4,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://upload.wikimedia.org/wikipedia/commons/9/9a/%D0%A4%D0%BB%D0%B0%D0%B3_%D0%A1%D0%A1%D0%A1%D0%A0_%D0%BE%D1%82_18_%D0%B0%D0%BF%D1%80%D0%B5%D0%BB%D1%8F_1924_%D0%B3%D0%BE%D0%B4%D0%B0.png",
     "Cost": 2
   },
   {
     "Name": "R3",
-    "DisplayName": "Red 3",
+    "DisplayName": "Barracks",
     "Type": 4,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://upload.wikimedia.org/wikipedia/commons/9/9a/%D0%A4%D0%BB%D0%B0%D0%B3_%D0%A1%D0%A1%D0%A1%D0%A0_%D0%BE%D1%82_18_%D0%B0%D0%BF%D1%80%D0%B5%D0%BB%D1%8F_1924_%D0%B3%D0%BE%D0%B4%D0%B0.png",
     "Cost": 3
   },
   {
     "Name": "R4",
-    "DisplayName": "Red 4",
+    "DisplayName": "Stronghold",
     "Type": 4,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://upload.wikimedia.org/wikipedia/commons/9/9a/%D0%A4%D0%BB%D0%B0%D0%B3_%D0%A1%D0%A1%D0%A1%D0%A0_%D0%BE%D1%82_18_%D0%B0%D0%BF%D1%80%D0%B5%D0%BB%D1%8F_1924_%D0%B3%D0%BE%D0%B4%D0%B0.png",
     "Cost": 4
   },
   {
     "Name": "R5",
-    "DisplayName": "Red 5",
+    "DisplayName": "Fortress",
     "Type": 4,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://upload.wikimedia.org/wikipedia/commons/9/9a/%D0%A4%D0%BB%D0%B0%D0%B3_%D0%A1%D0%A1%D0%A1%D0%A0_%D0%BE%D1%82_18_%D0%B0%D0%BF%D1%80%D0%B5%D0%BB%D1%8F_1924_%D0%B3%D0%BE%D0%B4%D0%B0.png",
     "Cost": 5
   },
   {
