@@ -369,12 +369,10 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
         private async Task SendCharacterKeyboard(long chatId, Lobby lobby, Player player, string characterName, string gameAction)
         {
             var currentCharacter = lobby.CharacterDeck.Find(c => c.Name == characterName).CharacterBase;
-            var characterOptions = lobby.CharacterDeck
-                .Where(
-                    x => x.CharacterBase.Order > currentCharacter.Order && 
-                    x.Status != CharacterStatus.Removed && 
-                    !player.CharacterHand.Contains(x.Name))
-                .OrderBy(c => c.CharacterBase.Order);
+            var characterOptions = lobby.CharacterDeck.Where(
+                x => x.CharacterBase.Order > currentCharacter.Order &&
+                x.Status != CharacterStatus.Removed &&
+                !player.CharacterHand.Contains(x.Name));
 
             var sendMessageTasks = characterOptions.Select(async x =>
             {
