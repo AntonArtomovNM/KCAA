@@ -17,6 +17,12 @@ namespace KCAA.Models
 
         public const string Steal = "steal";
 
+        public const string CardMagic = "cardMagic";
+
+        public const string ExchangeHands = "exchangeHands";
+
+        public const string DiscardQuarters = "discardQuarters";
+
         static GameAction()
         {
             _displayNames = SetNames();
@@ -30,7 +36,9 @@ namespace KCAA.Models
             { BuildQuarter, "Build quarter" },
             { TakeRevenue, "Take revenue" },
             { Kill, $"Kill {GameSymbols.Killed}" },
-            { Steal, $"Steal {GameSymbols.Robbed}"}
+            { Steal, $"Steal {GameSymbols.Robbed}"},
+            { ExchangeHands, $"Exchange hands" },
+            { DiscardQuarters, $"Discard quarters" },
         };
     }
 }

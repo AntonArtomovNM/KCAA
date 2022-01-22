@@ -114,7 +114,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
                 default:
                     break;
-            };
+            }
 
             await SendChooseResourses(botClient, lobbyId, player, content.Character.CharacterBase);
         }
