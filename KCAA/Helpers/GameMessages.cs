@@ -1,4 +1,8 @@
-﻿namespace KCAA.Helpers
+﻿using KCAA.Models.MongoDB;
+using System.Linq;
+using System.Text;
+
+namespace KCAA.Helpers
 {
     public static class GameMessages
     {
@@ -17,6 +21,10 @@
         public static string ChooseActionMessage => "Choose action:";
 
         public static string MyHandMessage => "Press \"My-Hand\" button to view all your cards and coins";
+
+        public static string KilledMessage => "You got killed(\nNo turn for you";
+
+        public static string RobbedMessage => "You got robbed(\nNo coins for you";
 
         public static string FarewellMessage => "Thanks for playing!";
 
@@ -48,12 +56,64 @@
 
         public static string NoQuartersToAffordError => "You`re too poor to afford any quarter from hand";
 
+        public static string AlreadyPlacedQuarterError => "You've already built a {0}";
+
         public static string MyHandClose => $"Close {GameSymbols.Close}";
+
+        public static string GetPlayerCharacters(Lobby lobby, Player player)
+        {
+            var characters = lobby.CharacterDeck.Where(c => player.CharacterHand.Contains(c.Name));
+
+            var builder = new StringBuilder();
+
+            if (player.HasCrown)
+            {
+                builder.AppendLine(GameSymbols.Crown);
+            }
+
+            if (characters.Any())
+            {
+                builder.Append($"{GameSymbols.Character}: ");
+
+                builder.Append(string.Join(", ", characters.Select(c => $"{GetCharacterDisplayName(c)}{GetCharacterEffectSymbol(c.Effect)}")));
+            }
+
+            return builder.ToString();
+        }
 
         public static string GetPlayerInfoMessage(int coinAmount, int cardAmount, int placedAmount, int score)
         {
-            return $"{GameSymbols.Coin}: {coinAmount} | {GameSymbols.Card}: {cardAmount} | {GameSymbols.PlacedQuarter}: {placedAmount} | {GameSymbols.Score}: {score}";
+            var builder = new StringBuilder();
+
+            builder.Append($"{GameSymbols.Coin}: {coinAmount}");
+            builder.Append($" | {GameSymbols.Card}: {cardAmount}");
+            if (placedAmount != 0)
+            {
+                builder.Append($" | {GameSymbols.PlacedQuarter}: {placedAmount}");
+            }
+            if (score != 0)
+            {
+                builder.Append($" | {GameSymbols.Score}: {score}");
+            }
+
+            return builder.ToString();
         }
 
+        private static string GetCharacterDisplayName(Character character)
+        {
+            var displayName = character.CharacterBase.DisplayName;
+
+            return character.Status == CharacterStatus.Selected ? displayName : $"<s>{displayName}</s>";
+        }
+
+        private static string GetCharacterEffectSymbol(CharacterEffect effect)
+        {
+            return effect switch
+            {
+                CharacterEffect.Killed => GameSymbols.Killed,
+                CharacterEffect.Robbed => GameSymbols.Robbed,
+                _ => string.Empty
+            };
+        }
     }
 }

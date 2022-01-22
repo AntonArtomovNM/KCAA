@@ -281,6 +281,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 Name = string.IsNullOrWhiteSpace(playerChat.Username) ? playerChat.FirstName : playerChat.Username,
                 LobbyId = lobbyId,
                 CSOrder = characterSelectionOrder,
+                HasCrown = characterSelectionOrder == 0,
                 TelegramMetadata = new PlayerTelegramMetadata
                 {
                     ChatId = playerChat.Id
@@ -303,20 +304,29 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 return;
             }
 
+            var lobby = await _lobbyProvider.GetLobbyById(player.LobbyId);
+
             await _botClient.TryDeleteMessages(playerChatId, player.TelegramMetadata.MyHandIds);
 
+            //Send all cards
             var characters = player.CharacterHand.Select(x => _characterFactory.GetCard(x));
             var quarters = player.QuarterHand.Select(y => _quarterFactory.GetCard(y));
             var placedQuarters = player.PlacedQuarters.Select(z => z.QuarterBase);
 
-            var playerInfo = GameMessages.GetPlayerInfoMessage(player.Coins, player.QuarterHand.Count, player.PlacedQuarters.Count, player.Score);
-            var closebtn = InlineKeyboardButton.WithCallbackData(GameMessages.MyHandClose, $"myHandClose");
-
             var result = (await _botClient.SendCardGroup(playerChatId, characters, $"Character {GameSymbols.Character}")).ToList();
             result.AddRange(await _botClient.SendCardGroup(playerChatId, quarters, $"In hand {GameSymbols.Card}"));
             result.AddRange(await _botClient.SendCardGroup(playerChatId, placedQuarters, $"Placed {GameSymbols.PlacedQuarter}"));
-            result.Add(await _botClient.SendTextMessageAsync(playerChatId, playerInfo, replyMarkup: new InlineKeyboardMarkup(closebtn)));
 
+            //Send player stats
+            var characterInfo = GameMessages.GetPlayerCharacters(lobby, player);
+            var playerInfo = GameMessages.GetPlayerInfoMessage(player.Coins, player.QuarterHand.Count, player.PlacedQuarters.Count, player.Score);
+            var closebtn = InlineKeyboardButton.WithCallbackData(GameMessages.MyHandClose, $"myHandClose");
+
+            var tgMessage = string.IsNullOrWhiteSpace(characterInfo) ? playerInfo : $"{characterInfo}\n\n{playerInfo}";
+
+            result.Add(await _botClient.SendTextMessageAsync(playerChatId, tgMessage, parseMode: ParseMode.Html, replyMarkup: new InlineKeyboardMarkup(closebtn)));
+
+            //Save message ids
             player.TelegramMetadata.MyHandIds = result.AsParallel().WithDegreeOfParallelism(3).Select(x => x.MessageId).ToList();
             await _playerProvider.UpdatePlayer(player.Id, p => p.TelegramMetadata, player.TelegramMetadata);
         }
@@ -343,9 +353,13 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 var chatId = p.TelegramMetadata.ChatId;
 
                 //Deleting old messages
-                await _botClient.TryDeleteMessage(chatId, p.TelegramMetadata.GameActionKeyboardId);
-                await _botClient.TryDeleteMessages(chatId, p.TelegramMetadata.CardMessageIds);
-                await _botClient.TryDeleteMessages(chatId, p.TelegramMetadata.MyHandIds);
+                var messageIds = new List<int>();
+                messageIds.AddRange(p.TelegramMetadata.CardMessageIds);
+                messageIds.AddRange(p.TelegramMetadata.MyHandIds);
+                messageIds.Add(p.TelegramMetadata.GameActionKeyboardId);
+                messageIds.Add(p.TelegramMetadata.ActionErrorId);
+
+                await _botClient.TryDeleteMessages(chatId, messageIds);
 
                 //Deleting reply keyboard and sending final message
                 await _botClient.SendTextMessageAsync(chatId, GameMessages.FarewellMessage, replyMarkup: new ReplyKeyboardRemove());
