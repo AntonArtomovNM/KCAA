@@ -22,6 +22,10 @@ namespace KCAA.Helpers
 
         public static string MyHandMessage => "Press \"My-Hand\" button to view all your cards and coins";
 
+        public static string KilledMessage => "You got killed(\nNo turn for you";
+
+        public static string RobbedMessage => "You got robbed(\nNo coins for you";
+
         public static string FarewellMessage => "Thanks for playing!";
 
         public static string CommandOnlyForGroupsError => "This command can only be used in a group chat";

@@ -1,4 +1,4 @@
-﻿using KCAA.Models.Characters;
+﻿using KCAA.Models.MongoDB;
 
 namespace KCAA.Models
 {
@@ -6,6 +6,6 @@ namespace KCAA.Models
     {
         public string PlayerId { get; set; }
 
-        public CharacterBase Character { get; set; }
+        public Character Character { get; set; }
     }
 }

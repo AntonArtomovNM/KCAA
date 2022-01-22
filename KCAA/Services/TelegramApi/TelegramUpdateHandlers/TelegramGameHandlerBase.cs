@@ -99,13 +99,28 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
 
             var content = await response.Content.ReadAsAsync<PlayerTurnDto>();
+            var player = await _playerProvider.GetPlayerById(content.PlayerId);
 
-            await SendChooseResourses(botClient, lobbyId, content);
+            switch (content.Character.Effect)
+            {
+                case CharacterEffect.Killed:
+                    await SendActionPerformedMessage(botClient, player, GameMessages.KilledMessage);
+                    await NextPlayerTurn(botClient, lobbyId);
+                    return;
+
+                case CharacterEffect.Robbed:
+                    await SendActionPerformedMessage(botClient, player, GameMessages.RobbedMessage);
+                    break;
+
+                default:
+                    break;
+            };
+
+            await SendChooseResourses(botClient, lobbyId, player, content.Character.CharacterBase);
         }
 
-        private async Task SendChooseResourses(ITelegramBotClient botClient, string lobbyId, PlayerTurnDto content)
+        private async Task SendChooseResourses(ITelegramBotClient botClient, string lobbyId, Player player, CharacterBase character)
         {
-            var player = await _playerProvider.GetPlayerById(content.PlayerId);
 
             var tgMessage = $"\n{GameMessages.GetPlayerInfoMessage(player.Coins, player.QuarterHand.Count, player.PlacedQuarters.Count, player.Score)}\n\n{GameMessages.ChooseResourcesMessage}";
 
@@ -117,7 +132,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var additionalResourses = ""; 
 
-            if (content.Character.Name == CharacterNames.Merchant)
+            if (character.Name == CharacterNames.Merchant)
             {
                 var bonusGold = _gameSettings.CoinsPerTurn / 2;
                 coinsAmount += bonusGold;
@@ -130,17 +145,24 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 {
                     InlineKeyboardButton.WithCallbackData(
                         $"{coinsString}{additionalResourses}",
-                        $"takeRes_{lobbyId}_{content.Character.Name}_{ResourceType.Coin}_{coinsAmount}"),
+                        $"takeRes_{lobbyId}_{character.Name}_{ResourceType.Coin}_{coinsAmount}"),
                     InlineKeyboardButton.WithCallbackData(
                         $"{cardsString}{additionalResourses}",
-                        $"takeRes_{lobbyId}_{content.Character.Name}_{ResourceType.Card}_{cardsAmount}"),
+                        $"takeRes_{lobbyId}_{character.Name}_{ResourceType.Card}_{cardsAmount}"),
                 }
             };
 
             var responseMessage =
-                await botClient.SendCharacter(player.TelegramMetadata.ChatId, content.Character, tgMessage, buttons);
+                await botClient.SendCharacter(player.TelegramMetadata.ChatId, character, tgMessage, buttons);
             player.TelegramMetadata.GameActionKeyboardId = responseMessage.MessageId;
 
+            await _playerProvider.UpdatePlayer(player.Id, p => p.TelegramMetadata, player.TelegramMetadata);
+        }
+
+        private async Task SendActionPerformedMessage(ITelegramBotClient botClient, Player player, string message)
+        {
+            var responseMessage = await botClient.PutTextMessage(player.TelegramMetadata.ChatId, player.TelegramMetadata.ActionPerformedId, message);
+            player.TelegramMetadata.ActionPerformedId = responseMessage.MessageId;
             await _playerProvider.UpdatePlayer(player.Id, p => p.TelegramMetadata, player.TelegramMetadata);
         }
     }

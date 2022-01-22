@@ -81,10 +81,7 @@ namespace KCAA.Controllers
             var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
 
             GiveStartingResources(lobby, players);
-            StartCharacterSelection(lobby, players);
-
-            await _lobbyProvider.SaveLobby(lobby);
-            await _playerProvider.SavePlayers(players);
+            await StartCharacterSelection(lobby, players);
 
             return Ok(GameMessages.GameStartMessage);
         }
@@ -139,7 +136,7 @@ namespace KCAA.Controllers
             }
 
             var character = lobby.CharacterDeck
-                .Where(c => c.Status == CharacterStatus.Selected && c.Effect != CharacterEffect.Killed)
+                .Where(c => c.Status == CharacterStatus.Selected)
                 .OrderBy(c => c.CharacterBase.Order)
                 .FirstOrDefault();
 
@@ -148,9 +145,7 @@ namespace KCAA.Controllers
             // if no characters left selected, the turn cycle is over and we need to start character selection again
             if (character == null)
             {
-                StartCharacterSelection(lobby, players);
-                await _lobbyProvider.SaveLobby(lobby);
-                await _playerProvider.SavePlayers(players);
+                await StartCharacterSelection(lobby, players);
 
                 return Accepted("Starting next character selection");
             }
@@ -167,15 +162,25 @@ namespace KCAA.Controllers
                 await UpdateCharacterSelectionOrder(players, player);
             }
 
-            if (character.Effect == CharacterEffect.Robbed)
+            switch (character.Effect)
             {
-                await RobPlayer(players, player);
+                case CharacterEffect.Killed:
+                    character.Status = CharacterStatus.SecretlyRemoved;
+                    await _lobbyProvider.UpdateLobby(lobbyId, l => l.CharacterDeck, lobby.CharacterDeck);
+                    break;
+
+                case CharacterEffect.Robbed:
+                    await RobPlayer(players, player);
+                    break;
+
+                default:
+                    break;
             }
 
             var turnDto = new PlayerTurnDto
             {
                 PlayerId = player.Id,
-                Character = character.CharacterBase
+                Character = character
             };
 
             return Ok(turnDto);
@@ -194,7 +199,7 @@ namespace KCAA.Controllers
             };
         }
 
-        private void StartCharacterSelection(Lobby lobby, IEnumerable<Player> players)
+        private async Task StartCharacterSelection(Lobby lobby, IEnumerable<Player> players)
         {
             //Clearing character statuses and effects
             lobby.CharacterDeck.AsParallel().WithDegreeOfParallelism(3).ForAll(c =>
@@ -224,6 +229,9 @@ namespace KCAA.Controllers
                     RemoveCharacter(lobby.CharacterDeck, CharacterStatus.Removed);
                     break;
             }
+
+            await _lobbyProvider.SaveLobby(lobby);
+            await _playerProvider.SavePlayers(players);
         }
 
         private void RemoveCharacter(List<Character> characters, CharacterStatus status)

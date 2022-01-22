@@ -15,5 +15,7 @@ namespace KCAA.Models.MongoDB
         public int GameActionKeyboardId { get; set; }
 
         public int ActionErrorId { get; set; }
+
+        public int ActionPerformedId { get; set; }
     }
 }
