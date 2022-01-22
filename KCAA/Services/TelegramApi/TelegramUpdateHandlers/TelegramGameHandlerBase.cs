@@ -139,6 +139,13 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 additionalResourses = string.Concat(Enumerable.Repeat(GameSymbols.Coin, bonusGold));
             }
 
+            if (character.Name == CharacterNames.Architect)
+            {
+                var bonusCards = _gameSettings.QuertersPerTurn * 2;
+                cardsAmount += bonusCards;
+                additionalResourses = string.Concat(Enumerable.Repeat(GameSymbols.Card, bonusCards));
+            }
+
             var buttons = new List<List<InlineKeyboardButton>>
             {
                 new List<InlineKeyboardButton>

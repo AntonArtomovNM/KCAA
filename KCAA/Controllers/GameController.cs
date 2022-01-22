@@ -206,6 +206,7 @@ namespace KCAA.Controllers
             {
                 c.Status = CharacterStatus.Awailable;
                 c.Effect = CharacterEffect.None;
+                c.BuiltQuarters = 0;
             });
 
             //Deleating selected character and actions for players

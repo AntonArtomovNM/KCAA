@@ -130,6 +130,14 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
                 default:
                     player.Coins += amount;
+
+                    if (characterName == CharacterNames.Architect)
+                    {
+                        for (int i = 0; i < _gameSettings.QuertersPerTurn * 2; i++)
+                        {
+                            player.QuarterHand.Add(lobby.DrawQuarter());
+                        }
+                    }
                     break;
             }
 
@@ -201,6 +209,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
 
             var player = tuple.Item1;
+            var lobby = tuple.Item2;
             var characterName = data[2];
             var quarterName = data[3];
 
@@ -222,14 +231,21 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _botClient.TryDeleteMessages(chatId, player.TelegramMetadata.CardMessageIds);
 
             var quarter = _quarterFactory.GetCard(quarterName);
+            var character = lobby.CharacterDeck.Find(c => c.Name == characterName);
+            character.BuiltQuarters++;
 
             player.Coins -= quarter.Cost;
             player.Score += quarter.Cost + quarter.BonusScore;
             player.QuarterHand.Remove(quarterName);
             player.PlacedQuarters.Add(new PlacedQuarter(quarterName));
-            player.GameActions.Remove(GameAction.BuildQuarter);
+
+            if (character.BuiltQuarters == character.CharacterBase.BuildingСapacity)
+            {
+                player.GameActions.Remove(GameAction.BuildQuarter);
+            }
 
             await _playerProvider.SavePlayer(player);
+            await _lobbyProvider.UpdateLobby(lobbyId, l => l.CharacterDeck, lobby.CharacterDeck);
 
             await DisplayAvailableGameActions(chatId, lobbyId, characterName);
         }

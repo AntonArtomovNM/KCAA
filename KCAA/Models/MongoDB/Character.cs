@@ -14,6 +14,9 @@ namespace KCAA.Models.MongoDB
         [BsonRequired]
         public CharacterEffect Effect { get; set; }
 
+        [BsonRequired]
+        public int BuiltQuarters { get; set; }
+
         [BsonIgnore]
         public CharacterBase CharacterBase { get; set; } 
 
