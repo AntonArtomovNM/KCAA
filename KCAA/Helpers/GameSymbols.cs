@@ -12,10 +12,14 @@
 
         public static string Score => "🏆";
 
+        public static string Crown => "👑";
+
         public static string Cancel => "🚫";
 
         public static string Close => "❌";
 
         public static string Killed => "🗡️";
+
+        public static string Robbed => "💸";
     }
 }

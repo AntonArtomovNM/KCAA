@@ -162,14 +162,14 @@ namespace KCAA.Controllers
                 return NotFound(GameMessages.PlayerNotFoundError);
             }
 
+            if (character.Name == CharacterNames.King)
+            {
+                await UpdateCharacterSelectionOrder(players, player);
+            }
+
             if (character.Effect == CharacterEffect.Robbed)
             {
-                var thief = players.Find(p => p.CharacterHand.Contains(CharacterNames.Thief));
-                thief.Coins += player.Coins;
-                player.Coins = 0;
-
-                await _playerProvider.UpdatePlayer(thief.Id, x => x.Coins, thief.Coins);
-                await _playerProvider.UpdatePlayer(player.Id, x => x.Coins, player.Coins);
+                await RobPlayer(players, player);
             }
 
             var turnDto = new PlayerTurnDto
@@ -230,6 +230,40 @@ namespace KCAA.Controllers
         {
             characters = characters.Where(c => c.Status == CharacterStatus.Awailable).ToList();
             characters[_random.Next(characters.Count)].Status = status;
+        }
+
+        private async Task UpdateCharacterSelectionOrder(List<Player> players, Player newKing)
+        {
+            var oldKing = players.Find(p => p.HasCrown);
+
+            if(oldKing == newKing)
+            {
+                return;
+            }
+
+            oldKing.HasCrown = false;
+            newKing.HasCrown = true;
+
+            await _playerProvider.UpdatePlayer(oldKing.Id, p => p.HasCrown, oldKing.HasCrown);
+            await _playerProvider.UpdatePlayer(newKing.Id, p => p.HasCrown, newKing.HasCrown);
+
+            var updateCsorderTasks = players.Select(async p =>
+            {
+                p.CSOrder = p.CSOrder < newKing.CSOrder ? p.CSOrder + newKing.CSOrder : p.CSOrder - newKing.CSOrder;
+                await _playerProvider.UpdatePlayer(p.Id, x => x.CSOrder, p.CSOrder);
+            });
+
+            await Task.WhenAll(updateCsorderTasks);
+        }
+
+        private async Task RobPlayer(List<Player> players, Player player)
+        {
+            var thief = players.Find(p => p.CharacterHand.Contains(CharacterNames.Thief));
+            thief.Coins += player.Coins;
+            player.Coins = 0;
+
+            await _playerProvider.UpdatePlayer(thief.Id, x => x.Coins, thief.Coins);
+            await _playerProvider.UpdatePlayer(player.Id, x => x.Coins, player.Coins);
         }
     }
 }

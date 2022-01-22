@@ -30,7 +30,7 @@ namespace KCAA.Models
             { BuildQuarter, "Build quarter" },
             { TakeRevenue, "Take revenue" },
             { Kill, $"Kill {GameSymbols.Killed}" },
-            { Steal, "Steal"}
+            { Steal, $"Steal {GameSymbols.Robbed}"}
         };
     }
 }

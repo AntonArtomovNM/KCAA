@@ -25,6 +25,7 @@ namespace KCAA.Extensions
             }
             catch
             {
+                await botClient.TryDeleteMessage(chatId, messageId);
                 message = await botClient.SendTextMessageAsync(chatId, text);
             }
 

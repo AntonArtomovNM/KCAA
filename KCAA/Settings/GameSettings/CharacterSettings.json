@@ -3,7 +3,7 @@
     "Name": "assassin",
     "DisplayName": "Assassin",
     "Type": 0,
-    "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deyl3f6-99b4bea5-4147-40dd-b6b9-3d5b926ff1d8.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5bDNmNi05OWI0YmVhNS00MTQ3LTQwZGQtYjZiOS0zZDViOTI2ZmYxZDgucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.QGhAgR2CNMez7gnkWrgOvAx0Z02N-G45wp-1pR9TqBo",
     "Description": "Select a character to murder. This character misses his entire turn.",
     "Order": 1,
     "GameAction": "kill"
@@ -12,7 +12,7 @@
     "Name": "thief",
     "DisplayName": "Thief",
     "Type": 0,
-    "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deyl3f6-99b4bea5-4147-40dd-b6b9-3d5b926ff1d8.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5bDNmNi05OWI0YmVhNS00MTQ3LTQwZGQtYjZiOS0zZDViOTI2ZmYxZDgucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.QGhAgR2CNMez7gnkWrgOvAx0Z02N-G45wp-1pR9TqBo",
     "Description": "Select a character to steal from. When the player who has that character is called upon to take his turn, you first take all of his gold.",
     "Order": 2,
     "GameAction": "steal"
@@ -21,7 +21,7 @@
     "Name": "magician",
     "DisplayName": "Magician",
     "Type": 0,
-    "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deyl3f6-99b4bea5-4147-40dd-b6b9-3d5b926ff1d8.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5bDNmNi05OWI0YmVhNS00MTQ3LTQwZGQtYjZiOS0zZDViOTI2ZmYxZDgucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.QGhAgR2CNMez7gnkWrgOvAx0Z02N-G45wp-1pR9TqBo",
     "Description": "At any time during your turn, you have one of two options: change your entire hand of cards with the hand of another player OR fold any number of cards from your hand and then draw an equal number of cards from the deck.",
     "Order": 3
   },
