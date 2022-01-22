@@ -100,6 +100,10 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var content = await response.Content.ReadAsAsync<PlayerTurnDto>();
             var player = await _playerProvider.GetPlayerById(content.PlayerId);
+            var tgMetadata = player.TelegramMetadata;
+
+            await botClient.TryDeleteMessage(tgMetadata.ChatId, tgMetadata.ActionPerformedId);
+            await botClient.TryDeleteMessage(tgMetadata.ChatId, tgMetadata.ActionErrorId);
 
             switch (content.Character.Effect)
             {
@@ -137,6 +141,13 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 var bonusGold = _gameSettings.CoinsPerTurn / 2;
                 coinsAmount += bonusGold;
                 additionalResourses = string.Concat(Enumerable.Repeat(GameSymbols.Coin, bonusGold));
+            }
+
+            if (character.Name == CharacterNames.Architect)
+            {
+                var bonusCards = _gameSettings.QuertersPerTurn * 2;
+                cardsAmount += bonusCards;
+                additionalResourses = string.Concat(Enumerable.Repeat(GameSymbols.Card, bonusCards));
             }
 
             var buttons = new List<List<InlineKeyboardButton>>

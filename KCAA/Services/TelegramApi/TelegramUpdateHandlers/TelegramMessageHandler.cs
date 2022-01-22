@@ -358,6 +358,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 messageIds.AddRange(p.TelegramMetadata.MyHandIds);
                 messageIds.Add(p.TelegramMetadata.GameActionKeyboardId);
                 messageIds.Add(p.TelegramMetadata.ActionErrorId);
+                messageIds.Add(p.TelegramMetadata.ActionPerformedId);
 
                 await _botClient.TryDeleteMessages(chatId, messageIds);
 

@@ -130,6 +130,14 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
                 default:
                     player.Coins += amount;
+
+                    if (characterName == CharacterNames.Architect)
+                    {
+                        for (int i = 0; i < _gameSettings.QuertersPerTurn * 2; i++)
+                        {
+                            player.QuarterHand.Add(lobby.DrawQuarter());
+                        }
+                    }
                     break;
             }
 
@@ -201,6 +209,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
 
             var player = tuple.Item1;
+            var lobby = tuple.Item2;
             var characterName = data[2];
             var quarterName = data[3];
 
@@ -222,14 +231,21 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _botClient.TryDeleteMessages(chatId, player.TelegramMetadata.CardMessageIds);
 
             var quarter = _quarterFactory.GetCard(quarterName);
+            var character = lobby.CharacterDeck.Find(c => c.Name == characterName);
+            character.BuiltQuarters++;
 
             player.Coins -= quarter.Cost;
             player.Score += quarter.Cost + quarter.BonusScore;
             player.QuarterHand.Remove(quarterName);
             player.PlacedQuarters.Add(new PlacedQuarter(quarterName));
-            player.GameActions.Remove(GameAction.BuildQuarter);
+
+            if (character.BuiltQuarters == character.CharacterBase.BuildingCapacity)
+            {
+                player.GameActions.Remove(GameAction.BuildQuarter);
+            }
 
             await _playerProvider.SavePlayer(player);
+            await _lobbyProvider.UpdateLobby(lobbyId, l => l.CharacterDeck, lobby.CharacterDeck);
 
             await DisplayAvailableGameActions(chatId, lobbyId, characterName);
         }
@@ -429,7 +445,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var player = tuple.Item1;
             var lobby = tuple.Item2;
 
-            var character = lobby.CharacterDeck.Find(x => x.Name == characterName).CharacterBase;
+            var character = lobby.CharacterDeck.Find(x => x.Name == characterName);
 
             var tgMessage = $"\n{GameMessages.GetPlayerInfoMessage(player.Coins, player.QuarterHand.Count, player.PlacedQuarters.Count, player.Score)}\n\n{GameMessages.ChooseActionMessage}";
 
@@ -441,12 +457,12 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                     $"endTurn_{lobby.Id}_{characterName}")
             });
 
-            var message = await _botClient.SendCharacter(chatId, character, tgMessage, buttons);
+            var message = await _botClient.SendCharacter(chatId, character.CharacterBase, tgMessage, buttons);
             player.TelegramMetadata.GameActionKeyboardId = message.MessageId;
             await _playerProvider.UpdatePlayer(player.Id, p => p.TelegramMetadata, player.TelegramMetadata);
         }
 
-        private static List<List<InlineKeyboardButton>> GetGameActionButtons(CharacterBase character, Player player, Lobby lobby)
+        private static List<List<InlineKeyboardButton>> GetGameActionButtons(Character character, Player player, Lobby lobby)
         {
             var buttons = new List<List<InlineKeyboardButton>>();
 
@@ -457,18 +473,32 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                     var actionDisplayName = GameAction.GetActionDisplayName(gameAction);
                     var callbackData = $"ga_{lobby.Id}_{character.Name}_{gameAction}";
 
-                    if (gameAction == GameAction.TakeRevenue)
+                    switch (gameAction)
                     {
-                        var revenueAmount = player.PlacedQuarters.Where(q => q.QuarterBase.Type == character.Type).Count();
-                        
-                        //No need to display action with no outcome
-                        if (revenueAmount == 0)
-                        {
-                            continue;
-                        }
-                        
-                        actionDisplayName += $" ({revenueAmount})";
-                        callbackData += $"_{revenueAmount}";
+                        case GameAction.TakeRevenue:
+                            var revenueAmount = player.PlacedQuarters.Where(q => q.QuarterBase.Type == character.CharacterBase.Type).Count();
+
+                            //No need to display action with no outcome
+                            if (revenueAmount == 0)
+                            {
+                                continue;
+                            }
+
+                            actionDisplayName += $" ({revenueAmount})";
+                            callbackData += $"_{revenueAmount}";
+                            break;
+
+                        case GameAction.BuildQuarter:
+                            var buildCapacityLeft = character.BuiltQuarters;
+
+                            if (buildCapacityLeft > 1)
+                            {
+                                actionDisplayName += $" ({buildCapacityLeft})";
+                            }
+                            break;
+
+                        default:
+                            break;
                     }
 
                     buttons.Add(new List<InlineKeyboardButton>
