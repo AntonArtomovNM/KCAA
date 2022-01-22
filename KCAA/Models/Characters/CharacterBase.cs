@@ -4,6 +4,6 @@
     {
         public int Order { get; init; }
 
-        public int BuildingСapacity { get; init; }
+        public int BuildingCapacity { get; init; }
     }
 }

@@ -100,6 +100,10 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var content = await response.Content.ReadAsAsync<PlayerTurnDto>();
             var player = await _playerProvider.GetPlayerById(content.PlayerId);
+            var tgMetadata = player.TelegramMetadata;
+
+            await botClient.TryDeleteMessage(tgMetadata.ChatId, tgMetadata.ActionPerformedId);
+            await botClient.TryDeleteMessage(tgMetadata.ChatId, tgMetadata.ActionErrorId);
 
             switch (content.Character.Effect)
             {
