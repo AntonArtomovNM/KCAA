@@ -10,7 +10,6 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
-using KCAA.Models.MongoDB;
 
 namespace KCAA.Extensions
 {
