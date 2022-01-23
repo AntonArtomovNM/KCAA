@@ -235,7 +235,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 return;
             }
 
-            var botResponse = await _botClient.PutTextMessage(lobby.TelegramMetadata.ChatId, lobby.TelegramMetadata.LobbyInfoMessageId, responseMessage);
+            var botResponse = await _botClient.PutMessage(lobby.TelegramMetadata.ChatId, lobby.TelegramMetadata.LobbyInfoMessageId, responseMessage);
             lobby.TelegramMetadata.LobbyInfoMessageId = botResponse.MessageId;
             await _lobbyProvider.UpdateLobby(lobby, x => x.TelegramMetadata.LobbyInfoMessageId);
 
@@ -269,7 +269,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 }
             };
 
-            var botResponse = await _botClient.PutInlineKeyboard(tgMetadata.ChatId, tgMetadata.LobbyInfoMessageId, lobbyStrBuilder.ToString(), new InlineKeyboardMarkup(buttons));
+            var botResponse = await _botClient.PutMessage(tgMetadata.ChatId, tgMetadata.LobbyInfoMessageId, lobbyStrBuilder.ToString(), new InlineKeyboardMarkup(buttons));
             lobby.TelegramMetadata.LobbyInfoMessageId = botResponse.MessageId;
             await _lobbyProvider.UpdateLobby(lobby, x => x.TelegramMetadata.LobbyInfoMessageId);
         }

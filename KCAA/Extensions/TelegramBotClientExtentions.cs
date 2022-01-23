@@ -16,12 +16,7 @@ namespace KCAA.Extensions
 {
     public static class TelegramBotClientExtentions
     {
-        public static async Task<Message> PutTextMessage(this ITelegramBotClient botClient, long chatId, int messageId, string text)
-        {
-            return await PutInlineKeyboard(botClient, chatId, messageId, text, null);
-        }
-
-        public static async Task<Message> PutInlineKeyboard(this ITelegramBotClient botClient, long chatId, int messageId, string text, InlineKeyboardMarkup inlineKeyboard)
+        public static async Task<Message> PutMessage(this ITelegramBotClient botClient, long chatId, int messageId, string text, InlineKeyboardMarkup inlineKeyboard = null)
         {
             Message message;
             try

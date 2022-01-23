@@ -176,7 +176,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
         protected async Task SendActionPerformedMessage(ITelegramBotClient botClient, Player player, string message)
         {
-            var responseMessage = await botClient.PutTextMessage(player.TelegramMetadata.ChatId, player.TelegramMetadata.ActionPerformedId, message);
+            var responseMessage = await botClient.PutMessage(player.TelegramMetadata.ChatId, player.TelegramMetadata.ActionPerformedId, message);
             player.TelegramMetadata.ActionPerformedId = responseMessage.MessageId;
             await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.ActionPerformedId);
         }

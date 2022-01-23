@@ -163,7 +163,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
             catch (ArgumentException ex)
             {
-                var message = await _botClient.PutTextMessage(chatId, player.TelegramMetadata.ActionErrorId, ex.Message);
+                var message = await _botClient.PutMessage(chatId, player.TelegramMetadata.ActionErrorId, ex.Message);
                 player.TelegramMetadata.ActionErrorId = message.MessageId;
                 await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.ActionErrorId);
             }
@@ -175,7 +175,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             if (placedQuarter != null)
             {
-                var message = await _botClient.PutTextMessage(
+                var message = await _botClient.PutMessage(
                     chatId,
                     player.TelegramMetadata.ActionErrorId, 
                     string.Format(GameMessages.AlreadyPlacedQuarterError, placedQuarter.QuarterBase.DisplayName));
@@ -326,7 +326,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var cancelButtonId = player.TelegramMetadata.CardMessageIds.Last();
             var doneButton = InlineKeyboardButton.WithCallbackData(GameSymbols.Done, $"{GameAction.Done}_{player.LobbyId}_{characterName}_{gameAction}");
             
-            var doneButtonId = (await _botClient.PutInlineKeyboard(
+            var doneButtonId = (await _botClient.PutMessage(
                 chatId, 
                 cancelButtonId, 
                 GameAction.GetActionDisplayName(GameAction.Done), 
@@ -429,7 +429,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             if (!players.Any())
             {
-                var message = await _botClient.PutTextMessage(chatId, player.TelegramMetadata.ActionErrorId, GameMessages.NoPlayersForActionError);
+                var message = await _botClient.PutMessage(chatId, player.TelegramMetadata.ActionErrorId, GameMessages.NoPlayersForActionError);
                 player.TelegramMetadata.ActionErrorId = message.MessageId;
                 await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.ActionErrorId);
 
