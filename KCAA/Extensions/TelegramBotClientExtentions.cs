@@ -81,16 +81,6 @@ Cost: {GetQuarterCost(quarter.Cost)}
             return await SendMessageWithPhoto(botClient, chatId, inlineKeyboard, photo, tgmessage);
         }
 
-        public static async Task<Message> SendPlayer(this ITelegramBotClient botClient, long chatId, Player player, string text, InlineKeyboardMarkup inlineKeyboard = null)
-        {
-            var tgmessage = $"{player.Name} {text}";
-
-            var targetChat = await botClient.GetChatAsync(player.TelegramMetadata.ChatId);
-            var photo = new InputOnlineFile(targetChat.Photo.SmallFileId);
-
-            return await SendMessageWithPhoto(botClient, chatId, inlineKeyboard, photo, tgmessage);
-        }
-
         public static async Task<Message[]> SendCardGroup(this ITelegramBotClient botClient, long chatId, IEnumerable<CardObject> cards, string captionExtention = "")
         {
             if (cards == null || !cards.Any()) 

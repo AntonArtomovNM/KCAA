@@ -41,7 +41,7 @@ namespace KCAA.Models
             { TakeRevenue, "Take revenue" },
             { Kill, $"Kill {GameSymbols.Killed}" },
             { Steal, $"Steal {GameSymbols.Robbed}"},
-            { ExchangeHands, $"Exchange hands {GameSymbols.Exchange}" },
+            { ExchangeHands, $"Switch hands {GameSymbols.Exchange}" },
             { DiscardQuarters, $"Discard {GameSymbols.Exchange}" },
         };
     }

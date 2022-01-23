@@ -13,6 +13,7 @@ using KCAA.Services.Interfaces;
 using KCAA.Settings.GameSettings;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
@@ -209,6 +210,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
         private async Task HandleCharacterEffect(long chatId, Player player, Lobby lobby, string characterName, string gameAction, string targetName)
         {
+            await _botClient.TryDeleteMessages(chatId, player.TelegramMetadata.CardMessageIds);
+
             lobby.CharacterDeck.Find(x => x.Name == targetName).Effect = gameAction switch
             {
                 GameAction.Kill => CharacterEffect.Killed,
@@ -278,6 +281,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
         private async Task HandleExchangeHands(long chatId, Player player, Lobby lobby, string characterName, string targetIdStr)
         {
+            await _botClient.TryDeleteMessages(chatId, player.TelegramMetadata.CardMessageIds);
+
             var targetChatId = long.Parse(targetIdStr);
 
             var target = await _playerProvider.GetPlayerByChatId(targetChatId);
@@ -300,6 +305,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
         {
             var chatId = message.Chat.Id;
             var messageId = message.MessageId;
+            var gameAction = $"{GameAction.ExchangeHands}|{GameAction.DiscardQuarters}";
 
             player.QuarterHand.Remove(quarterName);
             player.QuarterHand.Add(lobby.DrawQuarter());
@@ -309,8 +315,6 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             //Removing discarded quarter message
             await _botClient.TryDeleteMessage(chatId, messageId);
-
-            var gameAction = $"{GameAction.ExchangeHands}|{GameAction.DiscardQuarters}";
 
             //If there is only done/cancel button left, we should end the action
             if (player.TelegramMetadata.CardMessageIds.Count == 1)
@@ -436,13 +440,14 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var sendPlayersTasks = players.Select(p =>
             {
                 var builder = new StringBuilder();
+                builder.Append(p.Name + " ");
                 builder.AppendLine(GameMessages.GetPlayerCharacters(lobby, p));
                 builder.AppendLine();
                 builder.AppendLine(GameMessages.GetPlayerInfoMessage(p));
                 Console.WriteLine($"{gameAction}_{player.LobbyId}_{characterName}_{p.Id}");
                 var button = InlineKeyboardButton.WithCallbackData(GameAction.GetActionDisplayName(gameAction), $"{gameAction}_{player.LobbyId}_{characterName}_{p.TelegramMetadata.ChatId}");
 
-                return _botClient.SendPlayer(chatId, p, builder.ToString(), new InlineKeyboardMarkup(button));
+                return _botClient.SendTextMessageAsync(chatId, builder.ToString(), parseMode: ParseMode.Html,replyMarkup: new InlineKeyboardMarkup(button));
             });
 
             var cancelButton = InlineKeyboardButton.WithCallbackData(GameSymbols.Cancel, $"{GameAction.Cancel}_{player.LobbyId}_{characterName}");
@@ -465,7 +470,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             try
             {
-                tuple = await TryGetPlayerAndLobby(chatId, lobbyId, loadPlacedQuarters: true);
+                tuple = await TryGetPlayerAndLobby(chatId, lobbyId);
             }
             catch (Exception ex)
             {
@@ -550,9 +555,9 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             return InlineKeyboardButton.WithCallbackData(actionDisplayName, callbackData);
         }
 
-        private async Task<(Player, Lobby)> TryGetPlayerAndLobby(long chatId, string lobbyId, bool loadPlacedQuarters = false)
+        private async Task<(Player, Lobby)> TryGetPlayerAndLobby(long chatId, string lobbyId)
         {
-            var player = await _playerProvider.GetPlayerByChatId(chatId, loadPlacedQuarters);
+            var player = await _playerProvider.GetPlayerByChatId(chatId, loadPlacedQuarters: true);
 
             if (player == null)
             {

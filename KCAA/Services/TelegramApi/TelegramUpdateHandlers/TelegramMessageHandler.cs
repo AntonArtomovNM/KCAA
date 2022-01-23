@@ -314,9 +314,25 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var quarters = player.QuarterHand.Select(y => _quarterFactory.GetCard(y));
             var placedQuarters = player.PlacedQuarters.Select(z => z.QuarterBase);
 
-            var result = (await _botClient.SendCardGroup(playerChatId, characters, $"Character {GameSymbols.Character}")).ToList();
-            result.AddRange(await _botClient.SendCardGroup(playerChatId, quarters, $"In hand {GameSymbols.Card}"));
-            result.AddRange(await _botClient.SendCardGroup(playerChatId, placedQuarters, $"Placed {GameSymbols.PlacedQuarter}"));
+            var result = new List<Message>();
+
+            if (characters.Any())
+            {
+                result.Add(await _botClient.SendTextMessageAsync(playerChatId, $"Characters {GameSymbols.Character}:"));
+                result.AddRange(await _botClient.SendCardGroup(playerChatId, characters, $"Character {GameSymbols.Character}"));
+            }
+
+            if (quarters.Any())
+            {
+                result.Add(await _botClient.SendTextMessageAsync(playerChatId, $"Quarters in hand {GameSymbols.Card}:"));
+                result.AddRange(await _botClient.SendCardGroup(playerChatId, quarters, $"In hand {GameSymbols.Card}"));
+            }
+
+            if (placedQuarters.Any())
+            {
+                result.Add(await _botClient.SendTextMessageAsync(playerChatId, $"Placed quarters {GameSymbols.PlacedQuarter}:"));
+                result.AddRange(await _botClient.SendCardGroup(playerChatId, placedQuarters, $"Placed {GameSymbols.PlacedQuarter}"));
+            }
 
             //Send player stats
             var characterInfo = GameMessages.GetPlayerCharacters(lobby, player);

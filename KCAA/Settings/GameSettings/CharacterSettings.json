@@ -44,7 +44,7 @@
     "DisplayName": "Bishop",
     "Type": 2,
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
-    "Description": "You receive one gold for each religious (blue) quarter in your city. The Warlord cannot use its ability on your quarters.",
+    "Description": "You receive one gold for each religious (blue) quarter in your city. Military (red) characters cannot use its ability on your quarters.",
     "Order": 5,
     "BuildingCapacity": 1,
     "GameAction": "takeRevenue"
@@ -83,7 +83,7 @@
     "DisplayName": "Beggar",
     "Type": 0,
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
-    "Description": "You receive one gold for each quarter that costs one gold.",
+    "Description": "You receive one gold for each quarter that costs one gold. Noone can steal coins from you",
     "Order": 9,
     "BuildingCapacity": 1
   }
