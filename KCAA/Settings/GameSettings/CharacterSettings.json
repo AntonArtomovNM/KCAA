@@ -36,8 +36,7 @@
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
     "Description": "You receive one gold for each noble (yellow) quarter in your city. When the King is called, you immediately receive the Crown.",
     "Order": 4,
-    "BuildingCapacity": 1,
-    "GameAction": "takeRevenue"
+    "BuildingCapacity": 1
   },
   {
     "Name": "bishop",
@@ -46,8 +45,7 @@
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
     "Description": "You receive one gold for each religious (blue) quarter in your city. Military (red) characters cannot use its ability on your quarters.",
     "Order": 5,
-    "BuildingCapacity": 1,
-    "GameAction": "takeRevenue"
+    "BuildingCapacity": 1
   },
   {
     "Name": "merchant",
@@ -56,8 +54,7 @@
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
     "Description": "You receive one gold for each trade (green) quarter in your city. Gain one extra gold when taking resourses.",
     "Order": 6,
-    "BuildingCapacity": 1,
-    "GameAction": "takeRevenue"
+    "BuildingCapacity": 1
   },
   {
     "Name": "architect",
@@ -76,7 +73,7 @@
     "Description": "You receive one gold for each military (red) quarter in your city. You can destroy one district of your choice by paying one less than the cost of the quarter.",
     "Order": 8,
     "BuildingCapacity": 1,
-    "GameAction": "takeRevenue"
+    "GameAction": "destroy"
   },
   {
     "Name": "beggar",

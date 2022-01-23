@@ -112,10 +112,8 @@ namespace KCAA.Controllers
             }
 
             lobby.Status = LobbyStatus.Playing;
-            players.AsParallel().WithDegreeOfParallelism(3).ForAll(p => p.GameActions.Add(GameAction.BuildQuarter));
-
             await _lobbyProvider.UpdateLobby(lobby, l => l.Status);
-            await _playerProvider.SavePlayers(players);
+
             return Accepted();
         }
 
@@ -162,12 +160,19 @@ namespace KCAA.Controllers
                 await UpdateCharacterSelectionOrder(players, player);
             }
 
+            var turnDto = new PlayerTurnDto
+            {
+                PlayerId = player.Id,
+                Character = character
+            };
+
             switch (character.Effect)
             {
                 case CharacterEffect.Killed:
                     character.Status = CharacterStatus.SecretlyRemoved;
                     await _lobbyProvider.UpdateLobby(lobby, l => l.CharacterDeck);
-                    break;
+
+                    return Ok(turnDto);
 
                 case CharacterEffect.Robbed:
                     await RobPlayer(players, player);
@@ -177,11 +182,19 @@ namespace KCAA.Controllers
                     break;
             }
 
-            var turnDto = new PlayerTurnDto
+            player.GameActions.Add(GameAction.BuildQuarter);
+
+            if (!string.IsNullOrWhiteSpace(character.CharacterBase.GameAction))
             {
-                PlayerId = player.Id,
-                Character = character
-            };
+                player.GameActions.Add(character.CharacterBase.GameAction);
+            }
+
+            if (character.CharacterBase.Type != ColorType.None)
+            {
+                player.GameActions.Add(GameAction.TakeRevenue);
+            }
+
+            await _playerProvider.UpdatePlayer(player, p => p.GameActions);
 
             return Ok(turnDto);
         }

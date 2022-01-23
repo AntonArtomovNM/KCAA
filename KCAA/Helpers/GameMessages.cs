@@ -28,6 +28,8 @@ namespace KCAA.Helpers
 
         public static string ExchangedMessage => "Your cards in hand have been exchanged with {0}'s hand";
 
+        public static string DestroyedMessage => "Your {0} have been destroyed by {1}";
+
         public static string FarewellMessage => "Thanks for playing!";
 
         public static string CommandOnlyForGroupsError => "This command can only be used in a group chat";
