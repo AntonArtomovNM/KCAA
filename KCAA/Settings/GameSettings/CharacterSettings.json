@@ -4,7 +4,7 @@
     "DisplayName": "Assassin",
     "Type": 0,
     "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deyl3f6-99b4bea5-4147-40dd-b6b9-3d5b926ff1d8.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5bDNmNi05OWI0YmVhNS00MTQ3LTQwZGQtYjZiOS0zZDViOTI2ZmYxZDgucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.QGhAgR2CNMez7gnkWrgOvAx0Z02N-G45wp-1pR9TqBo",
-    "Description": "Select a character to murder. This character misses his entire turn.",
+    "Description": "Select a character you wish to kil. This character skips his entire turn.",
     "Order": 1,
     "BuildingCapacity": 1,
     "GameAction": "kill"
@@ -14,7 +14,7 @@
     "DisplayName": "Thief",
     "Type": 0,
     "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deyl3f6-99b4bea5-4147-40dd-b6b9-3d5b926ff1d8.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5bDNmNi05OWI0YmVhNS00MTQ3LTQwZGQtYjZiOS0zZDViOTI2ZmYxZDgucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.QGhAgR2CNMez7gnkWrgOvAx0Z02N-G45wp-1pR9TqBo",
-    "Description": "Select a character to steal from. When the player who has that character is called upon to take his turn, you first take all of his gold.",
+    "Description": "Select a character you wish to steal from. When the player who has that character is called upon to take his turn, you take all their gold.",
     "Order": 2,
     "BuildingCapacity": 1,
     "GameAction": "steal"
@@ -24,16 +24,17 @@
     "DisplayName": "Magician",
     "Type": 0,
     "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deyl3f6-99b4bea5-4147-40dd-b6b9-3d5b926ff1d8.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5bDNmNi05OWI0YmVhNS00MTQ3LTQwZGQtYjZiOS0zZDViOTI2ZmYxZDgucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.QGhAgR2CNMez7gnkWrgOvAx0Z02N-G45wp-1pR9TqBo",
-    "Description": "At any time during your turn, you have one of two options: change your entire hand of cards with the hand of another player OR fold any number of cards from your hand and then draw an equal number of cards from the deck.",
+    "Description": "Either exchange hands of cards with another player or discard any number of cards to gain an equal number of cards.",
     "Order": 3,
-    "BuildingCapacity": 1
+    "BuildingCapacity": 1,
+    "GameAction": "exchange|discard"
   },
   {
     "Name": "king",
     "DisplayName": "King",
     "Type": 1,
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
-    "Description": "You receive one gold for each noble (yellow) district in your city. When the King is called, you immediately receive the Crown.",
+    "Description": "You receive one gold for each noble (yellow) quarter in your city. When the King is called, you immediately receive the Crown.",
     "Order": 4,
     "BuildingCapacity": 1,
     "GameAction": "takeRevenue"
@@ -43,7 +44,7 @@
     "DisplayName": "Bishop",
     "Type": 2,
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
-    "Description": "You receive one gold for each religious (blue) district in your city. Your districts may not be destroyed by the Condottiere.",
+    "Description": "You receive one gold for each religious (blue) quarter in your city. Military (red) characters cannot use its ability on your quarters.",
     "Order": 5,
     "BuildingCapacity": 1,
     "GameAction": "takeRevenue"
@@ -53,7 +54,7 @@
     "DisplayName": "Merchant",
     "Type": 3,
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
-    "Description": "You receive one gold for each trade (green) district in your city. After you take an action, you receive one additional gold.",
+    "Description": "You receive one gold for each trade (green) quarter in your city. Gain one extra gold when taking resourses.",
     "Order": 6,
     "BuildingCapacity": 1,
     "GameAction": "takeRevenue"
@@ -63,7 +64,7 @@
     "DisplayName": "Architect",
     "Type": 0,
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
-    "Description": "After you take an action, you draw two additional district cards and put both in your hand. You may build up to three districts during your turn.",
+    "Description": "Draw two additional quarter cards when taking resourses and put both in your hand. You can build up to 3 quarters.",
     "Order": 7,
     "BuildingCapacity": 3
   },
@@ -72,7 +73,7 @@
     "DisplayName": "Warlord",
     "Type": 4,
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
-    "Description": "You receive one gold for each military (red) district in your city. At the end of your turn, you may destroy one district of your choice by paying a number of gold equal to one less than the cost of the district.",
+    "Description": "You receive one gold for each military (red) quarter in your city. You can destroy one district of your choice by paying one less than the cost of the quarter.",
     "Order": 8,
     "BuildingCapacity": 1,
     "GameAction": "takeRevenue"
@@ -82,7 +83,7 @@
     "DisplayName": "Beggar",
     "Type": 0,
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
-    "Description": "You receive one gold for each district that costs one gold.",
+    "Description": "You receive one gold for each quarter that costs one gold. Nobody can steal coins from you",
     "Order": 9,
     "BuildingCapacity": 1
   }

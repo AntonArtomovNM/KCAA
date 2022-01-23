@@ -16,7 +16,7 @@ namespace KCAA.Services.Interfaces
         /// <summary>
         /// For updating a specific field
         /// </summary>
-        Task UpdateLobby<T>(string lobbyId, Expression<Func<Lobby, T>> updateFunc, T value);
+        Task UpdateLobby<T>(Lobby lobby, Expression<Func<Lobby, T>> updateFunc);
 
         /// <summary>
         /// For updating all fields

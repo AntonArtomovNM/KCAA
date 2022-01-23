@@ -16,10 +16,14 @@
 
         public static string Cancel => "🚫";
 
+        public static string Done => "☑️";
+
         public static string Close => "❌";
 
         public static string Killed => "🗡️";
 
         public static string Robbed => "💸";
+
+        public static string Exchange => "🔄";
     }
 }

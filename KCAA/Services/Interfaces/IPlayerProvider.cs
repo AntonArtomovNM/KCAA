@@ -14,7 +14,7 @@ namespace KCAA.Services.Interfaces
 
         Task<List<Player>> GetPlayersByLobbyId(string lobbyId, bool loadPlacedQuarters = false);
 
-        Task UpdatePlayer<T>(string playerId, Expression<Func<Player, T>> updateFunc, T value);
+        Task UpdatePlayer<T>(Player player, Expression<Func<Player, T>> updateFunc);
 
         Task SavePlayer(Player player);
 
