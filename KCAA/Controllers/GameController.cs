@@ -114,7 +114,7 @@ namespace KCAA.Controllers
             lobby.Status = LobbyStatus.Playing;
             players.AsParallel().WithDegreeOfParallelism(3).ForAll(p => p.GameActions.Add(GameAction.BuildQuarter));
 
-            await _lobbyProvider.UpdateLobby(lobbyId, l => l.Status, lobby.Status);
+            await _lobbyProvider.UpdateLobby(lobby, l => l.Status);
             await _playerProvider.SavePlayers(players);
             return Accepted();
         }
@@ -166,7 +166,7 @@ namespace KCAA.Controllers
             {
                 case CharacterEffect.Killed:
                     character.Status = CharacterStatus.SecretlyRemoved;
-                    await _lobbyProvider.UpdateLobby(lobbyId, l => l.CharacterDeck, lobby.CharacterDeck);
+                    await _lobbyProvider.UpdateLobby(lobby, l => l.CharacterDeck);
                     break;
 
                 case CharacterEffect.Robbed:
@@ -192,8 +192,8 @@ namespace KCAA.Controllers
             {
                 for (int i = 0; i < _gameSettings.StartingQuertersAmount; i++)
                 {
-                    var quarter = lobby.DrawQuarter();
-                    player.QuarterHand.Add(quarter);
+                    var quarterName = lobby.DrawQuarter();
+                    player.QuarterHand.Add(quarterName);
                 }
                 player.Coins = _gameSettings.StartingCoinsAmount;
             };
@@ -253,13 +253,13 @@ namespace KCAA.Controllers
             oldKing.HasCrown = false;
             newKing.HasCrown = true;
 
-            await _playerProvider.UpdatePlayer(oldKing.Id, p => p.HasCrown, oldKing.HasCrown);
-            await _playerProvider.UpdatePlayer(newKing.Id, p => p.HasCrown, newKing.HasCrown);
+            await _playerProvider.UpdatePlayer(oldKing, p => p.HasCrown);
+            await _playerProvider.UpdatePlayer(newKing, p => p.HasCrown);
 
             var updateCsorderTasks = players.Select(async p =>
             {
                 p.CSOrder = p.CSOrder < newKing.CSOrder ? p.CSOrder + newKing.CSOrder : p.CSOrder - newKing.CSOrder;
-                await _playerProvider.UpdatePlayer(p.Id, x => x.CSOrder, p.CSOrder);
+                await _playerProvider.UpdatePlayer(p, x => x.CSOrder);
             });
 
             await Task.WhenAll(updateCsorderTasks);
@@ -271,8 +271,8 @@ namespace KCAA.Controllers
             thief.Coins += player.Coins;
             player.Coins = 0;
 
-            await _playerProvider.UpdatePlayer(thief.Id, x => x.Coins, thief.Coins);
-            await _playerProvider.UpdatePlayer(player.Id, x => x.Coins, player.Coins);
+            await _playerProvider.UpdatePlayer(thief, x => x.Coins);
+            await _playerProvider.UpdatePlayer(player, x => x.Coins);
         }
     }
 }

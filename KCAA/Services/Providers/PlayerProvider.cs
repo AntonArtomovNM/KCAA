@@ -57,11 +57,11 @@ namespace KCAA.Services.Providers
             return players;
         }
 
-        public async Task UpdatePlayer<T>(string playerId, Expression<Func<Player, T>> updateFunc, T value)
+        public async Task UpdatePlayer<T>(Player player, Expression<Func<Player, T>> updateFunc)
         {
-            var update = Builders<Player>.Update.Set(updateFunc, value);
+            var update = Builders<Player>.Update.Set(updateFunc, updateFunc.Compile()(player));
 
-            await _mongoCollection.UpdateOneAsync(GetIdFilter(playerId), update);
+            await _mongoCollection.UpdateOneAsync(GetIdFilter(player.Id), update);
         }
 
         public async Task SavePlayer(Player player)

@@ -11,17 +11,19 @@ namespace KCAA.Models
 
         public const string EndTurn = "endTurn";
 
+        public const string Cancel = "cancel";
+
+        public const string Done = "done";
+
         public const string TakeRevenue = "takeRevenue";
 
         public const string Kill = "kill";
 
         public const string Steal = "steal";
 
-        public const string CardMagic = "cardMagic";
+        public const string ExchangeHands = "exchange";
 
-        public const string ExchangeHands = "exchangeHands";
-
-        public const string DiscardQuarters = "discardQuarters";
+        public const string DiscardQuarters = "discard";
 
         static GameAction()
         {
@@ -33,12 +35,14 @@ namespace KCAA.Models
         private static Dictionary<string, string> SetNames() => new()
         {
             { EndTurn, "End turn" },
+            { Cancel, "Cancel" },
+            { Done, "Done" },
             { BuildQuarter, "Build quarter" },
             { TakeRevenue, "Take revenue" },
             { Kill, $"Kill {GameSymbols.Killed}" },
             { Steal, $"Steal {GameSymbols.Robbed}"},
-            { ExchangeHands, $"Exchange hands" },
-            { DiscardQuarters, $"Discard quarters" },
+            { ExchangeHands, $"Exchange hands {GameSymbols.Exchange}" },
+            { DiscardQuarters, $"Discard {GameSymbols.Exchange}" },
         };
     }
 }

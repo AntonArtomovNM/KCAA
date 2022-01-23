@@ -26,6 +26,8 @@ namespace KCAA.Helpers
 
         public static string RobbedMessage => "You got robbed(\nNo coins for you";
 
+        public static string ExchangedMessage => "Your cards in hand have been exchanged with {0}'s hand";
+
         public static string FarewellMessage => "Thanks for playing!";
 
         public static string CommandOnlyForGroupsError => "This command can only be used in a group chat";
@@ -58,6 +60,8 @@ namespace KCAA.Helpers
 
         public static string AlreadyPlacedQuarterError => "You've already built a {0}";
 
+        public static string NoPlayersForActionError => "There is no players suitable for this action";
+
         public static string MyHandClose => $"Close {GameSymbols.Close}";
 
         public static string GetPlayerCharacters(Lobby lobby, Player player)
@@ -68,8 +72,10 @@ namespace KCAA.Helpers
 
             if (player.HasCrown)
             {
-                builder.AppendLine(GameSymbols.Crown);
+                builder.Append(GameSymbols.Crown);
             }
+
+            builder.AppendLine();
 
             if (characters.Any())
             {
@@ -81,12 +87,14 @@ namespace KCAA.Helpers
             return builder.ToString();
         }
 
-        public static string GetPlayerInfoMessage(int coinAmount, int cardAmount, int placedAmount, int score)
+        public static string GetPlayerInfoMessage(Player player)
         {
             var builder = new StringBuilder();
+            var placedAmount = player.PlacedQuarters.Count;
+            var score = player.Score;
 
-            builder.Append($"{GameSymbols.Coin}: {coinAmount}");
-            builder.Append($" | {GameSymbols.Card}: {cardAmount}");
+            builder.Append($"{GameSymbols.Coin}: {player.Coins}");
+            builder.Append($" | {GameSymbols.Card}: {player.QuarterHand.Count}");
             if (placedAmount != 0)
             {
                 builder.Append($" | {GameSymbols.PlacedQuarter}: {placedAmount}");

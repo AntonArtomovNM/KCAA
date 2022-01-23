@@ -34,7 +34,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             _httpClient = new HttpClient();
         }
 
-        protected async Task SendCharactertSelection(ITelegramBotClient botClient, string lobbyId)
+        protected async Task NextCharactertSelection(ITelegramBotClient botClient, string lobbyId)
         {
             var message = new HttpRequestMessage(HttpMethod.Get, _gameSettings.GameApiUrl + $"/{lobbyId}/character_selection");
             var response = await _httpClient.SendAsync(message);
@@ -70,12 +70,12 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                     player.TelegramMetadata.ChatId,
                     character.CharacterBase,
                     character.CharacterBase.Description,
-                    buttons);
+                    new InlineKeyboardMarkup(buttons));
 
                 player.TelegramMetadata.CardMessageIds.Add(responseMessage.MessageId);
             }
 
-            await _playerProvider.UpdatePlayer(player.Id, p => p.TelegramMetadata, player.TelegramMetadata);
+            await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.CardMessageIds);
         }
 
         protected async Task NextPlayerTurn(ITelegramBotClient botClient, string lobbyId)
@@ -93,7 +93,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             // Accepted here means the start of new turn cycle and new character selection
             if (response.StatusCode == HttpStatusCode.Accepted)
             {
-                await SendCharactertSelection(botClient, lobbyId);
+                await NextCharactertSelection(botClient, lobbyId);
 
                 return;
             }
@@ -126,7 +126,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
         private async Task SendChooseResourses(ITelegramBotClient botClient, string lobbyId, Player player, CharacterBase character)
         {
 
-            var tgMessage = $"\n{GameMessages.GetPlayerInfoMessage(player.Coins, player.QuarterHand.Count, player.PlacedQuarters.Count, player.Score)}\n\n{GameMessages.ChooseResourcesMessage}";
+            var tgMessage = $"\n{GameMessages.GetPlayerInfoMessage(player)}\n\n{GameMessages.ChooseResourcesMessage}";
 
             var coinsAmount = _gameSettings.CoinsPerTurn;
             var cardsAmount = _gameSettings.QuertersPerTurn;
@@ -163,18 +163,22 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 }
             };
 
-            var responseMessage =
-                await botClient.SendCharacter(player.TelegramMetadata.ChatId, character, tgMessage, buttons);
+            var responseMessage = await botClient.SendCharacter(
+                player.TelegramMetadata.ChatId, 
+                character, 
+                tgMessage, 
+                new InlineKeyboardMarkup(buttons));
+
             player.TelegramMetadata.GameActionKeyboardId = responseMessage.MessageId;
 
-            await _playerProvider.UpdatePlayer(player.Id, p => p.TelegramMetadata, player.TelegramMetadata);
+            await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.GameActionKeyboardId);
         }
 
-        private async Task SendActionPerformedMessage(ITelegramBotClient botClient, Player player, string message)
+        protected async Task SendActionPerformedMessage(ITelegramBotClient botClient, Player player, string message)
         {
             var responseMessage = await botClient.PutTextMessage(player.TelegramMetadata.ChatId, player.TelegramMetadata.ActionPerformedId, message);
             player.TelegramMetadata.ActionPerformedId = responseMessage.MessageId;
-            await _playerProvider.UpdatePlayer(player.Id, p => p.TelegramMetadata, player.TelegramMetadata);
+            await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.ActionPerformedId);
         }
     }
 }

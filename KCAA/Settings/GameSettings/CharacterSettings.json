@@ -27,7 +27,7 @@
     "Description": "Either exchange hands of cards with another player or discard any number of cards to gain an equal number of cards.",
     "Order": 3,
     "BuildingCapacity": 1,
-    "GameAction": "cardMagic"
+    "GameAction": "exchange|discard"
   },
   {
     "Name": "king",
@@ -84,7 +84,7 @@
     "Type": 0,
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
     "Description": "You receive one gold for each quarter that costs one gold.",
-    "Order": 9
+    "Order": 9,
     "BuildingCapacity": 1
   }
 ]

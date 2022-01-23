@@ -49,11 +49,11 @@ namespace KCAA.Services.Providers
             return lobby;
         }
 
-        public async Task UpdateLobby<T>(string lobbyId, Expression<Func<Lobby, T>> updateFunc, T value)
+        public async Task UpdateLobby<T>(Lobby lobby, Expression<Func<Lobby, T>> updateFunc)
         {
-            var update = Builders<Lobby>.Update.Set(updateFunc, value);
+            var update = Builders<Lobby>.Update.Set(updateFunc, updateFunc.Compile()(lobby));
 
-            await _mongoCollection.UpdateOneAsync(GetIdFilter(lobbyId), update);
+            await _mongoCollection.UpdateOneAsync(GetIdFilter(lobby.Id), update);
         }
 
         public async Task SaveLobby(Lobby lobby)

@@ -208,7 +208,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await CreateAndSavePlayer(playerChat, lobby.Id, existingPlayer, lobby.PlayersCount);
 
             lobby.PlayersCount++;
-            await _lobbyProvider.UpdateLobby(lobby.Id, x => x.PlayersCount, lobby.PlayersCount);
+            await _lobbyProvider.UpdateLobby(lobby, x => x.PlayersCount);
 
             var groupChat = await _botClient.GetChatAsync(groupChatId);
             await _botClient.SendTextMessageAsync(playerChat.Id, string.Format(GameMessages.LobbyJoinedMessage, groupChat.Title));
@@ -236,12 +236,13 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
 
             var botResponse = await _botClient.PutTextMessage(lobby.TelegramMetadata.ChatId, lobby.TelegramMetadata.LobbyInfoMessageId, responseMessage);
-            await _lobbyProvider.UpdateLobby(lobby.Id, x => x.TelegramMetadata.LobbyInfoMessageId, botResponse.MessageId);
+            lobby.TelegramMetadata.LobbyInfoMessageId = botResponse.MessageId;
+            await _lobbyProvider.UpdateLobby(lobby, x => x.TelegramMetadata.LobbyInfoMessageId);
 
             var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
             await SendReplyKeyboardToPlayers(players, GameMessages.MyHandMessage);
 
-            await SendCharactertSelection(_botClient, lobby.Id);
+            await NextCharactertSelection(_botClient, lobby.Id);
         }
 
 
@@ -268,9 +269,9 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 }
             };
 
-            var botResponse = await _botClient.PutInlineKeyboard(tgMetadata.ChatId, tgMetadata.LobbyInfoMessageId, lobbyStrBuilder.ToString(), buttons);
-
-            await _lobbyProvider.UpdateLobby(lobby.Id, x => x.TelegramMetadata.LobbyInfoMessageId, botResponse.MessageId);
+            var botResponse = await _botClient.PutInlineKeyboard(tgMetadata.ChatId, tgMetadata.LobbyInfoMessageId, lobbyStrBuilder.ToString(), new InlineKeyboardMarkup(buttons));
+            lobby.TelegramMetadata.LobbyInfoMessageId = botResponse.MessageId;
+            await _lobbyProvider.UpdateLobby(lobby, x => x.TelegramMetadata.LobbyInfoMessageId);
         }
 
         private async Task CreateAndSavePlayer(Chat playerChat, string lobbyId, Player existingPlayer, int characterSelectionOrder)
@@ -319,8 +320,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             //Send player stats
             var characterInfo = GameMessages.GetPlayerCharacters(lobby, player);
-            var playerInfo = GameMessages.GetPlayerInfoMessage(player.Coins, player.QuarterHand.Count, player.PlacedQuarters.Count, player.Score);
-            var closebtn = InlineKeyboardButton.WithCallbackData(GameMessages.MyHandClose, $"myHandClose");
+            var playerInfo = GameMessages.GetPlayerInfoMessage(player);
+            var closebtn = InlineKeyboardButton.WithCallbackData(GameMessages.MyHandClose, $"myHandClose_{lobby.Id}");
 
             var tgMessage = string.IsNullOrWhiteSpace(characterInfo) ? playerInfo : $"{characterInfo}\n\n{playerInfo}";
 
@@ -328,7 +329,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             //Save message ids
             player.TelegramMetadata.MyHandIds = result.AsParallel().WithDegreeOfParallelism(3).Select(x => x.MessageId).ToList();
-            await _playerProvider.UpdatePlayer(player.Id, p => p.TelegramMetadata, player.TelegramMetadata);
+            await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.MyHandIds);
         }
 
         private async Task SendReplyKeyboardToPlayers(IEnumerable<Player> players, string text)
