@@ -351,7 +351,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _botClient.TryDeleteMessages(chatId, player.TelegramMetadata.CardMessageIds);
 
             var targetChatId = long.Parse(targetIdStr);
-            var target = await _playerProvider.GetPlayerByChatId(targetChatId, loadPlacedQuarters: true); ;
+            var target = await _playerProvider.GetPlayerByChatId(targetChatId, loadPlacedQuarters: true);
 
             //If no quarter was selected yet, send quarters
             if (string.IsNullOrWhiteSpace(quarterName))
