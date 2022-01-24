@@ -1,4 +1,5 @@
 ﻿using KCAA.Models.MongoDB;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -12,7 +13,7 @@ namespace KCAA.Helpers
 
         public static string LobbyJoinedMessage => "You've joined the lobby in {0}";
 
-        public static string LobbyCanceledMessage => "Lobby is canceled";
+        public static string GameCanceledMessage => "Game is canceled";
 
         public static string GameStartMessage => "Poehali!";
 
@@ -29,6 +30,12 @@ namespace KCAA.Helpers
         public static string ExchangedMessage => "Your cards in hand have been exchanged with {0}'s hand";
 
         public static string DestroyedMessage => "Your {0} have been destroyed by {1}";
+
+        public static string CityBuiltMessage => "Player {0} have completed their city🎉\nNow their quarters cannot be destroyed";
+
+        public static string GameEndedMessage => "The game has ended";
+
+        public static string WinnerMessage => "💃🏻{0} have won!🕺";
 
         public static string FarewellMessage => "Thanks for playing!";
 
@@ -66,10 +73,8 @@ namespace KCAA.Helpers
 
         public static string MyHandClose => $"Close {GameSymbols.Close}";
 
-        public static string GetPlayerCharacters(Lobby lobby, Player player)
-        {
-            var characters = lobby.CharacterDeck.Where(c => player.CharacterHand.Contains(c.Name));
-
+        public static string GetPlayerCharactersInfo(IEnumerable<Character> characters, Player player)
+        { 
             var builder = new StringBuilder();
 
             if (player.HasCrown)

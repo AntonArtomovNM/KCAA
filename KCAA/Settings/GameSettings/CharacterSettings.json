@@ -4,7 +4,7 @@
     "DisplayName": "Assassin",
     "Type": 0,
     "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deyoiao-82d87195-358c-42f9-8d58-36510cf7e4b8.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5b2lhby04MmQ4NzE5NS0zNThjLTQyZjktOGQ1OC0zNjUxMGNmN2U0YjgucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.kngqZGcmxK4XEURYYYFd-6Bc3Cc7NTFNauZGxjWLWLM",
-    "Description": "Select a character you wish to kil. This character skips his entire turn.",
+    "Description": "Select a character you wish to kill. This character skips his entire turn.",
     "Order": 1,
     "BuildingCapacity": 1,
     "GameAction": "kill"
@@ -51,7 +51,7 @@
     "Name": "merchant",
     "DisplayName": "Merchant",
     "Type": 3,
-    "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deyqlmb-24a8bc86-8873-4e85-932c-cf7850a43d53.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5cWxtYi0yNGE4YmM4Ni04ODczLTRlODUtOTMyYy1jZjc4NTBhNDNkNTMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.hq0Kr6qt_as8FIeZkdXrsdykA9a1axSlacJ-IEdPAUM",
     "Description": "You receive one gold for each trade (green) quarter in your city. Gain one extra gold when taking resourses.",
     "Order": 6,
     "BuildingCapacity": 1
