@@ -32,8 +32,6 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             _quarterFactory = quarterFactory;
         }
 
-        private ITelegramBotClient _botClient;
-
         public async Task Handle(ITelegramBotClient botClient, Update update)
         {
             _botClient = botClient;
@@ -97,7 +95,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _playerProvider.SavePlayer(player);
             await _lobbyProvider.UpdateLobby(lobby, x => x.CharacterDeck);
 
-            await NextCharactertSelection(_botClient, lobby.Id);
+            await NextCharactertSelection(lobby.Id);
         }
 
         private async Task HandleTakeResources(long chatId, Player player, Lobby lobby, string characterName, string typeStr, string amountStr)
@@ -199,6 +197,14 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             player.QuarterHand.Remove(quarterName);
             player.PlacedQuarters.Add(new PlacedQuarter(quarterName));
 
+            //If player completed the city
+            if (player.PlacedQuarters.Count == _gameSettings.QuartersToWin)
+            {
+                player.Score += _gameSettings.FullBuildBonus;
+
+                await _botClient.SendTextMessageAsync(lobby.TelegramMetadata.ChatId, string.Format(GameMessages.CityBuiltMessage, player.Name));
+            }
+
             if (character.BuiltQuarters == character.CharacterBase.BuildingCapacity)
             {
                 player.GameActions.Remove(GameAction.BuildQuarter);
@@ -237,7 +243,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             await _lobbyProvider.UpdateLobby(lobby, x => x.CharacterDeck);
 
-            await NextPlayerTurn(_botClient, lobby.Id);
+            await NextPlayerTurn(lobby.Id);
         }
 
         private async Task HandleCancelAction(long chatId, Player player, Lobby lobby, string characterName)
@@ -294,7 +300,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             target.QuarterHand = playersHand;
             player.GameActions.Remove($"{GameAction.ExchangeHands}|{GameAction.DiscardQuarters}");
 
-            await SendActionPerformedMessage(_botClient, target, string.Format(GameMessages.ExchangedMessage, player.Name));
+            await SendActionPerformedMessage(target, string.Format(GameMessages.ExchangedMessage, player.Name));
 
             await _playerProvider.UpdatePlayer(target, p => p.QuarterHand);
             await _playerProvider.UpdatePlayer(player, p => p.QuarterHand);
@@ -363,19 +369,17 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             //If quarter is already selected, destroy it
             var quarter = target.PlacedQuarters.Find(q => q.Name == quarterName);
+
             target.PlacedQuarters.Remove(quarter);
+            target.Score -= quarter.QuarterBase.Cost + quarter.BonusScore;
+
             player.Coins -= quarter.QuarterBase.Cost - 1;
 
             await _playerProvider.UpdatePlayer(player, p => p.Coins);
+            await _playerProvider.UpdatePlayer(target, p => p.Score);
             await _playerProvider.UpdatePlayer(target, p => p.PlacedQuarters);
 
-            var messageId = (await _botClient.PutMessage(
-                targetChatId,
-                target.TelegramMetadata.ActionPerformedId,
-                string.Format(GameMessages.DestroyedMessage, quarter.QuarterBase.DisplayName, player.Name))).MessageId;
-
-            target.TelegramMetadata.ActionPerformedId = messageId;
-            await _playerProvider.UpdatePlayer(target, p => p.TelegramMetadata.ActionPerformedId);
+            await SendActionPerformedMessage(target, string.Format(GameMessages.DestroyedMessage, quarter.QuarterBase.DisplayName, player.Name));
 
             await DisplayAvailableGameActions(chatId, lobby.Id, characterName);
         }
@@ -470,7 +474,9 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _botClient.TryDeleteMessage(chatId, player.TelegramMetadata.GameActionKeyboardId);
 
             var players = (await _playerProvider.GetPlayersByLobbyId(player.LobbyId, loadPlacedQuarters: true)).Where(p => p.Id != player.Id).ToList();
-            var character = lobby.CharacterDeck.Find(c => c.Name == characterName).CharacterBase;
+            
+            var characters = lobby.CharacterDeck.Where(c => player.CharacterHand.Contains(c.Name));
+            var character = characters.FirstOrDefault(c => c.Name == characterName).CharacterBase;
 
             //If it's placed quarters related ability
             if (character.Type == ColorType.Red)
@@ -481,7 +487,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                     _ => (_ => false)
                 };
 
-                players.RemoveAll(p => p.CharacterHand.Contains(CharacterNames.Bishop) || characterSpecificCheck(p));
+                players.RemoveAll(p => p.PlacedQuarters.Count >= _gameSettings.QuartersToWin || p.CharacterHand.Contains(CharacterNames.Bishop) || characterSpecificCheck(p));
             }
 
             if (!players.Any())
@@ -498,8 +504,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             {
                 var builder = new StringBuilder();
                 builder.Append(p.Name + " ");
-                builder.AppendLine(GameMessages.GetPlayerCharacters(lobby, p));
-                builder.AppendLine();
+                builder.AppendLine(GameMessages.GetPlayerCharactersInfo(characters, p));
                 builder.AppendLine(GameMessages.GetPlayerInfoMessage(p));
                 Console.WriteLine($"{gameAction}_{player.LobbyId}_{characterName}_{p.Id}");
                 var button = InlineKeyboardButton.WithCallbackData(GameAction.GetActionDisplayName(gameAction), $"{gameAction}_{player.LobbyId}_{characterName}_{p.TelegramMetadata.ChatId}");

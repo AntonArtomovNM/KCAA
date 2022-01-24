@@ -21,5 +21,9 @@
         public int CoinsPerTurn { get; set; }
 
         public int QuertersPerTurn { get; set; }
+
+        public int QuartersToWin { get; set; }
+
+        public int FullBuildBonus { get; set; }
     }
 }

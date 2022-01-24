@@ -7,7 +7,6 @@ using KCAA.Models;
 using KCAA.Models.Characters;
 using KCAA.Models.MongoDB;
 using KCAA.Services.Interfaces;
-using KCAA.Services.TelegramApi;
 using KCAA.Settings.GameSettings;
 using Microsoft.AspNetCore.Mvc;
 
@@ -53,7 +52,7 @@ namespace KCAA.Controllers
 
             await _playerProvider.SavePlayers(players);
 
-            return Ok(GameMessages.LobbyCanceledMessage);
+            return Ok(GameMessages.FarewellMessage);
         }
 
         [HttpPost]
@@ -140,12 +139,17 @@ namespace KCAA.Controllers
 
             var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
 
-            // if no characters left selected, the turn cycle is over and we need to start character selection again
+            // if no characters left selected, the turn cycle is over and we need to start character selection again or end the game
             if (character == null)
             {
+                if (players.Any(p => p.PlacedQuarters.Count >= _gameSettings.QuartersToWin))
+                {
+                    return Accepted(string.Empty, GameMessages.GameEndedMessage);
+                }
+
                 await StartCharacterSelection(lobby, players);
 
-                return Accepted("Starting next character selection");
+                return Accepted(string.Empty, "Starting next character selection");
             }
 
             var player = players.Find(p => p.CharacterHand.Contains(character.Name));
@@ -182,19 +186,7 @@ namespace KCAA.Controllers
                     break;
             }
 
-            player.GameActions.Add(GameAction.BuildQuarter);
-
-            if (!string.IsNullOrWhiteSpace(character.CharacterBase.GameAction))
-            {
-                player.GameActions.Add(character.CharacterBase.GameAction);
-            }
-
-            if (character.CharacterBase.Type != ColorType.None)
-            {
-                player.GameActions.Add(GameAction.TakeRevenue);
-            }
-
-            await _playerProvider.UpdatePlayer(player, p => p.GameActions);
+            await SetPlayerActions(character, player);
 
             return Ok(turnDto);
         }
@@ -258,7 +250,7 @@ namespace KCAA.Controllers
         {
             var oldKing = players.Find(p => p.HasCrown);
 
-            if(oldKing == newKing)
+            if (oldKing == newKing)
             {
                 return;
             }
@@ -269,9 +261,10 @@ namespace KCAA.Controllers
             await _playerProvider.UpdatePlayer(oldKing, p => p.HasCrown);
             await _playerProvider.UpdatePlayer(newKing, p => p.HasCrown);
 
+            var csorderDelta = newKing.CSOrder;
             var updateCsorderTasks = players.Select(async p =>
             {
-                p.CSOrder = p.CSOrder < newKing.CSOrder ? p.CSOrder + newKing.CSOrder : p.CSOrder - newKing.CSOrder;
+                p.CSOrder = p.CSOrder < csorderDelta ? p.CSOrder + csorderDelta : p.CSOrder - csorderDelta;
                 await _playerProvider.UpdatePlayer(p, x => x.CSOrder);
             });
 
@@ -286,6 +279,23 @@ namespace KCAA.Controllers
 
             await _playerProvider.UpdatePlayer(thief, x => x.Coins);
             await _playerProvider.UpdatePlayer(player, x => x.Coins);
+        }
+
+        private async Task SetPlayerActions(Character character, Player player)
+        {
+            if (!string.IsNullOrWhiteSpace(character.CharacterBase.GameAction))
+            {
+                player.GameActions.Add(character.CharacterBase.GameAction);
+            }
+
+            if (character.CharacterBase.Type != ColorType.None)
+            {
+                player.GameActions.Add(GameAction.TakeRevenue);
+            }
+
+            player.GameActions.Add(GameAction.BuildQuarter);
+
+            await _playerProvider.UpdatePlayer(player, p => p.GameActions);
         }
     }
 }
