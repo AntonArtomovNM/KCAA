@@ -539,7 +539,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                         revenueAmount = player.PlacedQuarters.Where(q => q.QuarterBase.Type == character.CharacterBase.Type).Count();
                     }
 
-                    if (character.Name == CharacterNames.Beggar)
+                    else if (character.Name == CharacterNames.Beggar)
                     {
                         revenueAmount = player.PlacedQuarters.Where(q => q.QuarterBase.Cost == 1).Count();
                     }
