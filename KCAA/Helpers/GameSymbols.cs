@@ -25,5 +25,7 @@
         public static string Robbed => "💸";
 
         public static string Exchange => "🔄";
+
+        public static string Destroy => "⚔️";
     }
 }

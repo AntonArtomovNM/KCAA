@@ -25,6 +25,8 @@ namespace KCAA.Models
 
         public const string DiscardQuarters = "discard";
 
+        public const string DestroyQuarters = "destroy";
+
         static GameAction()
         {
             _displayNames = SetNames();
@@ -43,6 +45,7 @@ namespace KCAA.Models
             { Steal, $"Steal {GameSymbols.Robbed}"},
             { ExchangeHands, $"Switch hands {GameSymbols.Exchange}" },
             { DiscardQuarters, $"Discard {GameSymbols.Exchange}" },
+            { DestroyQuarters, $"Destroy {GameSymbols.Destroy}" },
         };
     }
 }

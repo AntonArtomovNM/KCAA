@@ -36,8 +36,7 @@
     "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deyoip6-9596622b-48cf-4317-8162-fcaa90330277.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5b2lwNi05NTk2NjIyYi00OGNmLTQzMTctODE2Mi1mY2FhOTAzMzAyNzcucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.ohVZP8gfyyjKC_MwsSBBIR5lP4PCqQ7zmF9HyWclftc",
     "Description": "You receive one gold for each noble (yellow) quarter in your city. When the King is called, you immediately receive the Crown.",
     "Order": 4,
-    "BuildingCapacity": 1,
-    "GameAction": "takeRevenue"
+    "BuildingCapacity": 1
   },
   {
     "Name": "bishop",
@@ -46,8 +45,7 @@
     "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deyoi9h-b5de7725-3edf-4292-946d-c22030fa0a26.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5b2k5aC1iNWRlNzcyNS0zZWRmLTQyOTItOTQ2ZC1jMjIwMzBmYTBhMjYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.pPtKNnsITprVsnXBItLvjY8s4V76Fc_PRgjUh27wRfI",
     "Description": "You receive one gold for each religious (blue) quarter in your city. Military (red) characters cannot use its ability on your quarters.",
     "Order": 5,
-    "BuildingCapacity": 1,
-    "GameAction": "takeRevenue"
+    "BuildingCapacity": 1
   },
   {
     "Name": "merchant",
@@ -56,8 +54,7 @@
     "PhotoUri": "https://i.ytimg.com/an/ObLQxub_dIZmdjRq8pPCJQ/featured_channel.jpg?v=60d8a1d9",
     "Description": "You receive one gold for each trade (green) quarter in your city. Gain one extra gold when taking resourses.",
     "Order": 6,
-    "BuildingCapacity": 1,
-    "GameAction": "takeRevenue"
+    "BuildingCapacity": 1
   },
   {
     "Name": "architect",
@@ -76,7 +73,7 @@
     "Description": "You receive one gold for each military (red) quarter in your city. You can destroy one district of your choice by paying one less than the cost of the quarter.",
     "Order": 8,
     "BuildingCapacity": 1,
-    "GameAction": "takeRevenue"
+    "GameAction": "destroy"
   },
   {
     "Name": "beggar",
