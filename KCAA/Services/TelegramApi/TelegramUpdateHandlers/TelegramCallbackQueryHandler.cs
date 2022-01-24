@@ -392,7 +392,12 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var characterOptions = lobby.CharacterDeck.Where(
                 x => x.CharacterBase.Order > currentCharacter.Order &&
                 x.Status != CharacterStatus.Removed &&
-                !player.CharacterHand.Contains(x.Name));
+                !player.CharacterHand.Contains(x.Name)).ToList();
+
+            if (characterName == CharacterNames.Thief)
+            {
+                characterOptions.RemoveAll(c => c.Name == CharacterNames.Beggar);
+            }
 
             var sendMessageTasks = characterOptions.Select(async x =>
             {
@@ -526,7 +531,18 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             switch (action)
             {
                 case GameAction.TakeRevenue:
-                    var revenueAmount = player.PlacedQuarters.Where(q => q.QuarterBase.Type == character.CharacterBase.Type).Count();
+
+                    int revenueAmount = 0;
+
+                    if (character.CharacterBase.Type != ColorType.None)
+                    {
+                        revenueAmount = player.PlacedQuarters.Where(q => q.QuarterBase.Type == character.CharacterBase.Type).Count();
+                    }
+
+                    else if (character.Name == CharacterNames.Beggar)
+                    {
+                        revenueAmount = player.PlacedQuarters.Where(q => q.QuarterBase.Cost == 1).Count();
+                    }
 
                     //No need to display action with no outcome
                     if (revenueAmount == 0)
