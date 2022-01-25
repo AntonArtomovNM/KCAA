@@ -186,6 +186,9 @@ namespace KCAA.Controllers
                     break;
             }
 
+            character.Status = CharacterStatus.Playing;
+            await _lobbyProvider.UpdateLobby(lobby, l => l.CharacterDeck);
+
             await SetPlayerActions(character, player);
 
             return Ok(turnDto);

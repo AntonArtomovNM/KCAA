@@ -69,7 +69,9 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 {
                     new()
                     {
-                        InlineKeyboardButton.WithCallbackData($"Choose {character.CharacterBase.DisplayName}!", $"chooseCharacter_{lobbyId}_{character.Name}")
+                        InlineKeyboardButton.WithCallbackData(
+                            $"{GameAction.GetActionDisplayName(GameAction.ChooseCharacter)} {character.CharacterBase.DisplayName}!", 
+                            $"{GameAction.ChooseCharacter}_{lobbyId}_{character.Name}")
                     }
                 };
 
@@ -139,6 +141,18 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await SendChooseResourses(lobbyId, player, content.Character.CharacterBase);
         }
 
+        protected async Task EndGame(string lobbyId)
+        {
+            var lobby = await _lobbyProvider.GetLobbyById(lobbyId);
+            var players = await _playerProvider.GetPlayersByLobbyId(lobbyId);
+
+            var chatId = lobby.TelegramMetadata.ChatId;
+
+           await DisplayPlayerScore(lobby, players);
+
+            await CancelGame(chatId, lobby, players);
+        }
+
         protected async Task CancelGame(long chatId, Lobby lobby, List<Player> players)
         {
             var message = new HttpRequestMessage(HttpMethod.Delete, _gameSettings.GameApiUrl + $"/{lobby.Id}");
@@ -165,43 +179,25 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.ActionPerformedId);
         }
 
-        protected async Task<Player> DisplayPlayerScore(Lobby lobby, IEnumerable<Player> players)
+        private async Task DisplayPlayerScore(Lobby lobby, IEnumerable<Player> players)
         {
             players = players.OrderByDescending(p => p.Score);
+            var winner = players.First();
 
             var builder = new StringBuilder();
 
-            builder.AppendLine($"The scoreboard{GameSymbols.Score}:");
+            builder.AppendLine(string.Format(GameMessages.WinnerMessage, winner.Name));
             builder.AppendLine();
 
             var place = 1;
             foreach (var player in players)
             {
-                builder.AppendLine($"{place++}) {player.Name}:");
+                builder.AppendLine($"{place++}. {player.Name}:");
                 builder.AppendLine(GameMessages.GetPlayerInfoMessage(player));
                 builder.AppendLine();
             }
 
-            var tgMetadata = lobby.TelegramMetadata;
-            var messageId = (await _botClient.PutMessage(tgMetadata.ChatId, tgMetadata.ScoreboardId, builder.ToString())).MessageId;
-
-            lobby.TelegramMetadata.ScoreboardId = messageId;
-            await _lobbyProvider.UpdateLobby(lobby, l => l.TelegramMetadata.ScoreboardId);
-
-            return players.FirstOrDefault();
-        }
-
-        private async Task EndGame(string lobbyId)
-        {
-            var lobby = await _lobbyProvider.GetLobbyById(lobbyId);
-            var players = await _playerProvider.GetPlayersByLobbyId(lobbyId);
-
-            var chatId = lobby.TelegramMetadata.ChatId;
-
-            var winner = await DisplayPlayerScore(lobby, players);
-            await _botClient.SendTextMessageAsync(chatId, string.Format(GameMessages.WinnerMessage, winner.Name));
-
-            await CancelGame(chatId, lobby, players);
+            await _botClient.SendTextMessageAsync(lobby.TelegramMetadata.ChatId, builder.ToString());
         }
 
         private async Task SendChooseResourses(string lobbyId, Player player, CharacterBase character)
@@ -237,10 +233,10 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 {
                     InlineKeyboardButton.WithCallbackData(
                         $"{coinsString}{additionalResourses}",
-                        $"takeRes_{lobbyId}_{character.Name}_{ResourceType.Coin}_{coinsAmount}"),
+                        $"{GameAction.TakeResources}_{lobbyId}_{character.Name}_{ResourceType.Coin}_{coinsAmount}"),
                     InlineKeyboardButton.WithCallbackData(
                         $"{cardsString}{additionalResourses}",
-                        $"takeRes_{lobbyId}_{character.Name}_{ResourceType.Card}_{cardsAmount}"),
+                        $"{GameAction.TakeResources}_{lobbyId}_{character.Name}_{ResourceType.Card}_{cardsAmount}"),
                 }
             };
 
@@ -265,6 +261,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 var messageIds = new List<int>();
                 messageIds.AddRange(p.TelegramMetadata.CardMessageIds);
                 messageIds.AddRange(p.TelegramMetadata.MyHandIds);
+                messageIds.AddRange(p.TelegramMetadata.TableIds);
                 messageIds.Add(p.TelegramMetadata.GameActionKeyboardId);
                 messageIds.Add(p.TelegramMetadata.ActionErrorId);
                 messageIds.Add(p.TelegramMetadata.ActionPerformedId);

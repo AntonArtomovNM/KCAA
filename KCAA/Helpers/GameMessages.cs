@@ -21,7 +21,7 @@ namespace KCAA.Helpers
 
         public static string ChooseActionMessage => "Choose action:";
 
-        public static string MyHandMessage => "Press \"My-Hand\" button to view all your cards and coins";
+        public static string ReplyButtonsMessage => "• Press <b>My-Hand</b> button to view all your cards and coins\n• Press <b>Table</b> button to view other players' cities";
 
         public static string KilledMessage => "You got killed(\nNo turn for you";
 
@@ -35,7 +35,7 @@ namespace KCAA.Helpers
 
         public static string GameEndedMessage => "The game has ended";
 
-        public static string WinnerMessage => "💃🏻{0} have won!🕺";
+        public static string WinnerMessage => "💃🏻{0} have won!🕺\n\nThe scoreboard🏆:";
 
         public static string FarewellMessage => "Thanks for playing!";
 
@@ -71,24 +71,22 @@ namespace KCAA.Helpers
 
         public static string NoPlayersForActionError => "There is no players suitable for this action";
 
-        public static string MyHandClose => $"Close {GameSymbols.Close}";
+        public static string PlayerBorders => "=============================";
 
-        public static string GetPlayerCharactersInfo(IEnumerable<Character> characters, Player player)
+        public static string GetPlayerCharactersInfo(IEnumerable<Character> characters, Player player, bool loadNames = true)
         { 
             var builder = new StringBuilder();
 
             if (player.HasCrown)
             {
-                builder.Append(GameSymbols.Crown);
+                builder.AppendLine(GameSymbols.Crown);
             }
-
-            builder.AppendLine();
 
             if (characters.Any())
             {
                 builder.Append($"{GameSymbols.Character}: ");
 
-                builder.Append(string.Join(", ", characters.Select(c => $"{GetCharacterDisplayName(c)}{GetCharacterEffectSymbol(c.Effect)}")));
+                builder.Append(string.Join(", ", characters.Select(c => $"{GetCharacterDisplayNameAndEffect(c, loadNames)}")));
             }
 
             return builder.ToString();
@@ -114,21 +112,25 @@ namespace KCAA.Helpers
             return builder.ToString();
         }
 
-        private static string GetCharacterDisplayName(Character character)
+        private static string GetCharacterDisplayNameAndEffect(Character character, bool loadName = true)
         {
-            var displayName = character.CharacterBase.DisplayName;
+            if (character.Status == CharacterStatus.Selected)
+            {
+                return loadName ? character.CharacterBase.DisplayName : GameSymbols.UnknowCharacter; ;
+            }
 
-            return character.Status == CharacterStatus.Selected ? displayName : $"<s>{displayName}</s>";
-        }
+            var displayName = character.Status == CharacterStatus.Playing ? 
+                character.CharacterBase.DisplayName :
+                $"<s>{character.CharacterBase.DisplayName}</s>";
 
-        private static string GetCharacterEffectSymbol(CharacterEffect effect)
-        {
-            return effect switch
+            var effectSymbol = character.Effect switch
             {
                 CharacterEffect.Killed => GameSymbols.Killed,
                 CharacterEffect.Robbed => GameSymbols.Robbed,
                 _ => string.Empty
             };
+
+            return displayName + effectSymbol;
         }
     }
 }

@@ -75,11 +75,11 @@ Cost: {GetQuarterCost(quarter.Cost)}
             return await SendMessageWithPhoto(botClient, chatId, inlineKeyboard, photo, tgmessage);
         }
 
-        public static async Task<Message[]> SendCardGroup(this ITelegramBotClient botClient, long chatId, IEnumerable<CardObject> cards, string captionExtention = "")
+        public static async Task<IEnumerable<int>> SendCardGroup(this ITelegramBotClient botClient, long chatId, IEnumerable<CardObject> cards, string captionExtention = "")
         {
             if (cards == null || !cards.Any()) 
             {
-                return new Message[0];
+                return new int[0];
             }
 
             var mediaGroup = cards.Select(c => new InputMediaPhoto(new InputMedia(c.PhotoUri))
@@ -87,7 +87,7 @@ Cost: {GetQuarterCost(quarter.Cost)}
                 Caption = $"{c.DisplayName} ({captionExtention})"
             }) ;
 
-            return await botClient.SendMediaGroupAsync(chatId, mediaGroup);
+            return (await botClient.SendMediaGroupAsync(chatId, mediaGroup)).Select(m => m.MessageId);
         }
 
         private static async Task<Message> SendMessageWithPhoto(ITelegramBotClient botClient, long chatId, InlineKeyboardMarkup inlineKeyboard, InputOnlineFile photo, string tgmessage)

@@ -12,6 +12,8 @@ namespace KCAA.Models.MongoDB
 
         public List<int> MyHandIds { get; set; } = new List<int>();
 
+        public List<int> TableIds { get; set; } = new List<int>();
+
         public int GameActionKeyboardId { get; set; }
 
         public int ActionErrorId { get; set; }

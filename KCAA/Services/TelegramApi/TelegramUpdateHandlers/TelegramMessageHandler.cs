@@ -12,10 +12,10 @@ using KCAA.Services.Interfaces;
 using KCAA.Settings;
 using KCAA.Settings.GameSettings;
 using KCAA.Models.Quarters;
-using KCAA.Models.Characters;
 using System.Text;
 using System.Net.Http;
 using KCAA.Helpers;
+using KCAA.Models;
 
 namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 {
@@ -23,6 +23,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
     {
         private readonly ICardFactory<Quarter> _quarterFactory;
         private readonly TelegramSettings _telegramSettings;
+
+        public object GameActions { get; private set; }
 
         public TelegramMessageHandler(
             ILobbyProvider lobbyProvider, 
@@ -52,6 +54,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var action = text.First() switch
             {
                 "My-Hand" => DisplayHand(message),
+                "Table" => DisplayTable(message),
                 "/create_lobby" => HandleCreateLobby(message.Chat.Id),
                 "/start" => HandleStart(text.Last(), message.Chat),
                 "/end" => HandleEndGame(message.Chat.Id),
@@ -112,7 +115,14 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
 
-            await CancelGame(chatId, lobby, players);
+            if (lobby.Status == LobbyStatus.Configuring)
+            {
+                await CancelGame(chatId, lobby, players);
+            }
+            else
+            {
+                await EndGame(lobby.Id);
+            }
         }
 
         private async Task HandleStart(string payload, Chat chat)
@@ -219,7 +229,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _lobbyProvider.UpdateLobby(lobby, x => x.TelegramMetadata.LobbyInfoMessageId);
 
             var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
-            await SendReplyKeyboardToPlayers(players, GameMessages.MyHandMessage);
+            await SendReplyKeyboardToPlayers(players);
 
             await NextCharactertSelection(lobby.Id);
         }
@@ -277,6 +287,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _botClient.TryDeleteMessage(playerChatId, message.MessageId);
 
             var player = await _playerProvider.GetPlayerByChatId(playerChatId, loadPlacedQuarters: true);
+            await _botClient.TryDeleteMessages(playerChatId, player.TelegramMetadata.MyHandIds);
 
             if (player.LobbyId == Guid.Empty.ToString())
             {
@@ -284,73 +295,131 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 return;
             }
 
-            var lobby = await _lobbyProvider.GetLobbyById(player.LobbyId);
+            var characterDeck = (await _lobbyProvider.GetLobbyById(player.LobbyId)).CharacterDeck;
 
-            await _botClient.TryDeleteMessages(playerChatId, player.TelegramMetadata.MyHandIds);
+            player.TelegramMetadata.MyHandIds = await SendPlayerData(playerChatId, player, characterDeck, loadSecretData: true);
+            player.TelegramMetadata.MyHandIds.Add(await SendCloseButton(playerChatId, player.LobbyId, "My-Hand"));
 
-            //Send all cards
-            var characters = lobby.CharacterDeck.Where(c => player.CharacterHand.Contains(c.Name)).ToList();
-            var quarters = player.QuarterHand.Select(y => _quarterFactory.GetCard(y)).ToList();
-            var placedQuarters = player.PlacedQuarters.Select(z => z.QuarterBase).ToList();
+            await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.MyHandIds);
+        }
 
-            var result = new List<Message>();
+        private async Task DisplayTable(Message message)
+        {
+            var playerChatId = message.From.Id;
+            await _botClient.TryDeleteMessage(playerChatId, message.MessageId);
 
-            if (characters.Any())
+            var player = await _playerProvider.GetPlayerByChatId(playerChatId);
+            await _botClient.TryDeleteMessages(playerChatId, player.TelegramMetadata.TableIds);
+
+            if (player.LobbyId == Guid.Empty.ToString())
             {
-                result.AddRange(await _botClient.SendCardGroup(playerChatId, characters.Select(c => c.CharacterBase), $"Character {GameSymbols.Character}"));
-
-                if (characters.Count > 1)
-                {
-                    result.Add(await _botClient.SendTextMessageAsync(playerChatId, $"Characters {GameSymbols.Character}"));
-                }
+                await _botClient.SendTextMessageAsync(playerChatId, GameMessages.NotInGameError);
+                return;
             }
 
-            if (quarters.Any())
-            {
-                result.AddRange(await _botClient.SendCardGroup(playerChatId, quarters, $"In hand {GameSymbols.Card}"));
+            var characterDeck = (await _lobbyProvider.GetLobbyById(player.LobbyId)).CharacterDeck;
+            var otherPlayers = (await _playerProvider.GetPlayersByLobbyId(player.LobbyId, loadPlacedQuarters: true)).Where(p => p.Id != player.Id);
 
-                if (quarters.Count > 1)
+            var messageIds = new List<int>();
+            var lastPlayerId = otherPlayers.Last().Id;
+
+            foreach (var p in otherPlayers)
+            {
+                messageIds.AddRange(await SendPlayerData(playerChatId, p, characterDeck));
+
+                if (p.Id != lastPlayerId)
                 {
-                    result.Add(await _botClient.SendTextMessageAsync(playerChatId, $"Quarters in hand {GameSymbols.Card}"));
+                    messageIds.Add((await _botClient.SendTextMessageAsync(playerChatId, GameMessages.PlayerBorders)).MessageId);
                 }
+            }
+            messageIds.Add(await SendCloseButton(playerChatId, player.LobbyId, "Table"));
+
+            player.TelegramMetadata.TableIds = messageIds;
+
+            await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.TableIds);
+        }
+
+        private async Task<List<int>> SendPlayerData(long chatId, Player player, IEnumerable<Character> characterDeck, bool loadSecretData = false)
+        {
+            var playerCharacters = characterDeck.Where(c => player.CharacterHand.Contains(c.Name));
+            var charactersToDisplay = loadSecretData ? playerCharacters : playerCharacters.Where(c => c.Status != CharacterStatus.Selected);
+
+            //Send all cards
+            var quarters = player.QuarterHand.Select(y => _quarterFactory.GetCard(y));
+            var placedQuarters = player.PlacedQuarters.Select(z => z.QuarterBase);
+
+            var MessageIds = new List<int>();
+
+            if (charactersToDisplay.Any())
+            {
+                MessageIds.Add((await _botClient.SendTextMessageAsync(chatId, $"Characters {GameSymbols.Character}:")).MessageId);
+                MessageIds.AddRange(await _botClient.SendCardGroup(chatId, charactersToDisplay.Select(c => c.CharacterBase), $"Character {GameSymbols.Character}"));
+            }
+
+            if (loadSecretData && quarters.Any())
+            {
+                MessageIds.Add((await _botClient.SendTextMessageAsync(chatId, $"Quarters in hand {GameSymbols.Card}:")).MessageId);
+                MessageIds.AddRange(await _botClient.SendCardGroup(chatId, quarters, $"In hand {GameSymbols.Card}"));
             }
 
             if (placedQuarters.Any())
             {
-                result.AddRange(await _botClient.SendCardGroup(playerChatId, placedQuarters, $"Placed {GameSymbols.PlacedQuarter}"));
-
-                if (placedQuarters.Count > 1)
-                {
-                    result.Add(await _botClient.SendTextMessageAsync(playerChatId, $"Placed quarters {GameSymbols.PlacedQuarter}"));
-                }
+                MessageIds.Add((await _botClient.SendTextMessageAsync(chatId, $"Placed quarters {GameSymbols.PlacedQuarter}:")).MessageId);
+                MessageIds.AddRange(await _botClient.SendCardGroup(chatId, placedQuarters, $"Placed {GameSymbols.PlacedQuarter}"));
             }
 
             //Send player stats
-            var characterInfo = GameMessages.GetPlayerCharactersInfo(characters, player);
+            var playerName = loadSecretData ? string.Empty : player.Name;
+            var characterInfo = GameMessages.GetPlayerCharactersInfo(playerCharacters, player, loadSecretData);
             var playerInfo = GameMessages.GetPlayerInfoMessage(player);
-            var closebtn = InlineKeyboardButton.WithCallbackData(GameMessages.MyHandClose, $"myHandClose_{lobby.Id}");
 
-            var tgMessage = string.IsNullOrWhiteSpace(characterInfo) ? playerInfo : $"{characterInfo}\n\n{playerInfo}";
+            var builder = new StringBuilder();
 
-            result.Add(await _botClient.SendTextMessageAsync(playerChatId, tgMessage, parseMode: ParseMode.Html, replyMarkup: new InlineKeyboardMarkup(closebtn)));
+            builder.AppendLine(loadSecretData ? string.Empty : player.Name);
+            if (!string.IsNullOrWhiteSpace(characterInfo))
+            {
+                builder.AppendLine(characterInfo);
+            }
+            builder.AppendLine();
+            builder.AppendLine(playerInfo);
 
-            //Save message ids
-            player.TelegramMetadata.MyHandIds = result.AsParallel().WithDegreeOfParallelism(3).Select(x => x.MessageId).ToList();
-            await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.MyHandIds);
+            MessageIds.Add((await _botClient.SendTextMessageAsync(
+                chatId,
+                builder.ToString(),
+                parseMode: ParseMode.Html)).MessageId);
+
+            return MessageIds;
         }
 
-        private async Task SendReplyKeyboardToPlayers(IEnumerable<Player> players, string text)
+        private async Task<int> SendCloseButton(long chatId, string lobbyId, string messageType)
+        {
+            var closebtn = InlineKeyboardButton.WithCallbackData(
+                GameSymbols.Close,
+                $"{GameAction.Close}_{lobbyId}_{messageType}");
+
+            return (await _botClient.SendTextMessageAsync(chatId, GameAction.GetActionDisplayName(GameAction.Close), replyMarkup: new InlineKeyboardMarkup(closebtn))).MessageId;
+        }
+
+        private async Task SendReplyKeyboardToPlayers(IEnumerable<Player> players)
         {
             var replyKeyboardMarkup = new ReplyKeyboardMarkup(
                 new[]
                 {
-                    new KeyboardButton[] { "My-Hand" }
+                    new KeyboardButton[] { "My-Hand", "Table" }
                 })
             {
                 ResizeKeyboard = true
             };
 
-            var sendTasks = players.AsParallel().WithDegreeOfParallelism(3).Select(p => _botClient.SendTextMessageAsync(p.TelegramMetadata.ChatId, text, replyMarkup: replyKeyboardMarkup));
+            var sendTasks = players
+                .AsParallel()
+                .WithDegreeOfParallelism(3)
+                .Select(p => _botClient.SendTextMessageAsync(
+                    p.TelegramMetadata.ChatId,
+                    GameMessages.ReplyButtonsMessage, 
+                    parseMode: ParseMode.Html, 
+                    replyMarkup: replyKeyboardMarkup));
+
             await Task.WhenAll(sendTasks);
         }
     }
