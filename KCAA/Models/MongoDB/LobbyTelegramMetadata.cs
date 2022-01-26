@@ -9,7 +9,5 @@ namespace KCAA.Models.MongoDB
 
         [BsonIgnoreIfDefault]
         public int LobbyInfoMessageId { get; set; }
-
-        public int ScoreboardId { get; set; }
     }
 }

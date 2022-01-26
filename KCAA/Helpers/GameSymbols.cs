@@ -10,6 +10,8 @@
 
         public static string Character => "🎭";
 
+        public static string UnknowCharacter => "👤";
+
         public static string Score => "🏆";
 
         public static string Crown => "👑";

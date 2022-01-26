@@ -7,15 +7,21 @@ namespace KCAA.Models
     {
         private static readonly Dictionary<string, string> _displayNames;
 
+        public const string ChooseCharacter = "chooseCharacter";
+
         public const string BuildQuarter = "build";
 
         public const string EndTurn = "endTurn";
 
         public const string Cancel = "cancel";
 
+        public const string Close = "close";
+
         public const string Done = "done";
 
         public const string TakeRevenue = "takeRevenue";
+
+        public const string TakeResources = "takeRes";
 
         public const string Kill = "kill";
 
@@ -38,8 +44,10 @@ namespace KCAA.Models
         {
             { EndTurn, "End turn" },
             { Cancel, "Cancel" },
+            { Close, $"Close" },
             { Done, "Done" },
             { BuildQuarter, "Build quarter" },
+            { ChooseCharacter, "Choose" },
             { TakeRevenue, "Take revenue" },
             { Kill, $"Kill {GameSymbols.Killed}" },
             { Steal, $"Steal {GameSymbols.Robbed}"},

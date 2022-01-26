@@ -4,7 +4,8 @@
     {
         Awailable = 0,
         Selected = 1,
-        SecretlyRemoved = 2,
-        Removed = 3
+        Playing = 2,
+        SecretlyRemoved = 3,
+        Removed = 4
     }
 }

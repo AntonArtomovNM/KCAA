@@ -10,6 +10,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
+using Telegram.Bot.Types.Enums;
 
 namespace KCAA.Extensions
 {
@@ -20,12 +21,12 @@ namespace KCAA.Extensions
             Message message;
             try
             {
-                message = await botClient.EditMessageTextAsync(chatId, messageId, text, replyMarkup: inlineKeyboard);
+                message = await botClient.EditMessageTextAsync(chatId, messageId, text, parseMode: ParseMode.Html, replyMarkup: inlineKeyboard);
             }
             catch
             {
                 await botClient.TryDeleteMessage(chatId, messageId);
-                message = await botClient.SendTextMessageAsync(chatId, text, replyMarkup: inlineKeyboard);
+                message = await botClient.SendTextMessageAsync(chatId, text, parseMode: ParseMode.Html, replyMarkup: inlineKeyboard);
             }
 
             return message;
@@ -45,7 +46,6 @@ namespace KCAA.Extensions
             var deleteTasks = messageIds.AsParallel().WithDegreeOfParallelism(3).Select(id => botClient.TryDeleteMessage(chatId, id));
             await Task.WhenAll(deleteTasks);
         }
-
 
         public static async Task DisplayBotCommands(this ITelegramBotClient botClient, long chatId)
         {
@@ -75,11 +75,11 @@ Cost: {GetQuarterCost(quarter.Cost)}
             return await SendMessageWithPhoto(botClient, chatId, inlineKeyboard, photo, tgmessage);
         }
 
-        public static async Task<Message[]> SendCardGroup(this ITelegramBotClient botClient, long chatId, IEnumerable<CardObject> cards, string captionExtention = "")
+        public static async Task<IEnumerable<int>> SendCardGroup(this ITelegramBotClient botClient, long chatId, IEnumerable<CardObject> cards, string captionExtention = "")
         {
             if (cards == null || !cards.Any()) 
             {
-                return new Message[0];
+                return new int[0];
             }
 
             var mediaGroup = cards.Select(c => new InputMediaPhoto(new InputMedia(c.PhotoUri))
@@ -87,7 +87,7 @@ Cost: {GetQuarterCost(quarter.Cost)}
                 Caption = $"{c.DisplayName} ({captionExtention})"
             }) ;
 
-            return await botClient.SendMediaGroupAsync(chatId, mediaGroup);
+            return (await botClient.SendMediaGroupAsync(chatId, mediaGroup)).Select(m => m.MessageId);
         }
 
         private static async Task<Message> SendMessageWithPhoto(ITelegramBotClient botClient, long chatId, InlineKeyboardMarkup inlineKeyboard, InputOnlineFile photo, string tgmessage)

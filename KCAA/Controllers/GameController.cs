@@ -82,7 +82,7 @@ namespace KCAA.Controllers
             GiveStartingResources(lobby, players);
             await StartCharacterSelection(lobby, players);
 
-            return Ok(GameMessages.GameStartMessage);
+            return Ok();
         }
 
         [HttpGet]
@@ -185,6 +185,9 @@ namespace KCAA.Controllers
                 default:
                     break;
             }
+
+            character.Status = CharacterStatus.Playing;
+            await _lobbyProvider.UpdateLobby(lobby, l => l.CharacterDeck);
 
             await SetPlayerActions(character, player);
 

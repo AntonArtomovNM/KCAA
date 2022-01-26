@@ -7,35 +7,53 @@ namespace KCAA.Helpers
 {
     public static class GameMessages
     {
-        public static string GreetingsMessage => "Ohayo Pokko";
+        public static string GreetingsMessage => @"Ohayo Pokko 🐴
+ • Use /rules to see basic rules of the game
+ • Use /help to see all of the bot commands";
 
         public static string LobbyRegistrationMessage => "BOL`SHIE GORODA";
 
-        public static string LobbyJoinedMessage => "You've joined the lobby in {0}";
+        public static string LobbyJoinedMessage => "You've joined the lobby in <b>{0}</b>";
 
         public static string GameCanceledMessage => "Game is canceled";
-
-        public static string GameStartMessage => "Poehali!";
 
         public static string ChooseResourcesMessage => $"Choose resources: coins {GameSymbols.Coin} or quarter cards {GameSymbols.Card}";
 
         public static string ChooseActionMessage => "Choose action:";
 
-        public static string MyHandMessage => "Press \"My-Hand\" button to view all your cards and coins";
+        public static string ReplyButtonsMessage => "• Press <b>My-Hand</b> button to view all your cards and coins\n• Press <b>Table</b> button to view other players' cities";
 
-        public static string KilledMessage => "You got killed(\nNo turn for you";
+        public static string CharactersRemovedMessage => "won't appear this round";
 
-        public static string RobbedMessage => "You got robbed(\nNo coins for you";
+        public static string PlayerTurnPublicMessage => "<b>{0}'s</b> turn as <b>{1}</b>";
 
-        public static string ExchangedMessage => "Your cards in hand have been exchanged with {0}'s hand";
+        public static string CrownMessage => "[{0}] <b>{1}</b> have received the crown\nThey will be the first to select a character next time";
 
-        public static string DestroyedMessage => "Your {0} have been destroyed by {1}";
+        public static string KilledPersonalMessage => "You got killed(\nNo turn for you";
 
-        public static string CityBuiltMessage => "Player {0} have completed their city🎉\nNow their quarters cannot be destroyed";
+        public static string KilledPublicMessage => "[{0}] <b>{1}</b> decided to kill <b>{2}</b>";
+
+        public static string RobbedPersonalMessage => "You got robbed(\nNo coins for you";
+
+        public static string RobbedPublicMessage => "[{0}] <b>{1}</b> decided to steal from <b>{2}</b>";
+
+        public static string ExchangedPersonalMessage => "Your cards in hand have been exchanged with <b>{0}'s</b> hand";
+
+        public static string ExchangedPublicMessage => "[{0}] <b>{1}</b> exchanged their hand with <b>{2}'s</b> hand";
+
+        public static string DestroyedPersonalMessage => "Your <b>{0}</b> have been destroyed by <b>{1}</b>";
+
+        public static string DestroyedPublicMessage => "[{0}] <b>{1}</b> have destroyed <b>{2}'s {3}</b>";
+
+        public static string QuarterBuiltMessage => "[{0}] <b>{1}</b> have built a <b>{2}</b>";
+
+        public static string CityBuiltPublicMessage => "Player <b>{0}</b> have completed their city{1}🎉\nNow their quarters cannot be destroyed";
+
+        public static string CityBuiltPersonalMessage => "You've got <b>{0} bonus points</b> for completing the city{1}";
 
         public static string GameEndedMessage => "The game has ended";
 
-        public static string WinnerMessage => "💃🏻{0} have won!🕺";
+        public static string WinnerMessage => "💃🏻{0} have won!🕺\n\nThe scoreboard🏆:";
 
         public static string FarewellMessage => "Thanks for playing!";
 
@@ -71,9 +89,37 @@ namespace KCAA.Helpers
 
         public static string NoPlayersForActionError => "There is no players suitable for this action";
 
-        public static string MyHandClose => $"Close {GameSymbols.Close}";
+        public static string PlayerBorders => "=========================";
 
-        public static string GetPlayerCharactersInfo(IEnumerable<Character> characters, Player player)
+        public static string BasicRules => $@"<u>On your turn</u>
+
+<b>1) Gather resources:</b>
+You must gather resources in 1 of 2 ways:
+  • Take 2 coins {GameSymbols.Coin} from the bank
+  • Draw 1 quarter card { GameSymbols.Card }
+
+<b>2) Build:</b>
+You may build 1 quarter by paying its cost.
+
+<b>*) Use other abilities:</b>
+You may use each of your character’s and special card's abilities according to it's description on the card
+
+<u>Quarter types</u>
+
+🟨 Noble
+🟦 Religious
+🟩 Trade
+🟥 Military
+🟪 Special [WIP]
+
+<u>Scoring</u>
+
+When a city has <b>7 quarters</b>, the game ends after the current round, and you score points:
+  • <b>1 point</b> per coin on your placed quarters.
+  • <b>4 points</b> for the first player who completed their city.
+  • <b>2 points</b> for any other player who completed their city.";
+
+        public static string GetPlayerCharactersInfo(IEnumerable<Character> characters, Player player, bool loadNames = true)
         { 
             var builder = new StringBuilder();
 
@@ -82,13 +128,13 @@ namespace KCAA.Helpers
                 builder.Append(GameSymbols.Crown);
             }
 
-            builder.AppendLine();
-
             if (characters.Any())
             {
+                builder.AppendLine();
+
                 builder.Append($"{GameSymbols.Character}: ");
 
-                builder.Append(string.Join(", ", characters.Select(c => $"{GetCharacterDisplayName(c)}{GetCharacterEffectSymbol(c.Effect)}")));
+                builder.Append(string.Join(", ", characters.Select(c => $"{GetCharacterDisplayNameAndEffect(c, loadNames)}")));
             }
 
             return builder.ToString();
@@ -114,21 +160,25 @@ namespace KCAA.Helpers
             return builder.ToString();
         }
 
-        private static string GetCharacterDisplayName(Character character)
+        private static string GetCharacterDisplayNameAndEffect(Character character, bool loadName = true)
         {
-            var displayName = character.CharacterBase.DisplayName;
+            if (character.Status == CharacterStatus.Selected)
+            {
+                return loadName ? character.CharacterBase.DisplayName : GameSymbols.UnknowCharacter;
+            }
 
-            return character.Status == CharacterStatus.Selected ? displayName : $"<s>{displayName}</s>";
-        }
+            var displayName = character.Status == CharacterStatus.Playing ? 
+                $"<u>{character.CharacterBase.DisplayName}</u>" :
+                $"<s>{character.CharacterBase.DisplayName}</s>";
 
-        private static string GetCharacterEffectSymbol(CharacterEffect effect)
-        {
-            return effect switch
+            var effectSymbol = character.Effect switch
             {
                 CharacterEffect.Killed => GameSymbols.Killed,
                 CharacterEffect.Robbed => GameSymbols.Robbed,
                 _ => string.Empty
             };
+
+            return displayName + effectSymbol;
         }
     }
 }
