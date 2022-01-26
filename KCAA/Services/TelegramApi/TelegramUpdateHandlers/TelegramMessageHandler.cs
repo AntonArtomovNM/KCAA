@@ -242,7 +242,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             lobbyStrBuilder.AppendLine(GameMessages.LobbyRegistrationMessage);
             lobbyStrBuilder.AppendLine($"Players: {lobby.PlayersCount}/{_gameSettings.MaxPlayersAmount}");
 
-            var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
+            var players = (await _playerProvider.GetPlayersByLobbyId(lobby.Id)).OrderBy(p => p.CSOrder);
 
             foreach (var player in players)
             {
