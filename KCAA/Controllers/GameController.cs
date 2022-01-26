@@ -82,7 +82,7 @@ namespace KCAA.Controllers
             GiveStartingResources(lobby, players);
             await StartCharacterSelection(lobby, players);
 
-            return Ok(GameMessages.GameStartMessage);
+            return Ok();
         }
 
         [HttpGet]

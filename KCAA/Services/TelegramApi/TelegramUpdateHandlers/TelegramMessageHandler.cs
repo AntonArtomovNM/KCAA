@@ -58,7 +58,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 "/create_lobby" => HandleCreateLobby(message.Chat.Id),
                 "/start" => HandleStart(text.Last(), message.Chat),
                 "/end" => HandleEndGame(message.Chat.Id),
-                "/help" => base._botClient.DisplayBotCommands(message.Chat.Id),
+                "/rules" => _botClient.SendTextMessageAsync(message.Chat.Id, GameMessages.BasicRules, parseMode: ParseMode.Html),
+                "/help" => _botClient.DisplayBotCommands(message.Chat.Id),
                 _ => Task.CompletedTask
             };
             await action;
@@ -200,8 +201,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _lobbyProvider.UpdateLobby(lobby, x => x.PlayersCount);
 
             var groupChat = await _botClient.GetChatAsync(groupChatId);
-            await _botClient.SendTextMessageAsync(playerChat.Id, string.Format(GameMessages.LobbyJoinedMessage, groupChat.Title));
-  
+            await _botClient.SendTextMessageAsync(playerChat.Id, string.Format(GameMessages.LobbyJoinedMessage, groupChat.Title), parseMode: ParseMode.Html);
+
             if (lobby.PlayersCount == _gameSettings.MaxPlayersAmount)
             {
                 await StartGame(lobby);
@@ -224,12 +225,10 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 return;
             }
 
-            var botResponse = await _botClient.PutMessage(lobby.TelegramMetadata.ChatId, lobby.TelegramMetadata.LobbyInfoMessageId, responseMessage);
-            lobby.TelegramMetadata.LobbyInfoMessageId = botResponse.MessageId;
-            await _lobbyProvider.UpdateLobby(lobby, x => x.TelegramMetadata.LobbyInfoMessageId);
-
             var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
             await SendReplyKeyboardToPlayers(players);
+
+            await DisplayRemovedCharacters(lobby.Id);
 
             await NextCharactertSelection(lobby.Id);
         }
@@ -318,7 +317,9 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
 
             var characterDeck = (await _lobbyProvider.GetLobbyById(player.LobbyId)).CharacterDeck;
-            var otherPlayers = (await _playerProvider.GetPlayersByLobbyId(player.LobbyId, loadPlacedQuarters: true)).Where(p => p.Id != player.Id);
+            var otherPlayers = (await _playerProvider.GetPlayersByLobbyId(player.LobbyId, loadPlacedQuarters: true))
+                .Where(p => p.Id != player.Id)
+                .OrderBy(p => p.CSOrder);
 
             var messageIds = new List<int>();
             var lastPlayerId = otherPlayers.Last().Id;
@@ -342,24 +343,25 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
         private async Task<List<int>> SendPlayerData(long chatId, Player player, IEnumerable<Character> characterDeck, bool loadSecretData = false)
         {
             var playerCharacters = characterDeck.Where(c => player.CharacterHand.Contains(c.Name));
-            var charactersToDisplay = loadSecretData ? playerCharacters : playerCharacters.Where(c => c.Status != CharacterStatus.Selected);
-
-            //Send all cards
-            var quarters = player.QuarterHand.Select(y => _quarterFactory.GetCard(y));
             var placedQuarters = player.PlacedQuarters.Select(z => z.QuarterBase);
 
             var MessageIds = new List<int>();
 
-            if (charactersToDisplay.Any())
+            if (loadSecretData)
             {
-                MessageIds.Add((await _botClient.SendTextMessageAsync(chatId, $"Characters {GameSymbols.Character}:")).MessageId);
-                MessageIds.AddRange(await _botClient.SendCardGroup(chatId, charactersToDisplay.Select(c => c.CharacterBase), $"Character {GameSymbols.Character}"));
-            }
+                var quarters = player.QuarterHand.Select(y => _quarterFactory.GetCard(y));
 
-            if (loadSecretData && quarters.Any())
-            {
-                MessageIds.Add((await _botClient.SendTextMessageAsync(chatId, $"Quarters in hand {GameSymbols.Card}:")).MessageId);
-                MessageIds.AddRange(await _botClient.SendCardGroup(chatId, quarters, $"In hand {GameSymbols.Card}"));
+                if (playerCharacters.Any())
+                {
+                    MessageIds.Add((await _botClient.SendTextMessageAsync(chatId, $"Characters {GameSymbols.Character}:")).MessageId);
+                    MessageIds.AddRange(await _botClient.SendCardGroup(chatId, playerCharacters.Select(c => c.CharacterBase), $"Character {GameSymbols.Character}"));
+                }
+
+                if (quarters.Any())
+                {
+                    MessageIds.Add((await _botClient.SendTextMessageAsync(chatId, $"Quarters in hand {GameSymbols.Card}:")).MessageId);
+                    MessageIds.AddRange(await _botClient.SendCardGroup(chatId, quarters, $"In hand {GameSymbols.Card}"));
+                }
             }
 
             if (placedQuarters.Any())
@@ -369,18 +371,19 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
 
             //Send player stats
-            var playerName = loadSecretData ? string.Empty : player.Name;
             var characterInfo = GameMessages.GetPlayerCharactersInfo(playerCharacters, player, loadSecretData);
             var playerInfo = GameMessages.GetPlayerInfoMessage(player);
 
             var builder = new StringBuilder();
 
-            builder.AppendLine(loadSecretData ? string.Empty : player.Name);
+            if(!loadSecretData)
+            {
+                builder.Append(player.Name + " ");
+            }
             if (!string.IsNullOrWhiteSpace(characterInfo))
             {
                 builder.AppendLine(characterInfo);
             }
-            builder.AppendLine();
             builder.AppendLine(playerInfo);
 
             MessageIds.Add((await _botClient.SendTextMessageAsync(

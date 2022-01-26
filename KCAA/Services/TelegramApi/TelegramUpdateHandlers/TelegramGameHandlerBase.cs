@@ -14,6 +14,7 @@ using KCAA.Models.Characters;
 using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
 using System.Text;
+using Telegram.Bot.Types.Enums;
 
 namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 {
@@ -60,6 +61,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var lobby = await _lobbyProvider.GetLobbyById(player.LobbyId);
             var tgMetadata = player.TelegramMetadata;
 
+            await DisplayPlayersData(lobby);
+
             await _botClient.TryDeleteMessage(tgMetadata.ChatId, tgMetadata.ActionPerformedId);
             await _botClient.TryDeleteMessage(tgMetadata.ChatId, tgMetadata.ActionErrorId);
 
@@ -99,6 +102,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 return;
             }
 
+
             // Accepted here means the start of new turn cycle and new character selection or the game has ended
             if (response.StatusCode == HttpStatusCode.Accepted)
             {
@@ -110,6 +114,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 }
                 else
                 {
+                    await DisplayRemovedCharacters(lobbyId);
+
                     await NextCharactertSelection(lobbyId);
                 }
 
@@ -118,7 +124,26 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var content = await response.Content.ReadAsAsync<PlayerTurnDto>();
             var player = await _playerProvider.GetPlayerById(content.PlayerId);
+            var lobby = await _lobbyProvider.GetLobbyById(lobbyId);
             var tgMetadata = player.TelegramMetadata;
+
+            await DisplayPlayersData(lobby);
+
+            if (content.Character.Effect != CharacterEffect.Killed)
+            {
+                await _botClient.SendTextMessageAsync(
+                    lobby.TelegramMetadata.ChatId,
+                    string.Format(GameMessages.PlayerTurnPublicMessage, player.Name, content.Character.CharacterBase.DisplayName),
+                    parseMode: ParseMode.Html);
+            }
+
+            if (content.Character.CharacterBase.Type == ColorType.Yellow)
+            {
+                await _botClient.SendTextMessageAsync(
+                    lobby.TelegramMetadata.ChatId,
+                    string.Format(GameMessages.CrownMessage, GameSymbols.Crown, player.Name),
+                    parseMode: ParseMode.Html);
+            }
 
             await _botClient.TryDeleteMessage(tgMetadata.ChatId, tgMetadata.ActionPerformedId);
             await _botClient.TryDeleteMessage(tgMetadata.ChatId, tgMetadata.ActionErrorId);
@@ -126,12 +151,12 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             switch (content.Character.Effect)
             {
                 case CharacterEffect.Killed:
-                    await SendActionPerformedMessage(player, GameMessages.KilledMessage);
+                    await SendActionPerformedMessage(player, GameMessages.KilledPersonalMessage);
                     await NextPlayerTurn(lobbyId);
                     return;
 
                 case CharacterEffect.Robbed:
-                    await SendActionPerformedMessage(player, GameMessages.RobbedMessage);
+                    await SendActionPerformedMessage(player, GameMessages.RobbedPersonalMessage);
                     break;
 
                 default:
@@ -148,7 +173,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var chatId = lobby.TelegramMetadata.ChatId;
 
-           await DisplayPlayerScore(lobby, players);
+            await DisplayPlayerScore(lobby, players);
 
             await CancelGame(chatId, lobby, players);
         }
@@ -179,25 +204,17 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.ActionPerformedId);
         }
 
-        private async Task DisplayPlayerScore(Lobby lobby, IEnumerable<Player> players)
+        protected async Task DisplayRemovedCharacters(string lobbyId)
         {
-            players = players.OrderByDescending(p => p.Score);
-            var winner = players.First();
+            var lobby = await _lobbyProvider.GetLobbyById(lobbyId);
 
-            var builder = new StringBuilder();
+            var removed = lobby.CharacterDeck.Where(c => c.Status == CharacterStatus.Removed);
+            var names = string.Join("</b> and <b>", removed.Select(r => r.CharacterBase.DisplayName));
 
-            builder.AppendLine(string.Format(GameMessages.WinnerMessage, winner.Name));
-            builder.AppendLine();
-
-            var place = 1;
-            foreach (var player in players)
-            {
-                builder.AppendLine($"{place++}. {player.Name}:");
-                builder.AppendLine(GameMessages.GetPlayerInfoMessage(player));
-                builder.AppendLine();
-            }
-
-            await _botClient.SendTextMessageAsync(lobby.TelegramMetadata.ChatId, builder.ToString());
+            await _botClient.SendTextMessageAsync(
+                lobby.TelegramMetadata.ChatId, 
+                $"<b>{names}</b> {GameMessages.CharactersRemovedMessage}", 
+                parseMode: ParseMode.Html);
         }
 
         private async Task SendChooseResourses(string lobbyId, Player player, CharacterBase character)
@@ -249,6 +266,52 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             player.TelegramMetadata.GameActionKeyboardId = responseMessage.MessageId;
 
             await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.GameActionKeyboardId);
+        }
+
+        private async Task DisplayPlayersData(Lobby lobby)
+        {
+            var players = (await _playerProvider.GetPlayersByLobbyId(lobby.Id)).OrderBy(p => p.CSOrder);
+
+            var builder = new StringBuilder();
+
+            foreach(var player in players)
+            {
+                var characters = lobby.CharacterDeck.Where(c => player.CharacterHand.Contains(c.Name));
+
+                builder.Append(player.Name + " ");
+                builder.AppendLine(GameMessages.GetPlayerCharactersInfo(characters, player, loadNames: false));
+                builder.AppendLine(GameMessages.GetPlayerInfoMessage(player));
+                builder.AppendLine();
+            }
+
+            var tgMetadata = lobby.TelegramMetadata;
+
+            await _botClient.TryDeleteMessage(tgMetadata.ChatId, tgMetadata.LobbyInfoMessageId);
+            var messageId = (await _botClient.SendTextMessageAsync(tgMetadata.ChatId, builder.ToString(), parseMode: ParseMode.Html)).MessageId;
+
+            lobby.TelegramMetadata.LobbyInfoMessageId = messageId;
+            await _lobbyProvider.UpdateLobby(lobby, l => l.TelegramMetadata.LobbyInfoMessageId);
+        }
+
+        private async Task DisplayPlayerScore(Lobby lobby, IEnumerable<Player> players)
+        {
+            players = players.OrderByDescending(p => p.Score).ThenByDescending(p => p.QuarterHand.Count);
+            var winner = players.First();
+
+            var builder = new StringBuilder();
+
+            builder.AppendLine(string.Format(GameMessages.WinnerMessage, winner.Name));
+            builder.AppendLine();
+
+            var place = 1;
+            foreach (var player in players)
+            {
+                builder.AppendLine($"{place++}. {player.Name}:");
+                builder.AppendLine(GameMessages.GetPlayerInfoMessage(player));
+                builder.AppendLine();
+            }
+
+            await _botClient.SendTextMessageAsync(lobby.TelegramMetadata.ChatId, builder.ToString());
         }
 
         private async Task DeleteMessagesForPlayers(IEnumerable<Player> players)

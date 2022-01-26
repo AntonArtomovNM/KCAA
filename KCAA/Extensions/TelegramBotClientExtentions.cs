@@ -10,6 +10,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
+using Telegram.Bot.Types.Enums;
 
 namespace KCAA.Extensions
 {
@@ -20,12 +21,12 @@ namespace KCAA.Extensions
             Message message;
             try
             {
-                message = await botClient.EditMessageTextAsync(chatId, messageId, text, replyMarkup: inlineKeyboard);
+                message = await botClient.EditMessageTextAsync(chatId, messageId, text, parseMode: ParseMode.Html, replyMarkup: inlineKeyboard);
             }
             catch
             {
                 await botClient.TryDeleteMessage(chatId, messageId);
-                message = await botClient.SendTextMessageAsync(chatId, text, replyMarkup: inlineKeyboard);
+                message = await botClient.SendTextMessageAsync(chatId, text, parseMode: ParseMode.Html, replyMarkup: inlineKeyboard);
             }
 
             return message;
@@ -45,7 +46,6 @@ namespace KCAA.Extensions
             var deleteTasks = messageIds.AsParallel().WithDegreeOfParallelism(3).Select(id => botClient.TryDeleteMessage(chatId, id));
             await Task.WhenAll(deleteTasks);
         }
-
 
         public static async Task DisplayBotCommands(this ITelegramBotClient botClient, long chatId)
         {
