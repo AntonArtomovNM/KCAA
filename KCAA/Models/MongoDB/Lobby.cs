@@ -49,8 +49,8 @@ namespace KCAA.Models.MongoDB
         {
             QuarterDeck = new List<string>();
 
-            // 4 (i) color types with 5 (j) cost types repeated 4 (k) times 
-            for (int k = 0; k < 4; k++)
+            // 4 (i) color types with 5 (j) cost types repeated 3 (k) times 
+            for (int k = 0; k < 3; k++)
             {
                 for (int i = 1; i < 5; i++)
                 {

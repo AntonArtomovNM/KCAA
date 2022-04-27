@@ -33,6 +33,8 @@ namespace KCAA.Helpers
 
         public static string KilledPublicMessage => "[{0}] <b>{1}</b> decided to kill <b>{2}</b>";
 
+        public static string SkippedTurnMessage => "<b>{0}'s {1}</b> was killed, no turn for them";
+
         public static string RobbedPersonalMessage => "You got robbed(\nNo coins for you";
 
         public static string RobbedPublicMessage => "[{0}] <b>{1}</b> decided to steal from <b>{2}</b>";
@@ -41,15 +43,17 @@ namespace KCAA.Helpers
 
         public static string ExchangedPublicMessage => "[{0}] <b>{1}</b> exchanged their hand with <b>{2}'s</b> hand";
 
-        public static string DestroyedPersonalMessage => "Your <b>{0}</b> have been destroyed by <b>{1}</b>";
+        public static string DestroyedPersonalMessage => "<b>{0}</b> have destroyed your <b>{1}</b>";
 
         public static string DestroyedPublicMessage => "[{0}] <b>{1}</b> have destroyed <b>{2}'s {3}</b>";
 
-        public static string QuarterBuiltMessage => "[{0}] <b>{1}</b> have built a <b>{2}</b>";
+        public static string QuarterBuiltMessage => "[{0}] <b>{1}</b> have built <b>{2}</b>";
+
+        public static string OneQuarterLeftMessage => "They need to build only <b>1 more</b> quarter to win";
 
         public static string CityBuiltPublicMessage => "Player <b>{0}</b> have completed their city{1}🎉\nNow their quarters cannot be destroyed";
 
-        public static string CityBuiltPersonalMessage => "You've got <b>{0} bonus points</b> for completing the city{1}";
+        public static string CityBuiltPersonalMessage => "You've got <b>{0} points</b> for completing the city{1}";
 
         public static string GameEndedMessage => "The game has ended";
 

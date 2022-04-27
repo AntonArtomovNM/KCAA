@@ -40,7 +40,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
         public async Task Handle(ITelegramBotClient botClient, Update update)
         {
-            base._botClient = botClient;
+            _botClient = botClient;
             var message = update.Message;
 
             Console.WriteLine($"Receive message type: {message.Type}\nChat id: {message.Chat.Id}\nUsername: {message.From.Username}\nUser id: {message.From.Id}\n{message.Text}");
@@ -354,20 +354,20 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 if (playerCharacters.Any())
                 {
                     MessageIds.Add((await _botClient.SendTextMessageAsync(chatId, $"Characters {GameSymbols.Character}:")).MessageId);
-                    MessageIds.AddRange(await _botClient.SendCardGroup(chatId, playerCharacters.Select(c => c.CharacterBase), $"Character {GameSymbols.Character}"));
+                    MessageIds.AddRange(await _botClient.SendCardGroup(chatId, playerCharacters.Select(c => c.CharacterBase), c => $"{c.DisplayName} (Character {GameSymbols.Character})"));
                 }
 
                 if (quarters.Any())
                 {
                     MessageIds.Add((await _botClient.SendTextMessageAsync(chatId, $"Quarters in hand {GameSymbols.Card}:")).MessageId);
-                    MessageIds.AddRange(await _botClient.SendCardGroup(chatId, quarters, $"In hand {GameSymbols.Card}"));
+                    MessageIds.AddRange(await _botClient.SendCardGroup(chatId, quarters, c => $"{c.DisplayName} {GameSymbols.GetColorByType(c.Type)} (In hand {GameSymbols.Card})"));
                 }
             }
 
             if (placedQuarters.Any())
             {
                 MessageIds.Add((await _botClient.SendTextMessageAsync(chatId, $"Placed quarters {GameSymbols.PlacedQuarter}:")).MessageId);
-                MessageIds.AddRange(await _botClient.SendCardGroup(chatId, placedQuarters, $"Placed {GameSymbols.PlacedQuarter}"));
+                MessageIds.AddRange(await _botClient.SendCardGroup(chatId, placedQuarters, c => $"{c.DisplayName} {GameSymbols.GetColorByType(c.Type)} (Placed {GameSymbols.PlacedQuarter})"));
             }
 
             //Send player stats
@@ -398,9 +398,9 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
         {
             var closebtn = InlineKeyboardButton.WithCallbackData(
                 GameSymbols.Close,
-                $"{GameAction.Close}_{lobbyId}_{messageType}");
+                $"{GameActionNames.Close}_{lobbyId}_{messageType}");
 
-            return (await _botClient.SendTextMessageAsync(chatId, GameAction.GetActionDisplayName(GameAction.Close), replyMarkup: new InlineKeyboardMarkup(closebtn))).MessageId;
+            return (await _botClient.SendTextMessageAsync(chatId, GameActionNames.GetActionDisplayName(GameActionNames.Close), replyMarkup: new InlineKeyboardMarkup(closebtn))).MessageId;
         }
 
         private async Task SendReplyKeyboardToPlayers(IEnumerable<Player> players)

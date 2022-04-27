@@ -3,7 +3,7 @@ using KCAA.Helpers;
 
 namespace KCAA.Models
 {
-    public static class GameAction
+    public static class GameActionNames
     {
         private static readonly Dictionary<string, string> _displayNames;
 
@@ -33,7 +33,7 @@ namespace KCAA.Models
 
         public const string DestroyQuarters = "destroy";
 
-        static GameAction()
+        static GameActionNames()
         {
             _displayNames = SetNames();
         }

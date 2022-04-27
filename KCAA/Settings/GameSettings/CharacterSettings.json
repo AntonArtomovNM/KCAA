@@ -43,7 +43,7 @@
     "DisplayName": "Bishop",
     "Type": 2,
     "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deyoi9h-b5de7725-3edf-4292-946d-c22030fa0a26.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5b2k5aC1iNWRlNzcyNS0zZWRmLTQyOTItOTQ2ZC1jMjIwMzBmYTBhMjYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.pPtKNnsITprVsnXBItLvjY8s4V76Fc_PRgjUh27wRfI",
-    "Description": "You receive one gold for each religious (blue) quarter in your city. Military (red) characters cannot use its ability on your quarters.",
+    "Description": "You receive one gold for each religious (blue) quarter in your city. Military (red) characters cannot use their abilities on your quarters.",
     "Order": 5,
     "BuildingCapacity": 1
   },
