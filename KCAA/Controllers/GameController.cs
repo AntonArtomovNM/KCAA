@@ -293,10 +293,10 @@ namespace KCAA.Controllers
 
             if (character.CharacterBase.Type != ColorType.None)
             {
-                player.GameActions.Add(GameAction.TakeRevenue);
+                player.GameActions.Add(GameActionNames.TakeRevenue);
             }
 
-            player.GameActions.Add(GameAction.BuildQuarter);
+            player.GameActions.Add(GameActionNames.BuildQuarter);
 
             await _playerProvider.UpdatePlayer(player, p => p.GameActions);
         }

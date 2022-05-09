@@ -41,6 +41,7 @@ namespace KCAA.Extensions
             }
             catch { }
         }
+
         public static async Task TryDeleteMessages(this ITelegramBotClient botClient, long chatId, IEnumerable<int> messageIds)
         {
             var deleteTasks = messageIds.AsParallel().WithDegreeOfParallelism(3).Select(id => botClient.TryDeleteMessage(chatId, id));
@@ -58,7 +59,7 @@ namespace KCAA.Extensions
         public static async Task<Message> SendQuarter(this ITelegramBotClient botClient, long chatId, Quarter quarter, InlineKeyboardMarkup inlineKeyboard = null)
         {
             var tgmessage = $@"{GetQuarterTitleByColor(quarter.DisplayName, quarter.Type)}
-Cost: {GetQuarterCost(quarter.Cost)}
+Cost: {GameSymbols.GetCostInCoins(quarter.Cost)}
 {quarter.Description}";
 
             var photo = new InputOnlineFile(quarter.PhotoUri);
@@ -75,7 +76,7 @@ Cost: {GetQuarterCost(quarter.Cost)}
             return await SendMessageWithPhoto(botClient, chatId, inlineKeyboard, photo, tgmessage);
         }
 
-        public static async Task<IEnumerable<int>> SendCardGroup(this ITelegramBotClient botClient, long chatId, IEnumerable<CardObject> cards, string captionExtention = "")
+        public static async Task<IEnumerable<int>> SendCardGroup(this ITelegramBotClient botClient, long chatId, IEnumerable<CardObject> cards, Func<CardObject,string> messageFormatter = null)
         {
             if (cards == null || !cards.Any()) 
             {
@@ -84,8 +85,8 @@ Cost: {GetQuarterCost(quarter.Cost)}
 
             var mediaGroup = cards.Select(c => new InputMediaPhoto(new InputMedia(c.PhotoUri))
             {
-                Caption = $"{c.DisplayName} ({captionExtention})"
-            }) ;
+                Caption = messageFormatter(c)
+            });
 
             return (await botClient.SendMediaGroupAsync(chatId, mediaGroup)).Select(m => m.MessageId);
         }
@@ -117,11 +118,6 @@ Cost: {GetQuarterCost(quarter.Cost)}
                 ColorType.Purple => $"🟪✨ {title} ✨🟪",
                 _ => $"⬜️👁‍🗨 {title} 👁‍🗨⬜️"
             };
-        }
-
-        private static string GetQuarterCost(int cost)
-        {
-            return string.Concat(Enumerable.Repeat(GameSymbols.Coin, cost));
         }
 
         private static string GetCharacterTitleByColor(string title, ColorType type)

@@ -73,8 +73,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                     new()
                     {
                         InlineKeyboardButton.WithCallbackData(
-                            $"{GameAction.GetActionDisplayName(GameAction.ChooseCharacter)} {character.CharacterBase.DisplayName}!", 
-                            $"{GameAction.ChooseCharacter}_{lobbyId}_{character.Name}")
+                            $"{GameActionNames.GetActionDisplayName(GameActionNames.ChooseCharacter)} {character.CharacterBase.DisplayName}!", 
+                            $"{GameActionNames.ChooseCharacter}_{lobbyId}_{character.Name}")
                     }
                 };
 
@@ -122,22 +122,23 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 return;
             }
 
-            var content = await response.Content.ReadAsAsync<PlayerTurnDto>();
-            var player = await _playerProvider.GetPlayerById(content.PlayerId);
+            var turnDto = await response.Content.ReadAsAsync<PlayerTurnDto>();
+            var character = turnDto.Character;
+            var player = await _playerProvider.GetPlayerById(turnDto.PlayerId);
             var lobby = await _lobbyProvider.GetLobbyById(lobbyId);
             var tgMetadata = player.TelegramMetadata;
 
             await DisplayPlayersData(lobby);
 
-            if (content.Character.Effect != CharacterEffect.Killed)
+            if (character.Effect != CharacterEffect.Killed)
             {
                 await _botClient.SendTextMessageAsync(
                     lobby.TelegramMetadata.ChatId,
-                    string.Format(GameMessages.PlayerTurnPublicMessage, player.Name, content.Character.CharacterBase.DisplayName),
+                    string.Format(GameMessages.PlayerTurnPublicMessage, player.Name, character.CharacterBase.DisplayName),
                     parseMode: ParseMode.Html);
             }
 
-            if (content.Character.CharacterBase.Type == ColorType.Yellow)
+            if (character.CharacterBase.Type == ColorType.Yellow)
             {
                 await _botClient.SendTextMessageAsync(
                     lobby.TelegramMetadata.ChatId,
@@ -148,22 +149,27 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _botClient.TryDeleteMessage(tgMetadata.ChatId, tgMetadata.ActionPerformedId);
             await _botClient.TryDeleteMessage(tgMetadata.ChatId, tgMetadata.ActionErrorId);
 
-            switch (content.Character.Effect)
+            switch (character.Effect)
             {
                 case CharacterEffect.Killed:
                     await SendActionPerformedMessage(player, GameMessages.KilledPersonalMessage);
+                    await _botClient.SendTextMessageAsync(
+                        lobby.TelegramMetadata.ChatId, 
+                        string.Format(GameMessages.SkippedTurnMessage, player.Name, character.CharacterBase.DisplayName),
+                        parseMode: ParseMode.Html);
+
                     await NextPlayerTurn(lobbyId);
                     return;
 
                 case CharacterEffect.Robbed:
-                    await SendActionPerformedMessage(player, GameMessages.RobbedPersonalMessage);
+                    await SendActionPerformedMessage(player, string.Format(GameMessages.RobbedPersonalMessage));
                     break;
 
                 default:
                     break;
             }
 
-            await SendChooseResourses(lobbyId, player, content.Character.CharacterBase);
+            await SendChooseResourses(lobbyId, player, turnDto.Character.CharacterBase);
         }
 
         protected async Task EndGame(string lobbyId)
@@ -213,7 +219,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             await _botClient.SendTextMessageAsync(
                 lobby.TelegramMetadata.ChatId, 
-                $"<b>{names}</b> {GameMessages.CharactersRemovedMessage}", 
+                $"[{GameSymbols.Character}] <b>{names}</b> {GameMessages.CharactersRemovedMessage}", 
                 parseMode: ParseMode.Html);
         }
 
@@ -250,10 +256,10 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 {
                     InlineKeyboardButton.WithCallbackData(
                         $"{coinsString}{additionalResourses}",
-                        $"{GameAction.TakeResources}_{lobbyId}_{character.Name}_{ResourceType.Coin}_{coinsAmount}"),
+                        $"{GameActionNames.TakeResources}_{lobbyId}_{character.Name}_{ResourceType.Coin}_{coinsAmount}"),
                     InlineKeyboardButton.WithCallbackData(
                         $"{cardsString}{additionalResourses}",
-                        $"{GameAction.TakeResources}_{lobbyId}_{character.Name}_{ResourceType.Card}_{cardsAmount}"),
+                        $"{GameActionNames.TakeResources}_{lobbyId}_{character.Name}_{ResourceType.Card}_{cardsAmount}"),
                 }
             };
 
