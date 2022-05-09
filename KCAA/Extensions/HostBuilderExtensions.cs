@@ -8,7 +8,7 @@ namespace KCAA.Extensions
     {
         public static IHostBuilder UseConfiguredSerilog(this IHostBuilder hostBuilder)
         {
-            hostBuilder.UseSerilog((context, services, configuration) => configuration
+            hostBuilder.UseSerilog((_, _, configuration) => configuration
                 .WriteTo.Console()
                 //.WriteTo.AzureBlobStorage(connectionString, LogEventLevel.Warning, )
                 );
