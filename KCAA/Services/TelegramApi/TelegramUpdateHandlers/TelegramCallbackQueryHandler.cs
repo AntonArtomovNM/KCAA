@@ -11,6 +11,7 @@ using KCAA.Models.MongoDB;
 using KCAA.Models.Quarters;
 using KCAA.Services.Interfaces;
 using KCAA.Settings.GameSettings;
+using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -25,7 +26,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
         public TelegramCallbackQueryHandler(
             ILobbyProvider lobbyProvider,
             IPlayerProvider playerProvider,
-            GameSettings gameSettings, 
+            GameSettings gameSettings,
             ICardFactory<Quarter> quarterFactory)
             : base(playerProvider, lobbyProvider, gameSettings)
         {
@@ -38,7 +39,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var callbackQuery = update.CallbackQuery;
             var chatId = callbackQuery.Message.Chat.Id;
 
-            Console.WriteLine($"Receive callback query\nChat id: {chatId}\nUsername: {callbackQuery.From.Username}\nUser id: {callbackQuery.From.Id}\n{callbackQuery.Data}");
+            Log.Information($"[Debug] Receive callback query | Chat id: {chatId} | Username: {callbackQuery.From.Username} | User id: {callbackQuery.From.Id} | Data: {callbackQuery.Data}");
 
             var data = callbackQuery.Data.Split('_');
 
@@ -51,7 +52,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{GameMessages.LobbyOrPlayerNotFoundError}: {ex}");
+                Log.Error(ex, GameMessages.LobbyOrPlayerNotFoundError);
                 return;
             }
 
@@ -60,13 +61,13 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var command = data.First();
             var characterName = data.ElementAtOrDefault(2);
-            
+
 
             var action = command switch
             {
                 "ga" => HandleChooseGameAction(callbackQuery.Message.Chat, player, lobby, characterName, data[3], data.ElementAtOrDefault(4)),
                 GameActionNames.ChooseCharacter => HandleChooseCharacter(chatId, player, lobby, characterName),
-                GameActionNames.TakeResources =>  HandleTakeResources(chatId, player, lobby, characterName, data[3], data[4]),
+                GameActionNames.TakeResources => HandleTakeResources(chatId, player, lobby, characterName, data[3], data[4]),
                 GameActionNames.EndTurn => HandleEndTurn(chatId, player, lobby, characterName),
                 GameActionNames.Close => HandleCloseAction(chatId, data[2]),
                 GameActionNames.Cancel => HandleCancelAction(chatId, player, lobby, characterName),
@@ -86,7 +87,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var character = lobby.CharacterDeck.Find(x => x.Name == characterName);
 
             player.CharacterHand.Add(characterName);
-            
+
             character.Status = CharacterStatus.Selected;
 
             await _botClient.TryDeleteMessages(chatId, player.TelegramMetadata.CardMessageIds);
@@ -154,7 +155,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 GameActionNames.ExchangeHands => SendPlayerKeyboard(chatId, lobby, player, characterName, gameAction),
                 GameActionNames.DiscardQuarters => SendDiscardQuarterKeyboard(player, characterName, gameAction),
                 GameActionNames.DestroyQuarters => SendPlayerKeyboard(chatId, lobby, player, characterName, gameAction),
-                _ => Task.Run(() => Console.WriteLine($"Game action {gameAction} was not found"))
+                _ => Task.Run(() => Log.Warning($"Game action {gameAction} was not found"))
             };
 
             try
@@ -177,7 +178,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             {
                 var tgMessage = await _botClient.PutMessage(
                     chatId,
-                    player.TelegramMetadata.ActionErrorId, 
+                    player.TelegramMetadata.ActionErrorId,
                     string.Format(GameMessages.AlreadyPlacedQuarterError, placedQuarter.QuarterBase.DisplayName));
 
                 player.TelegramMetadata.ActionErrorId = tgMessage.MessageId;
@@ -259,7 +260,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             string message = string.Empty;
             string symbol = string.Empty;
 
-            switch(gameAction)
+            switch (gameAction)
             {
                 case GameActionNames.Kill:
                     effect = CharacterEffect.Killed;
@@ -373,8 +374,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await SendActionPerformedMessage(target, string.Format(GameMessages.ExchangedPersonalMessage, player.Name));
 
             await _botClient.SendTextMessageAsync(
-                lobby.TelegramMetadata.ChatId, 
-                string.Format(GameMessages.ExchangedPublicMessage, GameSymbols.Exchange, player.Name, target.Name), 
+                lobby.TelegramMetadata.ChatId,
+                string.Format(GameMessages.ExchangedPublicMessage, GameSymbols.Exchange, player.Name, target.Name),
                 parseMode: ParseMode.Html);
 
             await _playerProvider.UpdatePlayer(target, p => p.QuarterHand);
@@ -408,11 +409,11 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var cancelButtonId = player.TelegramMetadata.CardMessageIds.Last();
             var doneButton = InlineKeyboardButton.WithCallbackData(GameSymbols.Done, $"{GameActionNames.Done}_{player.LobbyId}_{characterName}_{gameAction}");
-            
+
             var doneButtonId = (await _botClient.PutMessage(
-                chatId, 
-                cancelButtonId, 
-                GameActionNames.GetActionDisplayName(GameActionNames.Done), 
+                chatId,
+                cancelButtonId,
+                GameActionNames.GetActionDisplayName(GameActionNames.Done),
                 new InlineKeyboardMarkup(doneButton))).MessageId;
 
             player.TelegramMetadata.CardMessageIds.Remove(cancelButtonId);
@@ -462,7 +463,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await SendActionPerformedMessage(target, string.Format(GameMessages.DestroyedPersonalMessage, player.Name, quarterStats));
 
             await _botClient.SendTextMessageAsync(
-                lobby.TelegramMetadata.ChatId, 
+                lobby.TelegramMetadata.ChatId,
                 string.Format(GameMessages.DestroyedPublicMessage, GameSymbols.Destroy, player.Name, target.Name, quarterStats),
                 parseMode: ParseMode.Html);
 
@@ -530,7 +531,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             player.TelegramMetadata.CardMessageIds.Clear();
 
-            foreach(var character in characterOptions)
+            foreach (var character in characterOptions)
             {
                 var btnAction = new List<List<InlineKeyboardButton>>
                 {
@@ -553,7 +554,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _botClient.TryDeleteMessage(chatId, player.TelegramMetadata.GameActionKeyboardId);
 
             var players = (await _playerProvider.GetPlayersByLobbyId(player.LobbyId, loadPlacedQuarters: true)).Where(p => p.Id != player.Id).ToList();
-            
+
             var characters = lobby.CharacterDeck;
             var character = characters.FirstOrDefault(c => c.Name == characterName).CharacterBase;
 
@@ -587,10 +588,12 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 builder.Append(p.Name + " ");
                 builder.AppendLine(GameMessages.GetPlayerCharactersInfo(playerCharacters, p, loadNames: false));
                 builder.AppendLine(GameMessages.GetPlayerInfoMessage(p));
-                Console.WriteLine($"{gameAction}_{player.LobbyId}_{characterName}_{p.Id}");
+
+                Log.Information($"[Debug] {gameAction}_{player.LobbyId}_{characterName}_{p.Id}");
+
                 var button = InlineKeyboardButton.WithCallbackData(GameActionNames.GetActionDisplayName(gameAction), $"{gameAction}_{player.LobbyId}_{characterName}_{p.TelegramMetadata.ChatId}");
 
-                return await _botClient.SendTextMessageAsync(chatId, builder.ToString(), parseMode: ParseMode.Html,replyMarkup: new InlineKeyboardMarkup(button));
+                return await _botClient.SendTextMessageAsync(chatId, builder.ToString(), parseMode: ParseMode.Html, replyMarkup: new InlineKeyboardMarkup(button));
             });
 
             var messageIds = (await Task.WhenAll(sendPlayersTasks)).Select(m => m.MessageId);
@@ -622,7 +625,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{GameMessages.LobbyOrPlayerNotFoundError}: {ex}");
+                Log.Error(ex, GameMessages.LobbyOrPlayerNotFoundError);
                 return;
             }
 

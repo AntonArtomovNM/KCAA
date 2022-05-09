@@ -16,6 +16,7 @@ using System.Text;
 using System.Net.Http;
 using KCAA.Helpers;
 using KCAA.Models;
+using Serilog;
 
 namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 {
@@ -27,12 +28,12 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
         public object GameActions { get; private set; }
 
         public TelegramMessageHandler(
-            ILobbyProvider lobbyProvider, 
-            IPlayerProvider playerProvider, 
+            ILobbyProvider lobbyProvider,
+            IPlayerProvider playerProvider,
             TelegramSettings telegramSettings,
             GameSettings gameSettings,
-            ICardFactory<Quarter> quarterFactory) 
-            : base (playerProvider, lobbyProvider, gameSettings)
+            ICardFactory<Quarter> quarterFactory)
+            : base(playerProvider, lobbyProvider, gameSettings)
         {
             _telegramSettings = telegramSettings;
             _quarterFactory = quarterFactory;
@@ -43,7 +44,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             _botClient = botClient;
             var message = update.Message;
 
-            Console.WriteLine($"Receive message type: {message.Type}\nChat id: {message.Chat.Id}\nUsername: {message.From.Username}\nUser id: {message.From.Id}\n{message.Text}");
+            Log.Information($"[Debug] Receive message type: {message.Type} | Chat id: {message.Chat.Id} | Username: {message.From.Username} | User id: {message.From.Id} | Data: {message.Text}");
 
             if (message.Type != MessageType.Text)
             {
@@ -376,7 +377,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var builder = new StringBuilder();
 
-            if(!loadSecretData)
+            if (!loadSecretData)
             {
                 builder.Append(player.Name + " ");
             }
@@ -419,8 +420,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 .WithDegreeOfParallelism(3)
                 .Select(p => _botClient.SendTextMessageAsync(
                     p.TelegramMetadata.ChatId,
-                    GameMessages.ReplyButtonsMessage, 
-                    parseMode: ParseMode.Html, 
+                    GameMessages.ReplyButtonsMessage,
+                    parseMode: ParseMode.Html,
                     replyMarkup: replyKeyboardMarkup));
 
             await Task.WhenAll(sendTasks);
