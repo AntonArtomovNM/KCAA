@@ -11,6 +11,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
 using Telegram.Bot.Types.Enums;
+using Serilog;
 
 namespace KCAA.Extensions
 {
@@ -101,7 +102,7 @@ Cost: {GameSymbols.GetCostInCoins(quarter.Cost)}
             catch (Exception ex)
             {
                 resultMessage = await botClient.SendTextMessageAsync(chatId, tgmessage, replyMarkup: inlineKeyboard);
-                Console.WriteLine($"An error occurred during sending photo: {ex}");
+                Log.Error(ex, "An error occurred during sending photo");
             }
 
             return resultMessage;

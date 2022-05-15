@@ -5,6 +5,7 @@ using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using KCAA.Services.Interfaces;
+using Serilog;
 
 namespace KCAA.Services.TelegramApi
 {
@@ -36,10 +37,10 @@ namespace KCAA.Services.TelegramApi
             var ErrorMessage = exception switch
             {
                 ApiRequestException apiRequestException => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
-                _ => exception.ToString()
+                _ => "An error occured while handling a telegram update"
             };
 
-            Console.WriteLine(ErrorMessage);
+            Log.Error(exception, ErrorMessage);
             return Task.CompletedTask;
         }
     }

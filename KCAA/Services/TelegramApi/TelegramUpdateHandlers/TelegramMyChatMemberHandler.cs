@@ -5,6 +5,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using KCAA.Services.Interfaces;
+using Serilog;
 
 namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 {
@@ -21,7 +22,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
         {
             var myChatMember = update.MyChatMember;
 
-            Console.WriteLine($"ChatId: {myChatMember.Chat.Id}\nOld member: {myChatMember.OldChatMember.Status}\nNew member: {myChatMember.NewChatMember.Status}");
+            Log.Information($"[Debug] ChatId: {myChatMember.Chat.Id} | Old member: {myChatMember.OldChatMember.Status} | New member: {myChatMember.NewChatMember.Status}");
 
             var chatId = myChatMember.Chat.Id;
 

@@ -67,7 +67,8 @@ namespace KCAA.Helpers
 
         public static string LobbyAlreadyJoinedError => "You've already joined a Citadels lobby";
 
-        public static string LobbyNotFoundError => "This group doesn`t have an active lobby";
+        public static string LobbyNotFoundError => @"This group doesn't have an active lobby
+Use /create_lobby to make one";
 
         public static string LobbyIsFullError => "Sorry, but lobby is already full";
 
@@ -124,7 +125,7 @@ When a city has <b>7 quarters</b>, the game ends after the current round, and yo
   • <b>2 points</b> for any other player who completed their city.";
 
         public static string GetPlayerCharactersInfo(IEnumerable<Character> characters, Player player, bool loadNames = true)
-        { 
+        {
             var builder = new StringBuilder();
 
             if (player.HasCrown)
@@ -171,7 +172,7 @@ When a city has <b>7 quarters</b>, the game ends after the current round, and yo
                 return loadName ? character.CharacterBase.DisplayName : GameSymbols.UnknowCharacter;
             }
 
-            var displayName = character.Status == CharacterStatus.Playing ? 
+            var displayName = character.Status == CharacterStatus.Playing ?
                 $"<u>{character.CharacterBase.DisplayName}</u>" :
                 $"<s>{character.CharacterBase.DisplayName}</s>";
 

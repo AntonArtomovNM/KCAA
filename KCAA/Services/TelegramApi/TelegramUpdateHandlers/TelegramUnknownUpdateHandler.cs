@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using KCAA.Services.Interfaces;
+using Serilog;
 
 namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 {
@@ -10,7 +11,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
     {
         public Task Handle(ITelegramBotClient botClient, Update update)
         {
-            Console.WriteLine($"Unknown update type: {update.Type}");
+            Log.Warning($"Unknown update type: {update.Type}");
             return Task.CompletedTask;
         }
     }

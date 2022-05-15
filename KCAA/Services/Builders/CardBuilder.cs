@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using KCAA.Models;
 using KCAA.Services.Interfaces;
+using Serilog;
 
 namespace KCAA.Services.Builders
 {
@@ -23,7 +24,7 @@ namespace KCAA.Services.Builders
             }
             catch(Exception ex)
             {
-                Console.WriteLine($"[Error] An error occurred during {typeof(T).Name} card deserialization: {ex}");
+                Log.Error(ex, $"An error occurred during {typeof(T).Name} card deserialization");
 
                 cards = new List<T>();
             }

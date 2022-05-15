@@ -3,7 +3,6 @@ using KCAA.Models;
 using KCAA.Models.MongoDB;
 using KCAA.Services.Interfaces;
 using KCAA.Settings.GameSettings;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -15,6 +14,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
 using System.Text;
 using Telegram.Bot.Types.Enums;
+using Serilog;
 
 namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 {
@@ -47,7 +47,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             {
                 if (!response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine($"Error occurred during character selection: {await response.Content.ReadAsStringAsync()}");
+                    Log.Error(await response.Content.ReadAsStringAsync(), "Error occurred during character selection");
                     return;
                 }
 
@@ -97,7 +97,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             if (!response.IsSuccessStatusCode)
             {
-                Console.WriteLine($"Error occurred during defining player's turn: {await response.Content.ReadAsStringAsync()}");
+                Log.Error(await response.Content.ReadAsStringAsync(), "Error occurred during defining player's turn");
 
                 return;
             }
