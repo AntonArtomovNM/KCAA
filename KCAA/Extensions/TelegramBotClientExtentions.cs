@@ -68,11 +68,11 @@ Cost: {GameSymbols.GetCostInCoins(quarter.Cost)}
             return await SendMessageWithPhoto(botClient, chatId, inlineKeyboard, photo, tgmessage);
         }
 
-        public static async Task<Message> SendCharacter(this ITelegramBotClient botClient, long chatId, CharacterBase character, string text, InlineKeyboardMarkup inlineKeyboard = null)
+        public static async Task<Message> SendCharacter(this ITelegramBotClient botClient, long chatId, CharacterBase character, string text, InlineKeyboardMarkup inlineKeyboard = null, bool usePhotoWithDescription = false)
         {
             var tgmessage = $@"{GetCharacterTitleByColor(character.DisplayName, character.Type)}
 {text}";
-            var photo = new InputOnlineFile(character.PhotoUri);
+            var photo = new InputOnlineFile(usePhotoWithDescription ? character.PhotoWithDescriptionUri : character.PhotoUri);
 
             return await SendMessageWithPhoto(botClient, chatId, inlineKeyboard, photo, tgmessage);
         }

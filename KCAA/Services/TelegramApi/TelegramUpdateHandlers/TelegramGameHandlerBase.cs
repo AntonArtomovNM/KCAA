@@ -57,7 +57,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var playerId = await response.Content.ReadAsStringAsync();
 
-            var player = await _playerProvider.GetPlayerById(playerId);
+            var player = await _playerProvider.GetPlayerById(playerId, loadPlacedQuarters: true);
             var lobby = await _lobbyProvider.GetLobbyById(player.LobbyId);
             var tgMetadata = player.TelegramMetadata;
 
@@ -68,20 +68,34 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             foreach (var character in lobby.CharacterDeck.Where(c => c.Status == CharacterStatus.Awailable)) 
             {
+                var characterBase = character.CharacterBase;
+                var characterDescription = characterBase.Description;
+
+                if (characterBase.Type != ColorType.None)
+                {
+                    var rightTypeQuartersCount = player.PlacedQuarters.Where(q => q.QuarterBase.Type == characterBase.Type).Count();
+                    characterDescription = string.Format(characterDescription, rightTypeQuartersCount);
+                } 
+                else if (characterBase.Name == CharacterNames.Beggar)
+                {
+                    var rightCostQuartersCount = player.PlacedQuarters.Where(q => q.QuarterBase.Cost == 1).Count();
+                    characterDescription = string.Format(characterDescription, rightCostQuartersCount);
+                }
+
                 var buttons = new List<List<InlineKeyboardButton>>
                 {
                     new()
                     {
                         InlineKeyboardButton.WithCallbackData(
-                            $"{GameActionNames.GetActionDisplayName(GameActionNames.ChooseCharacter)} {character.CharacterBase.DisplayName}!", 
+                            $"{GameActionNames.GetActionDisplayName(GameActionNames.ChooseCharacter)} {characterBase.DisplayName}!", 
                             $"{GameActionNames.ChooseCharacter}_{lobbyId}_{character.Name}")
                     }
                 };
 
                 var responseMessage = await _botClient.SendCharacter(
                     tgMetadata.ChatId,
-                    character.CharacterBase,
-                    character.CharacterBase.Description,
+                    characterBase,
+                    characterDescription,
                     new InlineKeyboardMarkup(buttons));
 
                 player.TelegramMetadata.CardMessageIds.Add(responseMessage.MessageId);
@@ -267,7 +281,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 player.TelegramMetadata.ChatId,
                 character,
                 tgMessage,
-                new InlineKeyboardMarkup(buttons));
+                new InlineKeyboardMarkup(buttons),
+                usePhotoWithDescription: true);
 
             player.TelegramMetadata.GameActionKeyboardId = responseMessage.MessageId;
 
@@ -276,7 +291,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
         private async Task DisplayPlayersData(Lobby lobby)
         {
-            var players = (await _playerProvider.GetPlayersByLobbyId(lobby.Id)).OrderBy(p => p.CSOrder);
+            var players = (await _playerProvider.GetPlayersByLobbyId(lobby.Id, loadPlacedQuarters: true)).OrderBy(p => p.CSOrder);
 
             var builder = new StringBuilder();
 
@@ -287,6 +302,19 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 builder.Append(player.Name + " ");
                 builder.AppendLine(GameMessages.GetPlayerCharactersInfo(characters, player, loadNames: false));
                 builder.AppendLine(GameMessages.GetPlayerInfoMessage(player));
+
+                foreach (var quarter in player.PlacedQuarters)
+                {
+                    builder.Append(GameMessages.GetQuarterInfo(quarter.QuarterBase));
+                    
+                    if (quarter.BonusScore > 0)
+                    {
+                        builder.Append($" +{quarter.BonusScore}{GameSymbols.Score}");
+                    }
+
+                    builder.AppendLine();
+                }
+
                 builder.AppendLine();
             }
 
@@ -306,7 +334,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var builder = new StringBuilder();
 
-            builder.AppendLine(string.Format(GameMessages.WinnerMessage, winner.Name));
+            builder.AppendLine(string.Format(GameMessages.WinnerPublicMessage, winner.Name));
             builder.AppendLine();
 
             var place = 1;
@@ -317,7 +345,10 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 builder.AppendLine();
             }
 
+            // send results to the group
             await _botClient.SendTextMessageAsync(lobby.TelegramMetadata.ChatId, builder.ToString());
+            // send results to the winner
+            await _botClient.SendTextMessageAsync(winner.TelegramMetadata.ChatId, GameMessages.WinnerPersonalMessage);
         }
 
         private async Task DeleteMessagesForPlayers(IEnumerable<Player> players)

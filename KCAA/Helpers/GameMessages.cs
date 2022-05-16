@@ -1,4 +1,5 @@
 ﻿using KCAA.Models.MongoDB;
+using KCAA.Models.Quarters;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,10 @@ namespace KCAA.Helpers
 
         public static string PlayerTurnPublicMessage => "<b>{0}'s</b> turn as <b>{1}</b>";
 
+        public static string CardDrawnMessage => "You've drawn:";
+
+        public static string EmptyHandMessage => "<i>Empty hand</i>";
+
         public static string CrownMessage => "[{0}] <b>{1}</b> have received the crown\nThey will be the first to select a character next time";
 
         public static string KilledPersonalMessage => "You got killed(\nNo turn for you";
@@ -39,7 +44,7 @@ namespace KCAA.Helpers
 
         public static string RobbedPublicMessage => "[{0}] <b>{1}</b> decided to steal from <b>{2}</b>";
 
-        public static string ExchangedPersonalMessage => "Your cards in hand have been exchanged with <b>{0}'s</b> hand";
+        public static string ExchangedPersonalMessage => "Your cards in hand have been exchanged with <b>{0}'s</b> hand:";
 
         public static string ExchangedPublicMessage => "[{0}] <b>{1}</b> exchanged their hand with <b>{2}'s</b> hand";
 
@@ -57,7 +62,9 @@ namespace KCAA.Helpers
 
         public static string GameEndedMessage => "The game has ended";
 
-        public static string WinnerMessage => "💃🏻{0} have won!🕺\n\nThe scoreboard🏆:";
+        public static string WinnerPublicMessage => "💃🏻{0} have won!🕺\n\nThe scoreboard🏆:";
+
+        public static string WinnerPersonalMessage => "🎉Congrats! You have won!🎉";
 
         public static string FarewellMessage => "Thanks for playing!";
 
@@ -88,9 +95,9 @@ Use /create_lobby to make one";
 
         public static string LobbyOrPlayerNotFoundError => "Error occurred during player or lobby retrieval";
 
-        public static string NoQuartersToAffordError => "You`re too poor to afford any quarter from hand";
+        public static string CannotAffordQuarterError => "⛔ You cannot afford this quarter ⛔";
 
-        public static string AlreadyPlacedQuarterError => "You've already built a {0}";
+        public static string AlreadyPlacedQuarterError => "⛔ You've already built this quarter ⛔";
 
         public static string NoPlayersForActionError => "There is no players suitable for this action";
 
@@ -124,8 +131,13 @@ When a city has <b>7 quarters</b>, the game ends after the current round, and yo
   • <b>4 points</b> for the first player who completed their city.
   • <b>2 points</b> for any other player who completed their city.";
 
-        public static string GetPlayerCharactersInfo(IEnumerable<Character> characters, Player player, bool loadNames = true)
+        public static string GetQuarterInfo(Quarter quarterData)
         {
+            return $"{GameSymbols.Tab}{GameSymbols.GetColorByType(quarterData.Type)} {quarterData.DisplayName} {GameSymbols.GetCostInCoins(quarterData.Cost)}";
+        }
+
+        public static string GetPlayerCharactersInfo(IEnumerable<Character> characters, Player player, bool loadNames = true)
+        { 
             var builder = new StringBuilder();
 
             if (player.HasCrown)
@@ -172,7 +184,7 @@ When a city has <b>7 quarters</b>, the game ends after the current round, and yo
                 return loadName ? character.CharacterBase.DisplayName : GameSymbols.UnknowCharacter;
             }
 
-            var displayName = character.Status == CharacterStatus.Playing ?
+            var displayName = character.Status == CharacterStatus.Playing ? 
                 $"<u>{character.CharacterBase.DisplayName}</u>" :
                 $"<s>{character.CharacterBase.DisplayName}</s>";
 

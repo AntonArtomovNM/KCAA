@@ -19,5 +19,7 @@ namespace KCAA.Models.MongoDB
         public int ActionErrorId { get; set; }
 
         public int ActionPerformedId { get; set; }
+
+        public string ExhangedQuarters { get; set; }
     }
 }
