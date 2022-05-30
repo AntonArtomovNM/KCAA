@@ -25,5 +25,7 @@
         public int QuartersToWin { get; set; }
 
         public int FullBuildBonus { get; set; }
+
+        public int AllTypesBonus { get; set; }
     }
 }

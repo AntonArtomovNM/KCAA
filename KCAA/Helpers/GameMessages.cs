@@ -12,7 +12,7 @@ namespace KCAA.Helpers
  • Use /rules to see basic rules of the game
  • Use /help to see all of the bot commands";
 
-        public static string LobbyRegistrationMessage => "BOL`SHIE GORODA";
+        public static string LobbyRegistrationMessage => "Well met, hero!";
 
         public static string LobbyJoinedMessage => "You've joined the lobby in <b>{0}</b>";
 
@@ -60,6 +60,10 @@ namespace KCAA.Helpers
 
         public static string CityBuiltPersonalMessage => "You've got <b>{0} points</b> for completing the city{1}";
 
+        public static string AllTypesBonusMessage => "You've got <b>{0} points</b> for having at least 1 quarter of each type";
+
+        public static string SpecialQuarterBonusMessage => "You've got <b>{0} points</b> from your {1}";
+
         public static string GameEndedMessage => "The game has ended";
 
         public static string WinnerPublicMessage => "💃🏻{0} have won!🕺\n\nThe scoreboard🏆:";
@@ -99,6 +103,8 @@ Use /create_lobby to make one";
 
         public static string AlreadyPlacedQuarterError => "⛔ You've already built this quarter ⛔";
 
+        public static string SecretHideoutBuildError => "⛔ You cannot build Secret Hideout ⛔";
+
         public static string NoPlayersForActionError => "There is no players suitable for this action";
 
         public static string PlayerBorders => "=========================";
@@ -122,18 +128,20 @@ You may use each of your character’s and special card's abilities according to
 🟦 Religious
 🟩 Trade
 🟥 Military
-🟪 Special [WIP]
+🟪 Special
 
 <u>Scoring</u>
 
 When a city has <b>7 quarters</b>, the game ends after the current round, and you score points:
   • <b>1 point</b> per coin on your placed quarters.
+  • <b>3 points</b> for having at least 1 quarter of each type.
   • <b>4 points</b> for the first player who completed their city.
   • <b>2 points</b> for any other player who completed their city.";
 
         public static string GetQuarterInfo(Quarter quarterData)
         {
-            return $"{GameSymbols.Tab}{GameSymbols.GetColorByType(quarterData.Type)} {quarterData.DisplayName} {GameSymbols.GetCostInCoins(quarterData.Cost)}";
+            return $@"{GameSymbols.Tab}{GameSymbols.GetColorByType(quarterData.Type)} {quarterData.DisplayName}{(quarterData.BonusScore > 0 ? $" [+{quarterData.BonusScore}{GameSymbols.Score}]" : "")}
+{GameSymbols.GetCostInCoins(quarterData.Cost)}";
         }
 
         public static string GetPlayerCharactersInfo(IEnumerable<Character> characters, Player player, bool loadNames = true)

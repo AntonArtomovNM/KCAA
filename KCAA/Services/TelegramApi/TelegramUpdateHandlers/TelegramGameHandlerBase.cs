@@ -15,6 +15,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using System.Text;
 using Telegram.Bot.Types.Enums;
 using Serilog;
+using KCAA.Models.Quarters;
 
 namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 {
@@ -192,6 +193,21 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var players = await _playerProvider.GetPlayersByLobbyId(lobbyId);
 
             var chatId = lobby.TelegramMetadata.ChatId;
+
+            foreach(var player in players)
+            {
+                var secretHideout = player.PlacedQuarters.Find(q => q.Name == QuarterNames.SecretHideout);
+
+                if (secretHideout is not null)
+                {
+                    var secretHideoutBonus = secretHideout.BonusScore;
+                    player.Score += secretHideoutBonus;
+                    await _botClient.SendTextMessageAsync(
+                        chatId,
+                        string.Format(GameMessages.SpecialQuarterBonusMessage, secretHideoutBonus, QuarterNames.SecretHideout),
+                        parseMode: ParseMode.Html);
+                }
+            }
 
             await DisplayPlayerScore(lobby, players);
 

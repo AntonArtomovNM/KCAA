@@ -17,6 +17,8 @@ namespace KCAA.Extensions
 {
     public static class TelegramBotClientExtentions
     {
+        private const int PHOTOS_PER_ALBM = 10;
+
         public static async Task<Message> PutMessage(this ITelegramBotClient botClient, long chatId, int messageId, string text, InlineKeyboardMarkup inlineKeyboard = null)
         {
             Message message;
@@ -59,7 +61,7 @@ namespace KCAA.Extensions
 
         public static async Task<Message> SendQuarter(this ITelegramBotClient botClient, long chatId, Quarter quarter, InlineKeyboardMarkup inlineKeyboard = null)
         {
-            var tgmessage = $@"{GetQuarterTitleByColor(quarter.DisplayName, quarter.Type)}
+            var tgmessage = $@"{GetQuarterTitleByColor(quarter.DisplayName, quarter.Type)}{(quarter.BonusScore > 0 ? $" [+{quarter.BonusScore}{GameSymbols.Score}]" : "")}
 Cost: {GameSymbols.GetCostInCoins(quarter.Cost)}
 {quarter.Description}";
 
@@ -77,14 +79,14 @@ Cost: {GameSymbols.GetCostInCoins(quarter.Cost)}
             return await SendMessageWithPhoto(botClient, chatId, inlineKeyboard, photo, tgmessage);
         }
 
-        public static async Task<IEnumerable<int>> SendCardGroup(this ITelegramBotClient botClient, long chatId, IEnumerable<CardObject> cards, Func<CardObject,string> messageFormatter = null)
+        public static async Task<IEnumerable<int>> SendCardGroup<T>(this ITelegramBotClient botClient, long chatId, IEnumerable<T> cards, Func<T,string> messageFormatter = null) where T: CardObject
         {
             if (cards == null || !cards.Any()) 
             {
                 return new int[0];
             }
 
-            var mediaGroup = cards.Select(c => new InputMediaPhoto(new InputMedia(c.PhotoUri))
+            var mediaGroup = cards.Select(c => new InputMediaPhoto(new InputMedia(c.PhotoWithDescriptionUri))
             {
                 Caption = messageFormatter(c)
             });

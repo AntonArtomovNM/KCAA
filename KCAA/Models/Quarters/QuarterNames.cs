@@ -42,40 +42,40 @@
 
         public static string Yellow5 => "Y5";
 
-        public static string SecretHideout => "sp-secret-hideout";
+        public static string SecretHideout => "sp-sh";
 
-        public static string GhostNeighbourhood => "sp-ghost-neighbourhood";
+        public static string GhostNeighbourhood => "sp-gn";
 
-        public static string Stable => "sp-stable";
+        public static string Stable => "sp-st";
 
-        public static string Fort => "sp-fort";
+        public static string Fort => "sp-fo";
 
-        public static string Goldmine => "sp-goldmine";
+        public static string Goldmine => "sp-gm";
 
-        public static string Library => "sp-library";
+        public static string Library => "sp-li";
 
-        public static string DragonGates => "sp-dragon-gates";
+        public static string DragonGates => "sp-dg";
 
-        public static string ImperialTreasury => "sp-imperial-treasury";
+        public static string ImperialTreasury => "sp-it";
 
-        public static string Capitol => "sp-capitol";
+        public static string Capitol => "sp-ca";
 
-        public static string MapRoom => "sp-map-room";
+        public static string MapRoom => "sp-mr";
 
-        public static string WishingWell => "sp-wishing-well";
+        public static string WishingWell => "sp-ww";
 
-        public static string Forge => "sp-forge";
+        public static string Forge => "sp-fg";
 
-        public static string Laboratory => "sp-laboratory";
+        public static string Laboratory => "sp-la";
 
-        public static string Museum => "sp-museum";
+        public static string Museum => "sp-mu";
 
-        public static string Armory => "sp-armory";
+        public static string Armory => "sp-ar";
 
-        public static string Scaffolding => "sp-scaffolding";
+        public static string Scaffolding => "sp-sc";
 
-        public static string Monument => "sp-monument";
+        public static string Monument => "sp-mo";
 
-        public static string SchoolOfMagic => "sp-school-of-magic";
+        public static string SchoolOfMagic => "sp-som";
     }
 }

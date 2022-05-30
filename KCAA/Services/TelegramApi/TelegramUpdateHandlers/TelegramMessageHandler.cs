@@ -361,14 +361,14 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 if (quarters.Any())
                 {
                     MessageIds.Add((await _botClient.SendTextMessageAsync(chatId, $"Quarters in hand {GameSymbols.Card}:")).MessageId);
-                    MessageIds.AddRange(await _botClient.SendCardGroup(chatId, quarters, c => $"{c.DisplayName} {GameSymbols.GetColorByType(c.Type)} (In hand {GameSymbols.Card})"));
+                    MessageIds.AddRange(await _botClient.SendCardGroup(chatId, quarters, q => $"{GameSymbols.GetColorByType(q.Type)} {q.DisplayName}{(q.BonusScore > 0 ? $"[+{q.BonusScore}{GameSymbols.Score}] " : "")} (In hand {GameSymbols.Card})"));
                 }
             }
 
             if (placedQuarters.Any())
             {
                 MessageIds.Add((await _botClient.SendTextMessageAsync(chatId, $"Placed quarters {GameSymbols.PlacedQuarter}:")).MessageId);
-                MessageIds.AddRange(await _botClient.SendCardGroup(chatId, placedQuarters, c => $"{c.DisplayName} {GameSymbols.GetColorByType(c.Type)} (Placed {GameSymbols.PlacedQuarter})"));
+                MessageIds.AddRange(await _botClient.SendCardGroup(chatId, placedQuarters, pq => $"{GameSymbols.GetColorByType(pq.Type)} {pq.DisplayName}{(pq.BonusScore > 0 ? $"[+{pq.BonusScore}{GameSymbols.Score}] " : "")} (Placed {GameSymbols.PlacedQuarter})"));
             }
 
             //Send player stats

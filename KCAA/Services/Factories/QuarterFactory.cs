@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using KCAA.Models.Quarters;
 using KCAA.Services.Interfaces;
@@ -10,6 +12,11 @@ namespace KCAA.Services.Factories
         private readonly Dictionary<string, Quarter> quarters = new();
 
         public Quarter GetCard(string name) => quarters[name];
+
+        public IEnumerable<string> GetFilteredNames(Predicate<Quarter> filter)
+        {
+            return quarters.Where(q => filter(q.Value)).Select(q => q.Key);
+        }
 
         public Task RegisterCard(Quarter card)
         {

@@ -140,15 +140,16 @@
     "Cost": 5
   },
   {
-    "Name": "sp-secret-hideout",
+    "Name": "sp-sh",
     "DisplayName": "Secret Hideout",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 0,
-    "Description": "The Secret Hideout cannot be built. At the end of the game, score 3 extra points if the card is in your hand."
+    "Description": "The Secret Hideout cannot be built. At the end of the game, score 3 extra points if the card is in your hand.",
+    "BonusScore": 3
   },
   {
-    "Name": "sp-ghost-neighbourhood",
+    "Name": "sp-gn",
     "DisplayName": "Ghost Neighbourhood",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
@@ -156,7 +157,7 @@
     "Description": "At the end of the game, the Ghost Neighbourhood counts as any district type of your choice."
   },
   {
-    "Name": "sp-stable",
+    "Name": "sp-st",
     "DisplayName": "Stable",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
@@ -164,7 +165,7 @@
     "Description": "You can build another district this turn."
   },
   {
-    "Name": "sp-fort",
+    "Name": "sp-fo",
     "DisplayName": "Fort",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
@@ -172,7 +173,7 @@
     "Description": "The Fort cannot be destroyed by the Warlord."
   },
   {
-    "Name": "sp-goldmine",
+    "Name": "sp-gm",
     "DisplayName": "Goldmine",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
@@ -180,15 +181,16 @@
     "Description": "If during resource acquisition you choose to receive gold, get 1 extra gold."
   },
   {
-    "Name": "sp-dragon-gates",
+    "Name": "sp-dg",
     "DisplayName": "Dragon Gates",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 6,
-    "Description": "At the end of the game, score 2 extra points."
+    "Description": "At the end of the game, score 2 extra points.",
+    "BonusScore": 2
   },
   {
-    "Name": "sp-imperial-treasury",
+    "Name": "sp-it",
     "DisplayName": "Imperial Treasury",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
@@ -196,7 +198,7 @@
     "Description": "At the end of the game, score 1 extra point for each gold in your stash."
   },
   {
-    "Name": "sp-capitol",
+    "Name": "sp-ca",
     "DisplayName": "Capitol",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
@@ -204,7 +206,7 @@
     "Description": "If at the end of the game you have built at least 3 districts of the same type, score 3 extra points."
   },
   {
-    "Name": "sp-map-room",
+    "Name": "sp-mr",
     "DisplayName": "Map Room",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
@@ -212,7 +214,7 @@
     "Description": "At the end of the game, score 1 extra point for each card in your hand."
   },
   {
-    "Name": "sp-wishing-well",
+    "Name": "sp-ww",
     "DisplayName": "Wishing Well",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
@@ -220,7 +222,7 @@
     "Description": "At the end of the game, score 1 extra point for each special district in your city."
   },
   {
-    "Name": "sp-forge",
+    "Name": "sp-fg",
     "DisplayName": "Forge",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
@@ -228,7 +230,7 @@
     "Description": "Once during your turn, you may pay two gold to draw three district cards."
   },
   {
-    "Name": "sp-laboratory",
+    "Name": "sp-la",
     "DisplayName": "Laboratory",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
@@ -236,7 +238,7 @@
     "Description": "Once during your turn, you may discard a district card from your hand and receive two gold from the bank."
   },
   {
-    "Name": "sp-museum",
+    "Name": "sp-mu",
     "DisplayName": "Museum",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
@@ -244,7 +246,7 @@
     "Description": "Once during your turn, you may put 1 card under the museum card. At the end of the game, score 1 extra point for each card under the Museum."
   },
   {
-    "Name": "sp-armory",
+    "Name": "sp-ar",
     "DisplayName": "Armory",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
@@ -252,7 +254,7 @@
     "Description": "Destroy the Armory to destroy 1 enemy's district of your choice."
   },
   {
-    "Name": "sp-scaffolding",
+    "Name": "sp-sc",
     "DisplayName": "Scaffolding",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
@@ -260,7 +262,7 @@
     "Description": "You can build the district by destroying scaffolding instead of paying the cost of the selected district."
   },
   {
-    "Name": "sp-monument",
+    "Name": "sp-mo",
     "DisplayName": "Monument",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
@@ -268,7 +270,7 @@
     "Description": "If you have the crown at the end of the game, score 5 extra points."
   },
   {
-    "Name": "sp-school-of-magic",
+    "Name": "sp-som",
     "DisplayName": "School of Magic",
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
