@@ -360,8 +360,14 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
                 if (quarters.Any())
                 {
+                    int groupsCount = (quarters.Count() % 10 == 0) ? quarters.Count() / 10 : quarters.Count() / 10 + 1;
                     MessageIds.Add((await _botClient.SendTextMessageAsync(chatId, $"Quarters in hand {GameSymbols.Card}:")).MessageId);
-                    MessageIds.AddRange(await _botClient.SendCardGroup(chatId, quarters, q => $"{GameSymbols.GetColorByType(q.Type)} {q.DisplayName}{(q.BonusScore > 0 ? $"[+{q.BonusScore}{GameSymbols.Score}] " : "")} (In hand {GameSymbols.Card})"));
+                    for (int i = 0; i < groupsCount; i++) 
+                    {
+                        MessageIds.AddRange(await _botClient.SendCardGroup(chatId, quarters.Skip(i * 10).Take(10), q => $"{GameSymbols.GetColorByType(q.Type)} {q.DisplayName}{(q.BonusScore > 0 ? $"[+{q.BonusScore}{GameSymbols.Score}] " : "")} (In hand {GameSymbols.Card})"));
+                    }
+
+                    
                 }
             }
 

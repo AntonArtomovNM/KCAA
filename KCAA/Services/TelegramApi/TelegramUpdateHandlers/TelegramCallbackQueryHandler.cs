@@ -222,6 +222,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             //If player completed the city
             if (player.PlacedQuarters.Count == _gameSettings.QuartersToWin)
             {
+                await _playerProvider.SavePlayer(player);
                 await CompleteCity(player, lobby);
             }
 
@@ -872,7 +873,6 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                     return false;
                 }
             }
-
             return true;
         }
     }
