@@ -16,6 +16,7 @@ using System.Text;
 using Telegram.Bot.Types.Enums;
 using Serilog;
 using KCAA.Models.Quarters;
+using System;
 
 namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 {
@@ -23,19 +24,22 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
     {
         protected readonly IPlayerProvider _playerProvider;
         protected readonly ILobbyProvider _lobbyProvider;
+        protected readonly ICardFactory<Quarter> _quarterFactory;
         protected readonly HttpClient _httpClient;
         protected readonly GameSettings _gameSettings;
 
         protected ITelegramBotClient _botClient;
 
         protected TelegramGameHandlerBase(
-            IPlayerProvider playerProvider, 
-            ILobbyProvider lobbyProvider, 
+            IPlayerProvider playerProvider,
+            ILobbyProvider lobbyProvider,
+            ICardFactory<Quarter> quarterFactory,
             GameSettings gameSettings)
         {
             _playerProvider = playerProvider;
             _lobbyProvider = lobbyProvider;
             _gameSettings = gameSettings;
+            _quarterFactory = quarterFactory;
             _httpClient = new HttpClient();
         }
 
@@ -190,21 +194,31 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
         protected async Task EndGame(string lobbyId)
         {
             var lobby = await _lobbyProvider.GetLobbyById(lobbyId);
-            var players = await _playerProvider.GetPlayersByLobbyId(lobbyId);
+            var players = await _playerProvider.GetPlayersByLobbyId(lobbyId, loadPlacedQuarters: true);
 
             var chatId = lobby.TelegramMetadata.ChatId;
 
+            // additional scores
             foreach(var player in players)
             {
-                var secretHideout = player.PlacedQuarters.Find(q => q.Name == QuarterNames.SecretHideout);
+                var secretHideout = _quarterFactory.GetCard(QuarterNames.SecretHideout);
 
-                if (secretHideout is not null)
+                if (player.QuarterHand.Any(q => string.Equals(q, secretHideout.Name)))
                 {
-                    var secretHideoutBonus = secretHideout.BonusScore;
-                    player.Score += secretHideoutBonus;
+                    player.Score += secretHideout.BonusScore;
                     await _botClient.SendTextMessageAsync(
-                        chatId,
-                        string.Format(GameMessages.SpecialQuarterBonusMessage, secretHideoutBonus, QuarterNames.SecretHideout),
+                        player.TelegramMetadata.ChatId,
+                        string.Format(GameMessages.SpecialQuarterBonusMessage, secretHideout.BonusScore, secretHideout.DisplayName),
+                        parseMode: ParseMode.Html);
+                }
+
+                if (DoesHaveAllQuarterTypes(player.PlacedQuarters))
+                {
+                    var allTypesBonus = _gameSettings.AllTypesBonus;
+                    player.Score += allTypesBonus;
+                    await _botClient.SendTextMessageAsync(
+                        player.TelegramMetadata.ChatId,
+                        string.Format(GameMessages.AllTypesBonusMessage, allTypesBonus),
                         parseMode: ParseMode.Html);
                 }
             }
@@ -220,14 +234,11 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var response = await _httpClient.SendAsync(message);
             var responseMessage = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
-            {
-                await _botClient.TryDeleteMessage(chatId, lobby.TelegramMetadata.LobbyInfoMessageId);
+            await _botClient.TryDeleteMessage(chatId, lobby.TelegramMetadata.LobbyInfoMessageId);
 
-                if (lobby.Status != LobbyStatus.Configuring)
-                {
-                    await DeleteMessagesForPlayers(players);
-                }
+            if (response.IsSuccessStatusCode && lobby.Status != LobbyStatus.Configuring)
+            {
+                await DeleteMessagesForPlayers(players);
             }
 
             await _botClient.SendTextMessageAsync(lobby.TelegramMetadata.ChatId, responseMessage);
@@ -389,6 +400,32 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             });
 
             await Task.WhenAll(deleteTasks);
+        }
+
+        private bool DoesHaveAllQuarterTypes(IEnumerable<PlacedQuarter> quarters)
+        {
+            var types = Enum.GetValues<ColorType>();
+            var hasIndulgence = quarters.Any(q => string.Equals(q.Name, QuarterNames.GhostNeighbourhood)) 
+                && quarters.Any(q => q.QuarterBase.Type == ColorType.Purple && !string.Equals(q.Name, QuarterNames.GhostNeighbourhood));
+
+            // starting with 1 because there is no 0 type quarters
+            for (var i = 1; i < types.Length; i++)
+            {
+                var type = types[i];
+
+                if (!quarters.Any(q => q.QuarterBase.Type == type))
+                {
+                    if (hasIndulgence)
+                    {
+                        hasIndulgence = false;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

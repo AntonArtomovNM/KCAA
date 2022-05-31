@@ -22,21 +22,19 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 {
     public class TelegramMessageHandler : TelegramGameHandlerBase, ITelegramUpdateHandler
     {
-        private readonly ICardFactory<Quarter> _quarterFactory;
         private readonly TelegramSettings _telegramSettings;
 
-        public object GameActions { get; private set; }
+        private const int PHOTOS_PER_ALBUM = 10;
 
         public TelegramMessageHandler(
             ILobbyProvider lobbyProvider,
             IPlayerProvider playerProvider,
-            TelegramSettings telegramSettings,
+            ICardFactory<Quarter> quarterFactory,
             GameSettings gameSettings,
-            ICardFactory<Quarter> quarterFactory)
-            : base(playerProvider, lobbyProvider, gameSettings)
+            TelegramSettings telegramSettings)
+            : base(playerProvider, lobbyProvider, quarterFactory, gameSettings)
         {
             _telegramSettings = telegramSettings;
-            _quarterFactory = quarterFactory;
         }
 
         public async Task Handle(ITelegramBotClient botClient, Update update)
@@ -295,9 +293,15 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 return;
             }
 
-            var characterDeck = (await _lobbyProvider.GetLobbyById(player.LobbyId)).CharacterDeck;
+            var lobby = await _lobbyProvider.GetLobbyById(player.LobbyId);
 
-            player.TelegramMetadata.MyHandIds = await SendPlayerData(playerChatId, player, characterDeck, loadSecretData: true);
+            if(lobby.Status == LobbyStatus.Configuring)
+            {
+                await _botClient.SendTextMessageAsync(playerChatId, GameMessages.NotInGameError);
+                return;
+            }
+
+            player.TelegramMetadata.MyHandIds = await SendPlayerData(playerChatId, player, lobby.CharacterDeck, loadSecretData: true);
             player.TelegramMetadata.MyHandIds.Add(await SendCloseButton(playerChatId, player.LobbyId, "My-Hand"));
 
             await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.MyHandIds);
@@ -317,7 +321,14 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 return;
             }
 
-            var characterDeck = (await _lobbyProvider.GetLobbyById(player.LobbyId)).CharacterDeck;
+            var lobby = await _lobbyProvider.GetLobbyById(player.LobbyId);
+
+            if (lobby.Status == LobbyStatus.Configuring)
+            {
+                await _botClient.SendTextMessageAsync(playerChatId, GameMessages.NotInGameError);
+                return;
+            }
+
             var otherPlayers = (await _playerProvider.GetPlayersByLobbyId(player.LobbyId, loadPlacedQuarters: true))
                 .Where(p => p.Id != player.Id)
                 .OrderBy(p => p.CSOrder);
@@ -327,7 +338,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             foreach (var p in otherPlayers)
             {
-                messageIds.AddRange(await SendPlayerData(playerChatId, p, characterDeck));
+                messageIds.AddRange(await SendPlayerData(playerChatId, p, lobby.CharacterDeck));
 
                 if (p.Id != lastPlayerId)
                 {
@@ -360,14 +371,19 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
                 if (quarters.Any())
                 {
-                    int groupsCount = (quarters.Count() % 10 == 0) ? quarters.Count() / 10 : quarters.Count() / 10 + 1;
                     MessageIds.Add((await _botClient.SendTextMessageAsync(chatId, $"Quarters in hand {GameSymbols.Card}:")).MessageId);
-                    for (int i = 0; i < groupsCount; i++) 
-                    {
-                        MessageIds.AddRange(await _botClient.SendCardGroup(chatId, quarters.Skip(i * 10).Take(10), q => $"{GameSymbols.GetColorByType(q.Type)} {q.DisplayName}{(q.BonusScore > 0 ? $"[+{q.BonusScore}{GameSymbols.Score}] " : "")} (In hand {GameSymbols.Card})"));
-                    }
 
-                    
+                    var groupsCount = (quarters.Count() % PHOTOS_PER_ALBUM == 0) ? quarters.Count() / PHOTOS_PER_ALBUM : quarters.Count() / PHOTOS_PER_ALBUM + 1;
+                    for (var i = 0; i < groupsCount; i++) 
+                    {
+                        MessageIds.AddRange(
+                            await _botClient.SendCardGroup(
+                                chatId, 
+                                quarters.Skip(i * PHOTOS_PER_ALBUM).Take(PHOTOS_PER_ALBUM), 
+                                q => $"{GameSymbols.GetColorByType(q.Type)} {q.DisplayName}{(q.BonusScore > 0 ? $"[+{q.BonusScore}{GameSymbols.Score}] " : "")} (In hand {GameSymbols.Card})"
+                            )
+                        );
+                    }
                 }
             }
 

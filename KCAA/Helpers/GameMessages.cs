@@ -141,7 +141,7 @@ When a city has <b>7 quarters</b>, the game ends after the current round, and yo
         public static string GetQuarterInfo(Quarter quarterData)
         {
             return $@"{GameSymbols.Tab}{GameSymbols.GetColorByType(quarterData.Type)} {quarterData.DisplayName}{(quarterData.BonusScore > 0 ? $" [+{quarterData.BonusScore}{GameSymbols.Score}]" : "")}
-{GameSymbols.GetCostInCoins(quarterData.Cost)}";
+{GameSymbols.Tab}{GameSymbols.Tab}{GameSymbols.GetCostInCoins(quarterData.Cost)}";
         }
 
         public static string GetPlayerCharactersInfo(IEnumerable<Character> characters, Player player, bool loadNames = true)
