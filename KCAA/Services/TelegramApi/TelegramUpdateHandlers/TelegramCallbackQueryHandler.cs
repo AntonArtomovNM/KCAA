@@ -195,7 +195,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var quarter = _quarterFactory.GetCard(quarterName);
             var character = lobby.CharacterDeck.Find(c => c.Name == characterName);
 
-            if (!string.Equals(quarterName, QuarterNames.Stable))
+            if (quarterName != QuarterNames.Stable)
             {
                 character.BuiltQuarters++;
             }
@@ -220,7 +220,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 messageBuilder.ToString(),
                 parseMode: ParseMode.Html);
 
-            if (character.BuiltQuarters >= character.CharacterBase.BuildingCapacity && !player.QuarterHand.Any(q => string.Equals(q, QuarterNames.Stable)))
+            if (character.BuiltQuarters >= character.CharacterBase.BuildingCapacity && !player.QuarterHand.Any(q => q == QuarterNames.Stable))
             {
                 player.GameActions.Remove(GameActionNames.BuildQuarter);
             }
@@ -475,8 +475,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             //If no quarter was selected yet, send quarters
             if (string.IsNullOrWhiteSpace(quarterName))
             {
-                var quarters = target.PlacedQuarters.Where(q => q.QuarterBase.Cost <= player.Coins + 1 && !string.Equals(q.Name, QuarterNames.Fort)).Select(q => q.QuarterBase);
-                await SendQuartersKeyboard(player, characterName, gameAction, $"{gameAction}_{player.LobbyId}_{characterName}_{targetIdStr}", quarters);
+                var quarters = target.PlacedQuarters.Where(q => q.QuarterBase.Cost <= player.Coins + 1 && q.Name != QuarterNames.Fort);
+                await SendPlacedQuartersKeyboard(player, characterName, gameAction, $"{gameAction}_{player.LobbyId}_{characterName}_{targetIdStr}", quarters);
                 return;
             }
 
@@ -484,7 +484,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var quarter = target.PlacedQuarters.Find(q => q.Name == quarterName);
 
             target.PlacedQuarters.Remove(quarter);
-            target.Score -= quarter.QuarterBase.Cost + quarter.QuarterBase.BonusScore + quarter.BonusScore;
+            target.Score -= quarter.QuarterBase.Cost + quarter.FullBonusScore;
 
             player.Coins -= quarter.QuarterBase.Cost - 1;
             player.GameActions.Remove(GameActionNames.DestroyQuarters);
@@ -494,7 +494,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await _playerProvider.UpdatePlayer(target, p => p.Score);
             await _playerProvider.UpdatePlayer(target, p => p.PlacedQuarters);
 
-            var quarterStats = $@"{GameSymbols.GetColorByType(quarter.QuarterBase.Type)} {quarter.QuarterBase.DisplayName}{(quarter.BonusScore > 0 ? $" [+{quarter.BonusScore}{GameSymbols.Score}]" : "")}
+            var quarterStats = $@"{GameSymbols.GetColorByType(quarter.QuarterBase.Type)} {quarter.QuarterBase.DisplayName}{(quarter.FullBonusScore > 0 ? $" [+{quarter.FullBonusScore}{GameSymbols.Score}]" : "")}
 {GameSymbols.GetCostInCoins(quarter.QuarterBase.Cost)}";
 
             await SendActionPerformedMessage(target, string.Format(GameMessages.DestroyedPersonalMessage, player.Name, quarterStats));
@@ -515,7 +515,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             if (character.BuiltQuarters >= character.CharacterBase.BuildingCapacity)
             {
                 // should only be possible for stable
-                if (player.QuarterHand.Any(q => string.Equals(q, QuarterNames.Stable))) 
+                if (player.QuarterHand.Any(q => q == QuarterNames.Stable)) 
                 {
                     quarters.Add(_quarterFactory.GetCard(QuarterNames.Stable));
                 }
@@ -591,6 +591,31 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                     $"{callbackData}_{x.Name}");
 
                 return await _botClient.SendQuarter(chatId, x, buildButton);
+            });
+
+            var messageIds = (await Task.WhenAll(sendQuartersTasks)).Select(m => m.MessageId);
+            var cancelMessageId = await SendCancelButton(chatId, player.LobbyId, characterName);
+
+            player.TelegramMetadata.CardMessageIds.Clear();
+            player.TelegramMetadata.CardMessageIds.AddRange(messageIds);
+            player.TelegramMetadata.CardMessageIds.Add(cancelMessageId);
+
+            await _playerProvider.UpdatePlayer(player, p => p.TelegramMetadata.CardMessageIds);
+        }
+
+        private async Task SendPlacedQuartersKeyboard(Player player, string characterName, string gameAction, string callbackData, IEnumerable<PlacedQuarter> quarters)
+        {
+            var chatId = player.TelegramMetadata.ChatId;
+
+            await _botClient.TryDeleteMessage(chatId, player.TelegramMetadata.GameActionKeyboardId);
+
+            var sendQuartersTasks = quarters.Select(async x =>
+            {
+                var buildButton = InlineKeyboardButton.WithCallbackData(
+                    GameActionNames.GetActionDisplayName(gameAction),
+                    $"{callbackData}_{x.Name}");
+
+                return await _botClient.SendPlacedQuarter(chatId, x, buildButton);
             });
 
             var messageIds = (await Task.WhenAll(sendQuartersTasks)).Select(m => m.MessageId);
@@ -778,7 +803,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
                     if (character.CharacterBase.Type != ColorType.None)
                     {
-                        revenueAmount = player.PlacedQuarters.Where(q => q.QuarterBase.Type == character.CharacterBase.Type).Count();
+                        revenueAmount = player.PlacedQuarters.Where(q => q.QuarterBase.Type == character.CharacterBase.Type || q.Name == QuarterNames.SchoolOfMagic).Count();
                     }
 
                     else if (character.Name == CharacterNames.Beggar)

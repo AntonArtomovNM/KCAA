@@ -78,7 +78,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
                 if (characterBase.Type != ColorType.None)
                 {
-                    var rightTypeQuartersCount = player.PlacedQuarters.Where(q => q.QuarterBase.Type == characterBase.Type).Count();
+                    var rightTypeQuartersCount = player.PlacedQuarters.Where(q => q.QuarterBase.Type == characterBase.Type || q.Name == QuarterNames.SchoolOfMagic).Count();
                     characterDescription = string.Format(characterDescription, rightTypeQuartersCount);
                 } 
                 else if (characterBase.Name == CharacterNames.Beggar)
@@ -203,7 +203,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             {
                 var secretHideout = _quarterFactory.GetCard(QuarterNames.SecretHideout);
 
-                if (player.QuarterHand.Any(q => string.Equals(q, secretHideout.Name)))
+                if (player.QuarterHand.Any(q => q == secretHideout.Name))
                 {
                     player.Score += secretHideout.BonusScore;
                     await _botClient.SendTextMessageAsync(
@@ -272,6 +272,11 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var coinsAmount = _gameSettings.CoinsPerTurn;
             var cardsAmount = _gameSettings.QuertersPerTurn;
 
+            if (player.PlacedQuarters.Any(q => q.Name == QuarterNames.Goldmine))
+            {
+                coinsAmount++;
+            }
+
             var coinsString = string.Concat(Enumerable.Repeat(GameSymbols.Coin, coinsAmount));
             var cardsString = string.Concat(Enumerable.Repeat(GameSymbols.Card, cardsAmount));
 
@@ -332,11 +337,11 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
                 foreach (var quarter in player.PlacedQuarters)
                 {
-                    builder.Append(GameMessages.GetQuarterInfo(quarter.QuarterBase));
+                    builder.Append(GameMessages.GetPlacedQuarterInfo(quarter));
                     
-                    if (quarter.BonusScore > 0)
+                    if (quarter.FullBonusScore > 0)
                     {
-                        builder.Append($" +{quarter.BonusScore}{GameSymbols.Score}");
+                        builder.Append($" +{quarter.FullBonusScore}{GameSymbols.Score}");
                     }
 
                     builder.AppendLine();
@@ -405,8 +410,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
         private bool DoesHaveAllQuarterTypes(IEnumerable<PlacedQuarter> quarters)
         {
             var types = Enum.GetValues<ColorType>();
-            var hasIndulgence = quarters.Any(q => string.Equals(q.Name, QuarterNames.GhostNeighbourhood)) 
-                && quarters.Any(q => q.QuarterBase.Type == ColorType.Purple && !string.Equals(q.Name, QuarterNames.GhostNeighbourhood));
+            var hasIndulgence = quarters.Any(q => q.Name == QuarterNames.GhostNeighbourhood) 
+                && quarters.Any(q => q.QuarterBase.Type == ColorType.Purple && q.Name != QuarterNames.GhostNeighbourhood);
 
             // starting with 1 because there is no 0 type quarters
             for (var i = 1; i < types.Length; i++)

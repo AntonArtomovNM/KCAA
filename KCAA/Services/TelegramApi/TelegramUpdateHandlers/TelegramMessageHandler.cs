@@ -355,7 +355,10 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
         private async Task<List<int>> SendPlayerData(long chatId, Player player, IEnumerable<Character> characterDeck, bool loadSecretData = false)
         {
             var playerCharacters = characterDeck.Where(c => player.CharacterHand.Contains(c.Name));
-            var placedQuarters = player.PlacedQuarters.Select(z => z.QuarterBase);
+            var placedQuarters = player.PlacedQuarters.Select(pq => {
+                pq.QuarterBase.BonusScore = pq.FullBonusScore;
+                return pq.QuarterBase;
+            });
 
             var MessageIds = new List<int>();
 

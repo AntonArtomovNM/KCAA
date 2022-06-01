@@ -144,6 +144,12 @@ When a city has <b>7 quarters</b>, the game ends after the current round, and yo
 {GameSymbols.Tab}{GameSymbols.Tab}{GameSymbols.GetCostInCoins(quarterData.Cost)}";
         }
 
+        public static string GetPlacedQuarterInfo(PlacedQuarter quarterData)
+        {
+            return $@"{GameSymbols.Tab}{GameSymbols.GetColorByType(quarterData.QuarterBase.Type)} {quarterData.QuarterBase.DisplayName}{(quarterData.FullBonusScore > 0 ? $" [+{quarterData.FullBonusScore}{GameSymbols.Score}]" : "")}
+{GameSymbols.Tab}{GameSymbols.Tab}{GameSymbols.GetCostInCoins(quarterData.QuarterBase.Cost)}";
+        }
+
         public static string GetPlayerCharactersInfo(IEnumerable<Character> characters, Player player, bool loadNames = true)
         { 
             var builder = new StringBuilder();
