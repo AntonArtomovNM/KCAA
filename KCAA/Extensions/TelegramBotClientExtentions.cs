@@ -62,7 +62,7 @@ namespace KCAA.Extensions
 
         public static async Task<Message> SendQuarter(this ITelegramBotClient botClient, long chatId, Quarter quarter, InlineKeyboardMarkup inlineKeyboard = null)
         {
-            var tgmessage = $@"{GetQuarterTitleByColor(quarter.DisplayName, quarter.Type)}{(quarter.BonusScore > 0 ? $" [+{quarter.BonusScore}{GameSymbols.Score}]" : "")}
+            var tgmessage = $@"{GetQuarterTitleByColor(quarter.DisplayName, quarter.Type)}
 Cost: {GameSymbols.GetCostInCoins(quarter.Cost)}
 {quarter.Description}";
 

@@ -383,7 +383,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                             await _botClient.SendCardGroup(
                                 chatId, 
                                 quarters.Skip(i * PHOTOS_PER_ALBUM).Take(PHOTOS_PER_ALBUM), 
-                                q => $"{GameSymbols.GetColorByType(q.Type)} {q.DisplayName}{(q.BonusScore > 0 ? $"[+{q.BonusScore}{GameSymbols.Score}] " : "")} (In hand {GameSymbols.Card})"
+                                q => $"{GameSymbols.GetColorByType(q.Type)} {q.DisplayName} (In hand {GameSymbols.Card})"
                             )
                         );
                     }

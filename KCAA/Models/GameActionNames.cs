@@ -33,6 +33,8 @@ namespace KCAA.Models
 
         public const string DestroyQuarters = "destroy";
 
+        public const string PutUnderMuseum = "museum";
+
         static GameActionNames()
         {
             _displayNames = SetNames();
@@ -54,6 +56,7 @@ namespace KCAA.Models
             { ExchangeHands, $"Switch hands {GameSymbols.Exchange}" },
             { DiscardQuarters, $"Discard {GameSymbols.Exchange}" },
             { DestroyQuarters, $"Destroy {GameSymbols.Destroy}" },
+            { PutUnderMuseum, $"Use Museum {GameSymbols.Museum}" },
         };
     }
 }

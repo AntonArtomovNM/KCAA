@@ -79,6 +79,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 GameActionNames.ExchangeHands => HandleExchangeHands(chatId, player, lobby, characterName, data[3]),
                 GameActionNames.DiscardQuarters => HandleDiscard(callbackQuery.Message, player, lobby, characterName, data[3]),
                 GameActionNames.DestroyQuarters => HandleDestroyQuarter(player, lobby, command, characterName, data[3], data.ElementAtOrDefault(4)),
+                GameActionNames.PutUnderMuseum => HandlePutUnderMuseum(chatId, player, lobby, characterName, data[3]),
                 _ => Task.CompletedTask
             };
             await action;
@@ -173,6 +174,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 GameActionNames.ExchangeHands => SendPlayerKeyboard(chatId, lobby, player, characterName, gameAction),
                 GameActionNames.DiscardQuarters => SendDiscardQuarterKeyboard(player, characterName, gameAction),
                 GameActionNames.DestroyQuarters => SendPlayerKeyboard(chatId, lobby, player, characterName, gameAction),
+                GameActionNames.PutUnderMuseum => SendDiscardQuarterKeyboard(player, characterName, gameAction),
                 _ => Task.Run(() => Log.Warning($"Game action {gameAction} was not found"))
             };
 
@@ -199,6 +201,10 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             {
                 character.BuiltQuarters++;
             }
+            if (quarterName == QuarterNames.Museum)
+            {
+                player.GameActions.Add(GameActionNames.PutUnderMuseum);
+            }
 
             player.Coins -= quarter.Cost;
             player.Score += quarter.Cost + quarter.BonusScore;
@@ -207,7 +213,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var messageBuilder = new StringBuilder();
             messageBuilder.AppendFormat(GameMessages.QuarterBuiltMessage, GameSymbols.PlacedQuarter, player.Name, $"{GameSymbols.GetColorByType(quarter.Type)} {quarter.DisplayName}");
-            messageBuilder.AppendLine(quarter.BonusScore > 0 ? $" [+{quarter.BonusScore}{GameSymbols.Score}]" : "");
+            messageBuilder.AppendLine();
             messageBuilder.AppendLine(GameSymbols.GetCostInCoins(quarter.Cost));
 
             if (player.PlacedQuarters.Count == _gameSettings.QuartersToWin - 1)
@@ -233,6 +239,24 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             {
                 await CompleteCity(player.Id, lobby);
             }
+
+            await DisplayAvailableGameActions(chatId, lobby.Id, characterName);
+        }
+
+        private async Task HandlePutUnderMuseum(long chatId, Player player, Lobby lobby, string characterName, string quarterName)
+        {
+            await _botClient.TryDeleteMessages(chatId, player.TelegramMetadata.CardMessageIds);
+
+            player.QuarterHand.Remove(quarterName);
+            player.PlacedQuarters.Find(q => q.Name == QuarterNames.Museum).BonusScore++;
+            player.Score++;
+
+            player.GameActions.Remove(GameActionNames.PutUnderMuseum);
+
+            await _playerProvider.UpdatePlayer(player, p => p.QuarterHand);
+            await _playerProvider.UpdatePlayer(player, p => p.PlacedQuarters);
+            await _playerProvider.UpdatePlayer(player, p => p.Score);
+            await _playerProvider.UpdatePlayer(player, p => p.GameActions);
 
             await DisplayAvailableGameActions(chatId, lobby.Id, characterName);
         }

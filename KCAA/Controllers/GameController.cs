@@ -289,7 +289,7 @@ namespace KCAA.Controllers
             await _playerProvider.UpdatePlayer(player, x => x.Coins);
         }
 
-        private async Task SetPlayerActions(Character character, Player player)
+        private async Task SetPlayerActions(Character character, Player player) 
         {
             if (!string.IsNullOrWhiteSpace(character.CharacterBase.GameAction))
             {
@@ -302,6 +302,11 @@ namespace KCAA.Controllers
             }
 
             player.GameActions.Add(GameActionNames.BuildQuarter);
+
+            if (player.PlacedQuarters.Any(q => q.Name == QuarterNames.Museum))
+            {
+                player.GameActions.Add(GameActionNames.PutUnderMuseum);
+            }
 
             await _playerProvider.UpdatePlayer(player, p => p.GameActions);
         }

@@ -338,12 +338,6 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 foreach (var quarter in player.PlacedQuarters)
                 {
                     builder.Append(GameMessages.GetPlacedQuarterInfo(quarter));
-                    
-                    if (quarter.FullBonusScore > 0)
-                    {
-                        builder.Append($" +{quarter.FullBonusScore}{GameSymbols.Score}");
-                    }
-
                     builder.AppendLine();
                 }
 

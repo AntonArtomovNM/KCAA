@@ -33,6 +33,8 @@ namespace KCAA.Helpers
 
         public static string Destroy => "⚔️";
 
+        public static string Museum => "🏛";
+
         public static string Tab => "     ";
 
         public static string GetColorByType(ColorType type)
