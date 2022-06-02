@@ -243,7 +243,8 @@
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 4,
-    "Description": "Once during your turn, you may put 1 card under the museum card. At the end of the game, score 1 extra point for each card under the Museum."
+    "Description": "Once during your turn, you may put 1 card under the museum card. At the end of the game, score 1 extra point for each card under the Museum.",
+    "GameAction": "museum"
   },
   {
     "Name": "sp-ar",

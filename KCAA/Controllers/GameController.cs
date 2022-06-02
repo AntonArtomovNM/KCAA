@@ -142,7 +142,7 @@ namespace KCAA.Controllers
                 .OrderBy(c => c.CharacterBase.Order)
                 .FirstOrDefault();
 
-            var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
+            var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id, loadPlacedQuarters: true);
 
             // if no characters left selected, the turn cycle is over and we need to start character selection again or end the game
             if (character == null)
@@ -303,9 +303,14 @@ namespace KCAA.Controllers
 
             player.GameActions.Add(GameActionNames.BuildQuarter);
 
-            if (player.PlacedQuarters.Any(q => q.Name == QuarterNames.Museum))
+            foreach (var placerQuarter in player.PlacedQuarters)
             {
-                player.GameActions.Add(GameActionNames.PutUnderMuseum);
+                var gameAction = placerQuarter.QuarterBase.GameAction;
+
+                if (!string.IsNullOrWhiteSpace(gameAction))
+                {
+                    player.GameActions.Add(gameAction);
+                }
             }
 
             await _playerProvider.UpdatePlayer(player, p => p.GameActions);
