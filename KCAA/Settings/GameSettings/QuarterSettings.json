@@ -260,7 +260,8 @@
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 3,
-    "Description": "You can build the district by destroying scaffolding instead of paying the cost of the selected district."
+    "Description": "You can build the district by destroying scaffolding instead of paying the cost of the selected district.",
+    "GameAction": "scaffolding"
   },
   {
     "Name": "sp-mo",

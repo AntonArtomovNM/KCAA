@@ -54,6 +54,10 @@ namespace KCAA.Helpers
 
         public static string QuarterBuiltMessage => "[{0}] <b>{1}</b> have built <b>{2}</b>";
 
+        public static string ScaffoldingRebuildMessage => "[{0}] <b>{1}</b> have rebuilt Scaffolding with <b>{2}</b>";
+
+        public static string PutUnderMuseumMessage => "[{0}] <b>{1}</b> have put a card under museum +{2}🏆";
+
         public static string OneQuarterLeftMessage => "They need to build only <b>1 more</b> quarter to win";
 
         public static string CityBuiltPublicMessage => "Player <b>{0}</b> have completed their city{1}🎉\nNow their quarters cannot be destroyed";
