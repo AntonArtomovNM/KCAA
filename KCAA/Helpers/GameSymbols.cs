@@ -37,6 +37,10 @@ namespace KCAA.Helpers
 
         public static string Scaffolding => "🪜";
 
+        public static string Forge => "⚒️";
+
+        public static string Laboratory => "⚗️";
+
         public static string Tab => "     ";
 
         public static string GetColorByType(ColorType type)

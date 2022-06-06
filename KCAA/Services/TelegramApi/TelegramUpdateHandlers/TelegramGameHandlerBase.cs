@@ -270,7 +270,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var tgMessage = $"\n{GameMessages.GetPlayerInfoMessage(player)}\n\n{GameMessages.ChooseResourcesMessage}";
 
             var coinsAmount = _gameSettings.CoinsPerTurn;
-            var cardsAmount = _gameSettings.QuertersPerTurn;
+            var cardsAmount = _gameSettings.QuartersPerTurn;
 
             if (player.PlacedQuarters.Any(q => q.Name == QuarterNames.Goldmine))
             {
@@ -291,7 +291,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             if (character.Name == CharacterNames.Architect)
             {
-                var bonusCards = _gameSettings.QuertersPerTurn * 2;
+                var bonusCards = _gameSettings.QuartersPerTurn * 2;
                 cardsAmount += bonusCards;
                 additionalResourses = string.Concat(Enumerable.Repeat(GameSymbols.Card, bonusCards));
             }

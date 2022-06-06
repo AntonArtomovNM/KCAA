@@ -227,7 +227,8 @@
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 5,
-    "Description": "Once during your turn, you may pay two gold to draw three district cards."
+    "Description": "Once during your turn, you may pay two gold to draw three district cards.",
+    "GameAction":  "forge"
   },
   {
     "Name": "sp-la",
@@ -235,7 +236,8 @@
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 5,
-    "Description": "Once during your turn, you may discard a district card from your hand and receive two gold from the bank."
+    "Description": "Once during your turn, you may discard a district card from your hand and receive two gold from the bank.",
+    "GameAction": "laboratory"
   },
   {
     "Name": "sp-mu",

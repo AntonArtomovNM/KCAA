@@ -39,6 +39,10 @@ namespace KCAA.Models
 
         public const string DestroyArmory = "armory";
 
+        public const string UseForge = "forge";
+
+        public const string UseLaboratoty = "laboratory";
+
         static GameActionNames()
         {
             _displayNames = SetNames();
@@ -63,6 +67,8 @@ namespace KCAA.Models
             { PutUnderMuseum, $"Use Museum {GameSymbols.Museum}" },
             { RebuildScaffolding, $"Use Scaffolding {GameSymbols.Scaffolding}" },
             { DestroyArmory, $"Use Armory {GameSymbols.Destroy}" },
+            { UseForge, $"Use Forge {GameSymbols.Forge}" },
+            { UseLaboratoty, $"Use Laboratory {GameSymbols.Laboratory}" },
         };
     }
 }

@@ -60,7 +60,11 @@ namespace KCAA.Helpers
 
         public static string ScaffoldingRebuildMessage => "[{0}] <b>{1}</b> have used <b>Scaffolding</b> to build <b>{2}</b>";
 
-        public static string PutUnderMuseumMessage => "[{0}] <b>{1}</b> have put a card under museum +{2}🏆";
+        public static string PutUnderMuseumMessage => "[{0}] <b>{1}</b> have donated a card to the <b>Museum</b> [+{2}🏆]";
+
+        public static string UseLaboratoryMessage => "[{0}] <b>{1}</b> have used <b>Laboratory</b> to turn their card into {2} coins";
+
+        public static string UseForgeMessage => "[{0}] <b>{1}</b> have paid <b>Forge</b> workers {2} coins to get {3} cards";
 
         public static string OneQuarterLeftMessage => "They need to build only <b>1 more</b> quarter to win";
 
