@@ -252,7 +252,8 @@
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 3,
-    "Description": "Destroy the Armory to destroy 1 enemy's district of your choice."
+    "Description": "Destroy the Armory to destroy 1 enemy's district of your choice.",
+    "GameAction": "armory"
   },
   {
     "Name": "sp-sc",

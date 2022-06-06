@@ -52,9 +52,13 @@ namespace KCAA.Helpers
 
         public static string DestroyedPublicMessage => "[{0}] <b>{1}</b> have destroyed <b>{2}'s {3}</b>";
 
+        public static string DestroyedArmoryPersonalMessage => "<b>{0}</b> used <b>Armory</b> to destroy your <b>{1}</b>";
+
+        public static string DestroyedArmoryPublicMessage => "[{0}] <b>{1}</b> used <b>Armory</b> to destroy <b>{2}'s {3}</b>";
+
         public static string QuarterBuiltMessage => "[{0}] <b>{1}</b> have built <b>{2}</b>";
 
-        public static string ScaffoldingRebuildMessage => "[{0}] <b>{1}</b> have rebuilt Scaffolding with <b>{2}</b>";
+        public static string ScaffoldingRebuildMessage => "[{0}] <b>{1}</b> have used <b>Scaffolding</b> to build <b>{2}</b>";
 
         public static string PutUnderMuseumMessage => "[{0}] <b>{1}</b> have put a card under museum +{2}🏆";
 

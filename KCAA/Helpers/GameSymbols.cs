@@ -35,6 +35,8 @@ namespace KCAA.Helpers
 
         public static string Museum => "🏛";
 
+        public static string Scaffolding => "🪜";
+
         public static string Tab => "     ";
 
         public static string GetColorByType(ColorType type)

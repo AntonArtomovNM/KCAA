@@ -37,6 +37,8 @@ namespace KCAA.Models
 
         public const string RebuildScaffolding = "scaffolding";
 
+        public const string DestroyArmory = "armory";
+
         static GameActionNames()
         {
             _displayNames = SetNames();
@@ -50,7 +52,7 @@ namespace KCAA.Models
             { Cancel, "Cancel" },
             { Close, $"Close" },
             { Done, "Done" },
-            { BuildQuarter, "Build quarter" },
+            { BuildQuarter, $"Build quarter {GameSymbols.PlacedQuarter}" },
             { ChooseCharacter, "Choose" },
             { TakeRevenue, "Take revenue" },
             { Kill, $"Kill {GameSymbols.Killed}" },
@@ -59,7 +61,8 @@ namespace KCAA.Models
             { DiscardQuarters, $"Discard {GameSymbols.Exchange}" },
             { DestroyQuarters, $"Destroy {GameSymbols.Destroy}" },
             { PutUnderMuseum, $"Use Museum {GameSymbols.Museum}" },
-            { RebuildScaffolding, $"Rebuild Scaffolding" },
+            { RebuildScaffolding, $"Use Scaffolding {GameSymbols.Scaffolding}" },
+            { DestroyArmory, $"Use Armory {GameSymbols.Destroy}" },
         };
     }
 }
