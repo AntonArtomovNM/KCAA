@@ -78,8 +78,8 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 GameActionNames.Kill or GameActionNames.Steal => HandleCharacterEffect(chatId, player, lobby, characterName, command, data[3]),
                 GameActionNames.ExchangeHands => HandleExchangeHands(chatId, player, lobby, characterName, data[3]),
                 GameActionNames.DiscardQuarters => HandleDiscard(callbackQuery.Message, player, lobby, characterName, data[3]),
-                GameActionNames.DestroyQuarters => HandleDestroyQuarter(player, lobby, command, characterName, data[3], data.ElementAtOrDefault(4)),
-                GameActionNames.PutUnderMuseum => HandlePutUnderMuseum(chatId, player, lobby, characterName, data[3]),
+                GameActionNames.DestroyQuarters or GameActionNames.DestroyArmory => HandleDestroyQuarter(player, lobby, command, characterName, data[3], data.ElementAtOrDefault(4)),
+                GameActionNames.PutUnderMuseum or GameActionNames.UseLaboratoty => HandleDiscardSingle(chatId, player, lobby, command, characterName, data[3]),
                 GameActionNames.RebuildScaffolding => HandleRebuildScaffolding(chatId, player, lobby, characterName, data[3]),
                 _ => Task.CompletedTask
             };
@@ -105,9 +105,14 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
         private async Task HandleTakeResources(long chatId, Player player, Lobby lobby, string characterName, string typeStr, string amountStr)
         {
-            var resourceType = Enum.Parse(typeof(ResourceType), typeStr);
+            var resourceType = Enum.Parse<ResourceType>(typeStr);
             var amount = int.Parse(amountStr);
 
+            await HandleTakeResources(chatId, player, lobby, characterName, resourceType, amount);
+        }
+
+        private async Task HandleTakeResources(long chatId, Player player, Lobby lobby, string characterName, ResourceType resourceType, int amount)
+        {
             var newQuarters = new List<string>();
 
             switch (resourceType)
@@ -129,7 +134,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
                     if (characterName == CharacterNames.Architect)
                     {
-                        for (int i = 0; i < _gameSettings.QuertersPerTurn * 2; i++)
+                        for (int i = 0; i < _gameSettings.QuartersPerTurn * 2; i++)
                         {
                             newQuarters.Add(lobby.DrawQuarter());
                         }
@@ -168,15 +173,12 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             var action = gameAction switch
             {
-                GameActionNames.BuildQuarter => SendBuildQuarterKeyboard(lobby, player, characterName, gameAction),
                 GameActionNames.TakeRevenue => HandleTakeRevenue(chatId, player, characterName, gameAction, additionalData),
-                GameActionNames.Kill => SendCharacterKeyboard(chatId, lobby, player, characterName, gameAction),
-                GameActionNames.Steal => SendCharacterKeyboard(chatId, lobby, player, characterName, gameAction),
-                GameActionNames.ExchangeHands => SendPlayerKeyboard(chatId, lobby, player, characterName, gameAction),
-                GameActionNames.DiscardQuarters => SendDiscardQuarterKeyboard(player, characterName, gameAction),
-                GameActionNames.DestroyQuarters => SendPlayerKeyboard(chatId, lobby, player, characterName, gameAction),
-                GameActionNames.PutUnderMuseum => SendDiscardQuarterKeyboard(player, characterName, gameAction),
-                GameActionNames.RebuildScaffolding => SendBuildQuarterKeyboard(lobby, player, characterName, gameAction),
+                GameActionNames.UseForge => HandleUseForge(chatId, player, lobby, characterName, gameAction),
+                GameActionNames.BuildQuarter or GameActionNames.RebuildScaffolding => SendBuildQuarterKeyboard(lobby, player, characterName, gameAction),
+                GameActionNames.Kill or GameActionNames.Steal => SendCharacterKeyboard(chatId, lobby, player, characterName, gameAction),
+                GameActionNames.DiscardQuarters or GameActionNames.PutUnderMuseum or GameActionNames.UseLaboratoty => SendDiscardQuarterKeyboard(player, characterName, gameAction),
+                GameActionNames.DestroyQuarters or GameActionNames.ExchangeHands or GameActionNames.DestroyArmory => SendPlayerKeyboard(chatId, lobby, player, characterName, gameAction),
                 _ => Task.Run(() => Log.Warning($"Game action {gameAction} was not found"))
             };
 
@@ -199,18 +201,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var quarter = _quarterFactory.GetCard(quarterName);
             var character = lobby.CharacterDeck.Find(c => c.Name == characterName);
 
-            if (quarterName != QuarterNames.Stable)
-            {
-                character.BuiltQuarters++;
-            }
-            if (quarterName == QuarterNames.Museum)
-            {
-                player.GameActions.Add(GameActionNames.PutUnderMuseum);
-            }
-            if (quarterName == QuarterNames.Scaffolding && character.BuiltQuarters < character.CharacterBase.BuildingCapacity)
-            {
-                player.GameActions.Add(GameActionNames.RebuildScaffolding);
-            }
+            SpecialQuarterCheck(player, quarterName, character);
 
             player.Coins -= quarter.Cost;
             player.Score += quarter.Cost + quarter.BonusScore;
@@ -232,13 +223,10 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 messageBuilder.ToString(),
                 parseMode: ParseMode.Html);
 
-            if (character.BuiltQuarters >= character.CharacterBase.BuildingCapacity && !player.QuarterHand.Any(q => q == QuarterNames.Stable))
+            if (ReachedBuildCapacity(player, character))
             {
-                if (player.GameActions.Any(q => q == QuarterNames.Scaffolding))
-                {
-                    player.GameActions.Remove(GameActionNames.RebuildScaffolding);
-                }
-                player.GameActions.Remove(GameActionNames.BuildQuarter); 
+                player.GameActions.Remove(GameActionNames.RebuildScaffolding);
+                player.GameActions.Remove(GameActionNames.BuildQuarter);
             }
 
             await _playerProvider.SavePlayer(player);
@@ -260,20 +248,13 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var quarter = _quarterFactory.GetCard(quarterName);
             var character = lobby.CharacterDeck.Find(c => c.Name == characterName);
 
-            if (quarterName != QuarterNames.Stable)
-            {
-                character.BuiltQuarters++;
-            }
-            if (quarterName == QuarterNames.Museum)
-            {
-                player.GameActions.Add(GameActionNames.PutUnderMuseum);
-            }
+            SpecialQuarterCheck(player, quarterName, character);
 
             player.Score += quarter.Cost + quarter.BonusScore - _quarterFactory.GetCard(QuarterNames.Scaffolding).Cost;
             player.QuarterHand.Remove(quarterName);
             player.GameActions.Remove(GameActionNames.RebuildScaffolding);
 
-            if (character.BuiltQuarters >= character.CharacterBase.BuildingCapacity && !player.QuarterHand.Any(q => q == QuarterNames.Stable))
+            if (ReachedBuildCapacity(player, character))
             {
                 player.GameActions.Remove(GameActionNames.BuildQuarter);
             }
@@ -282,7 +263,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             player.PlacedQuarters.Add(new PlacedQuarter(quarterName));
 
             var messageBuilder = new StringBuilder();
-            messageBuilder.AppendFormat(GameMessages.ScaffoldingRebuildMessage, GameSymbols.PlacedQuarter, player.Name, $"{GameSymbols.GetColorByType(quarter.Type)} {quarter.DisplayName}");
+            messageBuilder.AppendFormat(GameMessages.ScaffoldingRebuildMessage, GameSymbols.Scaffolding, player.Name, $"{GameSymbols.GetColorByType(quarter.Type)} {quarter.DisplayName}");
             messageBuilder.AppendLine();
             messageBuilder.AppendLine(GameSymbols.GetCostInCoins(quarter.Cost));
 
@@ -302,28 +283,42 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await DisplayAvailableGameActions(chatId, lobby.Id, characterName);
         }
 
-        private async Task HandlePutUnderMuseum(long chatId, Player player, Lobby lobby, string characterName, string quarterName)
+        private async Task HandleDiscardSingle(long chatId, Player player, Lobby lobby, string gameAction, string characterName, string quarterName)
         {
             await _botClient.TryDeleteMessages(chatId, player.TelegramMetadata.CardMessageIds);
 
+            player.GameActions.Remove(gameAction);
             player.QuarterHand.Remove(quarterName);
-            player.PlacedQuarters.Find(q => q.Name == QuarterNames.Museum).BonusScore++;
-            player.Score++;
-
-            player.GameActions.Remove(GameActionNames.PutUnderMuseum);
+            await _playerProvider.UpdatePlayer(player, p => p.GameActions);
+            await _playerProvider.UpdatePlayer(player, p => p.QuarterHand);
 
             var messageBuilder = new StringBuilder();
-            messageBuilder.AppendFormat(GameMessages.PutUnderMuseumMessage, GameSymbols.PlacedQuarter, player.Name, player.PlacedQuarters.Find(q => q.Name == QuarterNames.Museum).BonusScore);
+
+            if (gameAction == GameActionNames.PutUnderMuseum)
+            {
+                var museum = player.PlacedQuarters.Find(q => q.Name == QuarterNames.Museum);
+
+                museum.BonusScore++;
+                player.Score++;
+                await _playerProvider.UpdatePlayer(player, p => p.PlacedQuarters);
+                await _playerProvider.UpdatePlayer(player, p => p.Score);
+
+                messageBuilder.AppendFormat(GameMessages.PutUnderMuseumMessage, GameSymbols.Museum, player.Name, museum.FullBonusScore);
+            }
+            else if (gameAction == GameActionNames.UseLaboratoty)
+            {
+                var coins = _gameSettings.CoinsPerLaboratoryUse;
+
+                player.Coins += coins;
+                await _playerProvider.UpdatePlayer(player, p => p.Coins);
+
+                messageBuilder.AppendFormat(GameMessages.UseLaboratoryMessage, GameSymbols.Laboratory, player.Name, coins);
+            }
 
             await _botClient.SendTextMessageAsync(
                 lobby.TelegramMetadata.ChatId,
                 messageBuilder.ToString(),
                 parseMode: ParseMode.Html);
-
-            await _playerProvider.UpdatePlayer(player, p => p.QuarterHand);
-            await _playerProvider.UpdatePlayer(player, p => p.PlacedQuarters);
-            await _playerProvider.UpdatePlayer(player, p => p.Score);
-            await _playerProvider.UpdatePlayer(player, p => p.GameActions);
 
             await DisplayAvailableGameActions(chatId, lobby.Id, characterName);
         }
@@ -566,7 +561,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             //If no quarter was selected yet, send quarters
             if (string.IsNullOrWhiteSpace(quarterName))
             {
-                var quarters = target.PlacedQuarters.Where(q => q.QuarterBase.Cost <= player.Coins + 1 && q.Name != QuarterNames.Fort);
+                var quarters = target.PlacedQuarters.Where(q => q.QuarterBase.Cost <= player.Coins + 1 && (gameAction == GameActionNames.DestroyArmory || q.Name != QuarterNames.Fort));
                 await SendPlacedQuartersKeyboard(player, characterName, gameAction, $"{gameAction}_{player.LobbyId}_{characterName}_{targetIdStr}", quarters);
                 return;
             }
@@ -576,26 +571,60 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             target.PlacedQuarters.Remove(quarter);
             target.Score -= quarter.QuarterBase.Cost + quarter.FullBonusScore;
-
-            player.Coins -= quarter.QuarterBase.Cost - 1;
-            player.GameActions.Remove(GameActionNames.DestroyQuarters);
-
-            await _playerProvider.UpdatePlayer(player, p => p.Coins);
-            await _playerProvider.UpdatePlayer(player, p => p.GameActions);
-            await _playerProvider.UpdatePlayer(target, p => p.Score);
             await _playerProvider.UpdatePlayer(target, p => p.PlacedQuarters);
+            await _playerProvider.UpdatePlayer(target, p => p.Score);
+
+            var destroyPersonalMessage = string.Empty;
+            var destroyPublicMessage = string.Empty;
+
+            if (gameAction == GameActionNames.DestroyQuarters)
+            { 
+                player.Coins -= quarter.QuarterBase.Cost - 1; 
+                await _playerProvider.UpdatePlayer(player, p => p.Coins);
+
+                destroyPersonalMessage = GameMessages.DestroyedPersonalMessage;
+                destroyPublicMessage = GameMessages.DestroyedPublicMessage;
+            }
+            else if (gameAction == GameActionNames.DestroyArmory)
+            {
+                var armory = player.PlacedQuarters.Find(pq => pq.Name == QuarterNames.Armory);
+                player.PlacedQuarters.Remove(armory);
+                player.Score -= armory.QuarterBase.Cost;
+                await _playerProvider.UpdatePlayer(player, p => p.PlacedQuarters);
+                await _playerProvider.UpdatePlayer(player, p => p.Score);
+
+                destroyPersonalMessage = GameMessages.DestroyedArmoryPersonalMessage;
+                destroyPublicMessage = GameMessages.DestroyedArmoryPublicMessage;
+            }
+
+            player.GameActions.Remove(gameAction);
+            await _playerProvider.UpdatePlayer(player, p => p.GameActions);
 
             var quarterStats = $@"{GameSymbols.GetColorByType(quarter.QuarterBase.Type)} {quarter.QuarterBase.DisplayName}{(quarter.FullBonusScore > 0 ? $" [+{quarter.FullBonusScore}{GameSymbols.Score}]" : "")}
 {GameSymbols.GetCostInCoins(quarter.QuarterBase.Cost)}";
 
-            await SendActionPerformedMessage(target, string.Format(GameMessages.DestroyedPersonalMessage, player.Name, quarterStats));
+            await SendActionPerformedMessage(target, string.Format(destroyPersonalMessage, player.Name, quarterStats));
 
             await _botClient.SendTextMessageAsync(
                 lobby.TelegramMetadata.ChatId, 
-                string.Format(GameMessages.DestroyedPublicMessage, GameSymbols.Destroy, player.Name, target.Name, quarterStats),
+                string.Format(destroyPublicMessage, GameSymbols.Destroy, player.Name, target.Name, quarterStats),
                 parseMode: ParseMode.Html);
 
             await DisplayAvailableGameActions(chatId, lobby.Id, characterName);
+        }
+
+        private async Task HandleUseForge(long chatId, Player player, Lobby lobby, string characterName, string gameAction)
+        {
+            player.Coins -= _gameSettings.CoinsPerForgeUse;
+            player.GameActions.Remove(GameActionNames.UseForge);
+            await _playerProvider.UpdatePlayer(player, p => p.GameActions);
+
+            await HandleTakeResources(chatId, player, lobby, characterName, ResourceType.Card, _gameSettings.QuartersPerForgeUse);
+
+            await _botClient.SendTextMessageAsync(
+                lobby.TelegramMetadata.ChatId,
+                string.Format(GameMessages.UseForgeMessage, GameSymbols.Forge, player.Name, _gameSettings.CoinsPerForgeUse, _gameSettings.QuartersPerForgeUse),
+                parseMode: ParseMode.Html);
         }
 
         private async Task SendBuildQuarterKeyboard(Lobby lobby, Player player, string characterName, string gameAction)
@@ -764,16 +793,15 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var characters = lobby.CharacterDeck;
             var character = characters.FirstOrDefault(c => c.Name == characterName).CharacterBase;
 
-            //If it's placed quarters related ability
-            if (character.Type == ColorType.Red)
+            if (gameAction == GameActionNames.DestroyQuarters)
             {
-                Predicate<Player> characterSpecificCheck = character.Name switch
-                {
-                    CharacterNames.Warlord => (p => !p.PlacedQuarters.Any(q => q.QuarterBase.Cost <= player.Coins + 1 && q.Name != QuarterNames.Fort)),
-                    _ => (_ => false)
-                };
-
-                players.RemoveAll(p => p.PlacedQuarters.Count >= _gameSettings.QuartersToWin || p.CharacterHand.Contains(CharacterNames.Bishop) || characterSpecificCheck(p));
+                players.RemoveAll(p => p.PlacedQuarters.Count >= _gameSettings.QuartersToWin 
+                    || p.CharacterHand.Contains(CharacterNames.Bishop) 
+                    || !p.PlacedQuarters.Any(q => q.QuarterBase.Cost <= player.Coins + 1 && q.Name != QuarterNames.Fort));
+            }
+            else if (gameAction == GameActionNames.DestroyArmory)
+            {
+                players.RemoveAll(p => p.PlacedQuarters.Count >= _gameSettings.QuartersToWin);
             }
 
             if (!players.Any())
@@ -932,7 +960,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                     var quartersToBuild = character.CharacterBase.BuildingCapacity - character.BuiltQuarters;
                     if (quartersToBuild != 1)
                     {
-                        actionDisplayName += $" ({(quartersToBuild > 0 ? quartersToBuild : "*")})"; //aaa
+                        actionDisplayName += $" ({(quartersToBuild > 0 ? quartersToBuild : "*")})";
                     }
 
                     break;
@@ -995,6 +1023,45 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 parseMode: ParseMode.Html);
 
             await _playerProvider.SavePlayer(player);
+        }
+
+        private bool ReachedBuildCapacity(Player player, Character character)
+        {
+            return character.BuiltQuarters >= character.CharacterBase.BuildingCapacity && !player.QuarterHand.Any(q => q == QuarterNames.Stable);
+        }
+
+        private void SpecialQuarterCheck(Player player, string quarterName, Character character)
+        {
+            switch (quarterName)
+            {
+                case QuarterNames.Stable:
+                    return;
+
+                case QuarterNames.Museum:
+                    player.GameActions.Add(GameActionNames.PutUnderMuseum);
+                    break;
+
+                case QuarterNames.Scaffolding:
+                    if (!ReachedBuildCapacity(player, character))
+                    {
+                        player.GameActions.Add(GameActionNames.RebuildScaffolding);
+                    }
+                    break;
+
+                case QuarterNames.Armory:
+                    player.GameActions.Add(GameActionNames.DestroyArmory);
+                    break;
+
+                case QuarterNames.Forge:
+                    player.GameActions.Add(GameActionNames.UseForge);
+                    break;
+
+                case QuarterNames.Laboratory:
+                    player.GameActions.Add(GameActionNames.UseLaboratoty);
+                    break;
+            }
+
+            character.BuiltQuarters++;
         }
     }
 }

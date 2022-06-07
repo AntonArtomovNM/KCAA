@@ -154,7 +154,7 @@
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 2,
-    "Description": "At the end of the game, the Ghost Neighbourhood counts as any quarter type of your choice."
+    "Description": "At the end of the game, the Ghost Neighbourhood counts as any district type of your choice."
   },
   {
     "Name": "sp-st",
@@ -162,7 +162,7 @@
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 2,
-    "Description": "You can build another quarter this turn."
+    "Description": "You can build another district this turn."
   },
   {
     "Name": "sp-fo",
@@ -203,7 +203,7 @@
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 5,
-    "Description": "If at the end of the game you have built at least 3 quarters of the same type, score 3 extra points."
+    "Description": "If at the end of the game you have built at least 3 districts of the same type, score 3 extra points."
   },
   {
     "Name": "sp-mr",
@@ -219,7 +219,7 @@
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 5,
-    "Description": "At the end of the game, score 1 extra point for each special quarter in your city."
+    "Description": "At the end of the game, score 1 extra point for each special district in your city."
   },
   {
     "Name": "sp-fg",
@@ -227,7 +227,8 @@
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 5,
-    "Description": "Once during your turn, you may pay two gold to draw three quarter cards."
+    "Description": "Once during your turn, you may pay two gold to draw three district cards.",
+    "GameAction":  "forge"
   },
   {
     "Name": "sp-la",
@@ -235,7 +236,8 @@
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 5,
-    "Description": "Once during your turn, you may discard a quarter card from your hand and receive two gold from the bank."
+    "Description": "Once during your turn, you may discard a district card from your hand and receive two gold from the bank.",
+    "GameAction": "laboratory"
   },
   {
     "Name": "sp-mu",
@@ -252,7 +254,8 @@
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 3,
-    "Description": "Destroy the Armory to destroy 1 enemy's quarter of your choice."
+    "Description": "Destroy the Armory to destroy 1 enemy's district of your choice.",
+    "GameAction": "armory"
   },
   {
     "Name": "sp-sc",
@@ -260,7 +263,7 @@
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 3,
-    "Description": "You can build the quarters by destroying scaffolding instead of paying the cost of the selected quarter.",
+    "Description": "You can build the district by destroying scaffolding instead of paying the cost of the selected district.",
     "GameAction": "scaffolding"
   },
   {
@@ -277,7 +280,7 @@
     "Type": 5,
     "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
     "Cost": 6,
-    "Description": "For abilities that gain resources for your quarters, the School of Magic counts as the quarters type of your choice."
+    "Description": "For abilities that gain resources for your districts, the School of Magic counts as the district type of your choice."
   }
 ]
 

@@ -20,9 +20,15 @@
 
         public int CoinsPerTurn { get; set; }
 
-        public int QuertersPerTurn { get; set; }
+        public int QuartersPerTurn { get; set; }
 
         public int QuartersToWin { get; set; }
+
+        public int CoinsPerLaboratoryUse { get; set; }
+
+        public int CoinsPerForgeUse { get; set; }
+
+        public int QuartersPerForgeUse { get; set; }
 
         public int FullBuildBonus { get; set; }
 
