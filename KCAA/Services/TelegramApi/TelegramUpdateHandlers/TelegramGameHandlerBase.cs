@@ -355,7 +355,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
         private async Task DisplayPlayerScore(Lobby lobby, IEnumerable<Player> players)
         {
-            players = players.OrderByDescending(p => p.Score).ThenByDescending(p => p.QuarterHand.Count);
+            players = players.OrderByDescending(p => p.FullScore).ThenByDescending(p => p.QuarterHand.Count);
             var winner = players.First();
 
             var builder = new StringBuilder();

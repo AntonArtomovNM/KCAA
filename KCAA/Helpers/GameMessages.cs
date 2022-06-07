@@ -158,7 +158,7 @@ When a city has <b>7 quarters</b>, the game ends after the current round, and yo
 
         public static string GetPlacedQuarterInfo(PlacedQuarter quarterData)
         {
-            return $@"{GameSymbols.Tab}{GameSymbols.GetColorByType(quarterData.QuarterBase.Type)} {quarterData.QuarterBase.DisplayName}{(quarterData.FullBonusScore > 0 ? $" [+{quarterData.FullBonusScore}{GameSymbols.Score}]" : "")}
+            return $@"{GameSymbols.Tab}{GameSymbols.GetColorByType(quarterData.QuarterBase.Type)} {quarterData.QuarterBase.DisplayName}{(quarterData.BonusScore > 0 ? $" [+{quarterData.BonusScore}{GameSymbols.Score}]" : "")}
 {GameSymbols.Tab}{GameSymbols.Tab}{GameSymbols.GetCostInCoins(quarterData.QuarterBase.Cost)}";
         }
 
@@ -187,7 +187,7 @@ When a city has <b>7 quarters</b>, the game ends after the current round, and yo
         {
             var builder = new StringBuilder();
             var placedAmount = player.PlacedQuarters.Count;
-            var score = player.Score;
+            var score = player.FullScore;
 
             builder.Append($"{GameSymbols.Coin}: {player.Coins}");
             builder.Append($" | {GameSymbols.Card}: {player.QuarterHand.Count}");
