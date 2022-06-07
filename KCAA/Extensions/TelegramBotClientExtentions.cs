@@ -73,7 +73,7 @@ Cost: {GameSymbols.GetCostInCoins(quarter.Cost)}
 
         public static async Task<Message> SendPlacedQuarter(this ITelegramBotClient botClient, long chatId, PlacedQuarter quarter, InlineKeyboardMarkup inlineKeyboard = null)
         {
-            var tgmessage = $@"{GetQuarterTitleByColor(quarter.QuarterBase.DisplayName, quarter.QuarterBase.Type)}{(quarter.FullBonusScore > 0 ? $" [+{quarter.FullBonusScore}{GameSymbols.Score}]" : "")}
+            var tgmessage = $@"{GetQuarterTitleByColor(quarter.QuarterBase.DisplayName, quarter.QuarterBase.Type)}{(quarter.BonusScore > 0 ? $" [+{quarter.BonusScore}{GameSymbols.Score}]" : "")}
 Cost: {GameSymbols.GetCostInCoins(quarter.QuarterBase.Cost)}
 {quarter.QuarterBase.Description}";
 

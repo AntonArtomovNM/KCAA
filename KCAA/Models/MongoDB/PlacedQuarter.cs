@@ -13,9 +13,6 @@ namespace KCAA.Models.MongoDB
         [BsonIgnore]
         public Quarter QuarterBase { get; set; }
 
-        [BsonIgnore]
-        public int FullBonusScore => BonusScore + QuarterBase.BonusScore;
-
         public PlacedQuarter(string name)
         {
             Name = name;

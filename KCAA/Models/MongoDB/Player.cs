@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace KCAA.Models.MongoDB
@@ -25,6 +26,9 @@ namespace KCAA.Models.MongoDB
         public int Coins { get; set; }
 
         public int Score { get; set; }
+
+        [BsonIgnore]
+        public int FullScore => Score + PlacedQuarters.Sum(pq => pq.BonusScore);
 
         public List<string> CharacterHand { get; set; } = new List<string>();
 
