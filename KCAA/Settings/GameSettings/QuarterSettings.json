@@ -143,7 +143,7 @@
     "Name": "sp-sh",
     "DisplayName": "Secret Hideout",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8cl-14e8958c-6d37-46b5-a0b9-5c7a7c8dbcec.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThjbC0xNGU4OTU4Yy02ZDM3LTQ2YjUtYTBiOS01YzdhN2M4ZGJjZWMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.3uUN0sPcM3QvNU8ZDEK_IxT0qPnnnqHSuTcl1-9TFp4",
     "Cost": 0,
     "Description": "The Secret Hideout cannot be built. At the end of the game, score 3 extra points if the card is in your hand.",
     "BonusScore": 3
@@ -152,23 +152,23 @@
     "Name": "sp-gn",
     "DisplayName": "Ghost Neighbourhood",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8ar-7b61ad2e-07d6-462a-b23d-de4ec9a23af0.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThhci03YjYxYWQyZS0wN2Q2LTQ2MmEtYjIzZC1kZTRlYzlhMjNhZjAucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.UcRVPKkbt1WnKPlDivFscD187dbe96TrygYxckz5ab0",
     "Cost": 2,
-    "Description": "At the end of the game, the Ghost Neighbourhood counts as any district type of your choice."
+    "Description": "At the end of the game, the Ghost Neighbourhood counts as any quarter type of your choice."
   },
   {
     "Name": "sp-st",
     "DisplayName": "Stable",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8ct-4836028b-be6b-4ca7-b27d-db7df242a4ac.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThjdC00ODM2MDI4Yi1iZTZiLTRjYTctYjI3ZC1kYjdkZjI0MmE0YWMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.mTtln56zoSfWg0jI2hf1n3OJUVFxQkrlLg7LhqvCRc0",
     "Cost": 2,
-    "Description": "You can build another district this turn."
+    "Description": "You can build another quarter this turn."
   },
   {
     "Name": "sp-fo",
     "DisplayName": "Fort",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8ao-b9674d94-12ca-46c6-b54d-c3fe5ed0db6e.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThhby1iOTY3NGQ5NC0xMmNhLTQ2YzYtYjU0ZC1jM2ZlNWVkMGRiNmUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.bZtdhSQACQ_Psxl9-LaWYUqNg-aDCNtOcu3CcimQNw8",
     "Cost": 3,
     "Description": "The Fort cannot be destroyed by the Warlord."
   },
@@ -176,7 +176,7 @@
     "Name": "sp-gm",
     "DisplayName": "Goldmine",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8b1-18817578-7674-4067-be77-8ca3c423376d.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThiMS0xODgxNzU3OC03Njc0LTQwNjctYmU3Ny04Y2EzYzQyMzM3NmQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.wxj0K-NRILtDgZOsASfz1ZBjfJTzaMAAL8zU86UsPDE",
     "Cost": 6,
     "Description": "If during resource acquisition you choose to receive gold, get 1 extra gold."
   },
@@ -184,7 +184,7 @@
     "Name": "sp-dg",
     "DisplayName": "Dragon Gates",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8ag-11f3a145-65c7-401f-96e7-368c9fb6f065.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThhZy0xMWYzYTE0NS02NWM3LTQwMWYtOTZlNy0zNjhjOWZiNmYwNjUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.NDMA3uEnAxac1J_IxQUYONm5CQcULeyxm-Yl2p1Kxp0",
     "Cost": 6,
     "Description": "At the end of the game, score 2 extra points.",
     "BonusScore": 2
@@ -193,7 +193,7 @@
     "Name": "sp-it",
     "DisplayName": "Imperial Treasury",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8ba-2fa6eaa7-0084-48f9-920a-6f9995513fd7.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThiYS0yZmE2ZWFhNy0wMDg0LTQ4ZjktOTIwYS02Zjk5OTU1MTNmZDcucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.Tjvp1nE-XB0nzJFchavKBA5yB5V7SRxK56Vkgm-iSrw",
     "Cost": 5,
     "Description": "At the end of the game, score 1 extra point for each gold in your stash."
   },
@@ -201,15 +201,16 @@
     "Name": "sp-ca",
     "DisplayName": "Capitol",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8a6-63abf056-cf03-41b0-8aaa-49e48f349794.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThhNi02M2FiZjA1Ni1jZjAzLTQxYjAtOGFhYS00OWU0OGYzNDk3OTQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.d3KQ5F83vi7QgKVYMjDIVBGwJmZUPg8vMHQpkFky1k4",
     "Cost": 5,
-    "Description": "If at the end of the game you have built at least 3 districts of the same type, score 3 extra points."
+    "Description": "If at the end of the game you have built at least 3 quarters of the same type, score 3 extra points.",
+    "BonusScore": 3
   },
   {
     "Name": "sp-mr",
     "DisplayName": "Map Room",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8bp-6989d0b4-53f4-4c58-80d2-17d406e792c8.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThicC02OTg5ZDBiNC01M2Y0LTRjNTgtODBkMi0xN2Q0MDZlNzkyYzgucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.V5XXcqmSzeXJ-ZiTAZbJeKTEI-cQUR60Wzbn7uy7R6c",
     "Cost": 5,
     "Description": "At the end of the game, score 1 extra point for each card in your hand."
   },
@@ -217,33 +218,33 @@
     "Name": "sp-ww",
     "DisplayName": "Wishing Well",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8cx-9a6a82bb-64ed-4099-9919-1a9955bed8d0.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThjeC05YTZhODJiYi02NGVkLTQwOTktOTkxOS0xYTk5NTViZWQ4ZDAucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.VRu9XpxTY4at7WXTs9IbirlFEvSnWWCqS_gF9F-N2e8",
     "Cost": 5,
-    "Description": "At the end of the game, score 1 extra point for each special district in your city."
+    "Description": "At the end of the game, score 1 extra point for each special quarter in your city."
   },
   {
     "Name": "sp-fg",
     "DisplayName": "Forge",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8al-f7e9b77a-e046-46d8-b1d0-b620549fb66f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThhbC1mN2U5Yjc3YS1lMDQ2LTQ2ZDgtYjFkMC1iNjIwNTQ5ZmI2NmYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.OeFhm9VjbZK5eh0IG67zD5HXJCJNqLvwdbk6EcK7NQs",
     "Cost": 5,
-    "Description": "Once during your turn, you may pay two gold to draw three district cards.",
-    "GameAction":  "forge"
+    "Description": "Once during your turn, you may pay two gold to draw three quarter cards.",
+    "GameAction": "forge"
   },
   {
     "Name": "sp-la",
     "DisplayName": "Laboratory",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8bh-a3865a8a-b984-4f45-83bc-f3d2ac3f797d.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThiaC1hMzg2NWE4YS1iOTg0LTRmNDUtODNiYy1mM2QyYWMzZjc5N2QucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.QGXhEdsgvgbpZ1-dDA94ikO_WmFWkfTcWHSyYJtQ2jU",
     "Cost": 5,
-    "Description": "Once during your turn, you may discard a district card from your hand and receive two gold from the bank.",
+    "Description": "Once during your turn, you may discard a quarter card from your hand and receive two gold from the bank.",
     "GameAction": "laboratory"
   },
   {
     "Name": "sp-mu",
     "DisplayName": "Museum",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8c1-6ab885c6-e114-4444-bdf5-6a4f888591eb.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThjMS02YWI4ODVjNi1lMTE0LTQ0NDQtYmRmNS02YTRmODg4NTkxZWIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.VMFfb2P4GEab16EbrG5t7XNhWM_xDiO39kvWggNAS_w",
     "Cost": 4,
     "Description": "Once during your turn, you may put 1 card under the museum card. At the end of the game, score 1 extra point for each card under the Museum.",
     "GameAction": "museum"
@@ -252,35 +253,36 @@
     "Name": "sp-ar",
     "DisplayName": "Armory",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u89y-2bd595a4-9b6b-46c2-8507-43088279cb0f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dTg5eS0yYmQ1OTVhNC05YjZiLTQ2YzItODUwNy00MzA4ODI3OWNiMGYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.99D73FLxIGwDD9dQ_zGgc1QJBG3EVwRGaBEN5HxdWyM",
     "Cost": 3,
-    "Description": "Destroy the Armory to destroy 1 enemy's district of your choice.",
+    "Description": "Destroy the Armory to destroy 1 enemy's quarter of your choice.",
     "GameAction": "armory"
   },
   {
     "Name": "sp-sc",
     "DisplayName": "Scaffolding",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8c7-8376db01-edb7-45a9-a46a-8a47d3c49802.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThjNy04Mzc2ZGIwMS1lZGI3LTQ1YTktYTQ2YS04YTQ3ZDNjNDk4MDIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.BYd_pDx3DPOsR6fj3KWuOmmFyypsarEFu0csawobCoE",
     "Cost": 3,
-    "Description": "You can build the district by destroying scaffolding instead of paying the cost of the selected district.",
+    "Description": "You can build the quarter by destroying scaffolding instead of paying the cost of the selected quarter.",
     "GameAction": "scaffolding"
   },
   {
     "Name": "sp-mo",
     "DisplayName": "Monument",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8bw-6ee5e809-6dc7-40b9-8aa6-e5d69ff58cc6.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThidy02ZWU1ZTgwOS02ZGM3LTQwYjktOGFhNi1lNWQ2OWZmNThjYzYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.SVUfbY6IGZu8jyFGb1_ol7iTXAQHXafaKAYIPoRCoDc",
     "Cost": 3,
-    "Description": "If you have the crown at the end of the game, score 5 extra points."
+    "Description": "If you have the crown at the end of the game, score 5 extra points.",
+    "BonusScore": 5
   },
   {
     "Name": "sp-som",
     "DisplayName": "School of Magic",
     "Type": 5,
-    "PhotoUri": "https://i.pinimg.com/736x/b5/be/91/b5be91f0de3a5eaa5268a77a92a28d57--over-the-garden-wall-background-designs.jpg",
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8cd-8b10f893-6a95-499b-a9fc-427d8e8b2770.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThjZC04YjEwZjg5My02YTk1LTQ5OWItYTlmYy00MjdkOGU4YjI3NzAucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.oaCdW-iB_TKHj1Ybl3-hGkwTNKEiS5OYLOwI-5yd0gs",
     "Cost": 6,
-    "Description": "For abilities that gain resources for your districts, the School of Magic counts as the district type of your choice."
+    "Description": "For abilities that gain resources for your quarters, the School of Magic counts as the quarter type of your choice."
   }
 ]
 
