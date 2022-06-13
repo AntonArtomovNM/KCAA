@@ -56,7 +56,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 "Table" => DisplayTable(message),
                 "/create_lobby" => HandleCreateLobby(message.Chat.Id),
                 "/start" => HandleStart(text.Last(), message.Chat),
-                "/end" => HandleEndGame(message.Chat.Id),
+                "/stop" => HandleStopGame(message.Chat.Id),
                 "/rules" => _botClient.SendTextMessageAsync(message.Chat.Id, GameMessages.BasicRules, parseMode: ParseMode.Html),
                 "/help" => _botClient.DisplayBotCommands(message.Chat.Id),
                 _ => Task.CompletedTask
@@ -96,7 +96,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await SendNewJoinButton(lobby);
         }
 
-        private async Task HandleEndGame(long chatId)
+        private async Task HandleStopGame(long chatId)
         {
             //if it's a user chat
             if (chatId > 0)
@@ -246,6 +246,11 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             foreach (var player in players)
             {
                 lobbyStrBuilder.AppendLine("• " + player.Name);
+            }
+
+            if (lobby.PlayersCount >= _gameSettings.MinPlayersAmount)
+            {
+                lobbyStrBuilder.AppendLine(GameMessages.StartLobbyMessage);
             }
 
             var buttons = new[]

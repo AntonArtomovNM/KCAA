@@ -13,6 +13,8 @@ namespace KCAA.Helpers
  • Use /help to see all of the bot commands";
 
         public static string LobbyRegistrationMessage => "Well met, hero!";
+        
+        public static string StartLobbyMessage => "You can use /start to start the game";
 
         public static string LobbyJoinedMessage => "You've joined the lobby in <b>{0}</b>";
 
