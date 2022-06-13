@@ -12,11 +12,14 @@ using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
 using Telegram.Bot.Types.Enums;
 using Serilog;
+using KCAA.Models.MongoDB;
 
 namespace KCAA.Extensions
 {
     public static class TelegramBotClientExtentions
     {
+        private const int PHOTOS_PER_ALBM = 10;
+
         public static async Task<Message> PutMessage(this ITelegramBotClient botClient, long chatId, int messageId, string text, InlineKeyboardMarkup inlineKeyboard = null)
         {
             Message message;
@@ -68,6 +71,17 @@ Cost: {GameSymbols.GetCostInCoins(quarter.Cost)}
             return await SendMessageWithPhoto(botClient, chatId, inlineKeyboard, photo, tgmessage);
         }
 
+        public static async Task<Message> SendPlacedQuarter(this ITelegramBotClient botClient, long chatId, PlacedQuarter quarter, InlineKeyboardMarkup inlineKeyboard = null)
+        {
+            var tgmessage = $@"{GetQuarterTitleByColor(quarter.QuarterBase.DisplayName, quarter.QuarterBase.Type)}{(quarter.BonusScore > 0 ? $" [+{quarter.BonusScore}{GameSymbols.Score}]" : "")}
+Cost: {GameSymbols.GetCostInCoins(quarter.QuarterBase.Cost)}
+{quarter.QuarterBase.Description}";
+
+            var photo = new InputOnlineFile(quarter.QuarterBase.PhotoUri);
+
+            return await SendMessageWithPhoto(botClient, chatId, inlineKeyboard, photo, tgmessage);
+        }
+
         public static async Task<Message> SendCharacter(this ITelegramBotClient botClient, long chatId, CharacterBase character, string text, InlineKeyboardMarkup inlineKeyboard = null, bool usePhotoWithDescription = false)
         {
             var tgmessage = $@"{GetCharacterTitleByColor(character.DisplayName, character.Type)}
@@ -77,14 +91,14 @@ Cost: {GameSymbols.GetCostInCoins(quarter.Cost)}
             return await SendMessageWithPhoto(botClient, chatId, inlineKeyboard, photo, tgmessage);
         }
 
-        public static async Task<IEnumerable<int>> SendCardGroup(this ITelegramBotClient botClient, long chatId, IEnumerable<CardObject> cards, Func<CardObject,string> messageFormatter = null)
+        public static async Task<IEnumerable<int>> SendCardGroup<T>(this ITelegramBotClient botClient, long chatId, IEnumerable<T> cards, Func<T,string> messageFormatter = null) where T: CardObject
         {
             if (cards == null || !cards.Any()) 
             {
-                return new int[0];
+                return Array.Empty<int>();
             }
 
-            var mediaGroup = cards.Select(c => new InputMediaPhoto(new InputMedia(c.PhotoUri))
+            var mediaGroup = cards.Select(c => new InputMediaPhoto(new InputMedia(c.PhotoWithDescriptionUri))
             {
                 Caption = messageFormatter(c)
             });

@@ -15,6 +15,8 @@ using Telegram.Bot.Types.ReplyMarkups;
 using System.Text;
 using Telegram.Bot.Types.Enums;
 using Serilog;
+using KCAA.Models.Quarters;
+using System;
 
 namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 {
@@ -22,19 +24,22 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
     {
         protected readonly IPlayerProvider _playerProvider;
         protected readonly ILobbyProvider _lobbyProvider;
+        protected readonly ICardFactory<Quarter> _quarterFactory;
         protected readonly HttpClient _httpClient;
         protected readonly GameSettings _gameSettings;
 
         protected ITelegramBotClient _botClient;
 
         protected TelegramGameHandlerBase(
-            IPlayerProvider playerProvider, 
-            ILobbyProvider lobbyProvider, 
+            IPlayerProvider playerProvider,
+            ILobbyProvider lobbyProvider,
+            ICardFactory<Quarter> quarterFactory,
             GameSettings gameSettings)
         {
             _playerProvider = playerProvider;
             _lobbyProvider = lobbyProvider;
             _gameSettings = gameSettings;
+            _quarterFactory = quarterFactory;
             _httpClient = new HttpClient();
         }
 
@@ -73,7 +78,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
                 if (characterBase.Type != ColorType.None)
                 {
-                    var rightTypeQuartersCount = player.PlacedQuarters.Where(q => q.QuarterBase.Type == characterBase.Type).Count();
+                    var rightTypeQuartersCount = player.PlacedQuarters.Where(q => q.QuarterBase.Type == characterBase.Type || q.Name == QuarterNames.SchoolOfMagic).Count();
                     characterDescription = string.Format(characterDescription, rightTypeQuartersCount);
                 } 
                 else if (characterBase.Name == CharacterNames.Beggar)
@@ -189,13 +194,86 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
         protected async Task EndGame(string lobbyId)
         {
             var lobby = await _lobbyProvider.GetLobbyById(lobbyId);
-            var players = await _playerProvider.GetPlayersByLobbyId(lobbyId);
+            var players = await _playerProvider.GetPlayersByLobbyId(lobbyId, loadPlacedQuarters: true);
 
             var chatId = lobby.TelegramMetadata.ChatId;
+
+            // additional scores
+            foreach(var player in players)
+            {
+                var secretHideout = _quarterFactory.GetCard(QuarterNames.SecretHideout);
+                var capitol = _quarterFactory.GetCard(QuarterNames.Capitol);
+                var mapRoom = _quarterFactory.GetCard(QuarterNames.MapRoom);
+                var wishingWell = _quarterFactory.GetCard(QuarterNames.WishingWell);
+                var monument = _quarterFactory.GetCard(QuarterNames.Monument);
+                var imperialTreasury = _quarterFactory.GetCard(QuarterNames.ImperialTreasury);
+
+                if (player.QuarterHand.Any(q => q == secretHideout.Name))
+                {
+                    await SpecialCardEndGameBonus(player, secretHideout);
+                }
+
+                if (player.PlacedQuarters.Any(q => q.Name == capitol.Name))
+                {
+                    var types = Enum.GetValues<ColorType>();
+                    for (var i = 1; i < types.Length; i++)
+                    {
+                        var type = types[i];
+
+                        if (player.PlacedQuarters.Where(q => q.QuarterBase.Type == type).Count()>=3)
+                        {
+                            await SpecialCardEndGameBonus(player, capitol);
+                            break;
+                        }
+                    }
+                }
+
+                if (player.PlacedQuarters.Any(q => q.Name == monument.Name) && player.HasCrown)
+                {
+                    await SpecialCardEndGameBonus(player, monument);
+                }
+
+                if (player.PlacedQuarters.Any(q => q.Name == mapRoom.Name))
+                {
+                    mapRoom.BonusScore = player.QuarterHand.Count();
+                    await SpecialCardEndGameBonus(player, mapRoom);
+                }
+
+                if (player.PlacedQuarters.Any(q => q.Name == wishingWell.Name))
+                {
+                    wishingWell.BonusScore = player.PlacedQuarters.Where(q => q.QuarterBase.Type == ColorType.Purple).Count();
+                    await SpecialCardEndGameBonus(player, wishingWell);
+                }
+
+                if (player.PlacedQuarters.Any(q => q.Name == imperialTreasury.Name))
+                {
+                    imperialTreasury.BonusScore = player.Coins;
+                    await SpecialCardEndGameBonus(player, imperialTreasury);
+                }
+
+                if (DoesHaveAllQuarterTypes(player.PlacedQuarters))
+                {
+                    var allTypesBonus = _gameSettings.AllTypesBonus;
+                    player.Score += allTypesBonus;
+                    await _botClient.SendTextMessageAsync(
+                        player.TelegramMetadata.ChatId,
+                        string.Format(GameMessages.AllTypesBonusMessage, allTypesBonus),
+                        parseMode: ParseMode.Html);
+                }
+            }
 
             await DisplayPlayerScore(lobby, players);
 
             await CancelGame(chatId, lobby, players);
+        }
+
+        private async Task SpecialCardEndGameBonus(Player player, Quarter quarterName)
+        {
+            player.Score += quarterName.BonusScore;
+            await _botClient.SendTextMessageAsync(
+                player.TelegramMetadata.ChatId,
+                string.Format(GameMessages.SpecialQuarterBonusMessage, quarterName.BonusScore, quarterName.DisplayName),
+                parseMode: ParseMode.Html);
         }
 
         protected async Task CancelGame(long chatId, Lobby lobby, List<Player> players)
@@ -204,14 +282,11 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var response = await _httpClient.SendAsync(message);
             var responseMessage = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
-            {
-                await _botClient.TryDeleteMessage(chatId, lobby.TelegramMetadata.LobbyInfoMessageId);
+            await _botClient.TryDeleteMessage(chatId, lobby.TelegramMetadata.LobbyInfoMessageId);
 
-                if (lobby.Status != LobbyStatus.Configuring)
-                {
-                    await DeleteMessagesForPlayers(players);
-                }
+            if (response.IsSuccessStatusCode && lobby.Status != LobbyStatus.Configuring)
+            {
+                await DeleteMessagesForPlayers(players);
             }
 
             await _botClient.SendTextMessageAsync(lobby.TelegramMetadata.ChatId, responseMessage);
@@ -243,7 +318,12 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var tgMessage = $"\n{GameMessages.GetPlayerInfoMessage(player)}\n\n{GameMessages.ChooseResourcesMessage}";
 
             var coinsAmount = _gameSettings.CoinsPerTurn;
-            var cardsAmount = _gameSettings.QuertersPerTurn;
+            var cardsAmount = _gameSettings.QuartersPerTurn;
+
+            if (player.PlacedQuarters.Any(q => q.Name == QuarterNames.Goldmine))
+            {
+                coinsAmount++;
+            }
 
             var coinsString = string.Concat(Enumerable.Repeat(GameSymbols.Coin, coinsAmount));
             var cardsString = string.Concat(Enumerable.Repeat(GameSymbols.Card, cardsAmount));
@@ -259,7 +339,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
             if (character.Name == CharacterNames.Architect)
             {
-                var bonusCards = _gameSettings.QuertersPerTurn * 2;
+                var bonusCards = _gameSettings.QuartersPerTurn * 2;
                 cardsAmount += bonusCards;
                 additionalResourses = string.Concat(Enumerable.Repeat(GameSymbols.Card, bonusCards));
             }
@@ -305,13 +385,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
                 foreach (var quarter in player.PlacedQuarters)
                 {
-                    builder.Append(GameMessages.GetQuarterInfo(quarter.QuarterBase));
-                    
-                    if (quarter.BonusScore > 0)
-                    {
-                        builder.Append($" +{quarter.BonusScore}{GameSymbols.Score}");
-                    }
-
+                    builder.Append(GameMessages.GetPlacedQuarterInfo(quarter));
                     builder.AppendLine();
                 }
 
@@ -329,7 +403,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
 
         private async Task DisplayPlayerScore(Lobby lobby, IEnumerable<Player> players)
         {
-            players = players.OrderByDescending(p => p.Score).ThenByDescending(p => p.QuarterHand.Count);
+            players = players.OrderByDescending(p => p.FullScore).ThenByDescending(p => p.QuarterHand.Count);
             var winner = players.First();
 
             var builder = new StringBuilder();
@@ -373,6 +447,32 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             });
 
             await Task.WhenAll(deleteTasks);
+        }
+
+        private bool DoesHaveAllQuarterTypes(IEnumerable<PlacedQuarter> quarters)
+        {
+            var types = Enum.GetValues<ColorType>();
+            var hasIndulgence = quarters.Any(q => q.Name == QuarterNames.GhostNeighbourhood) 
+                && quarters.Any(q => q.QuarterBase.Type == ColorType.Purple && q.Name != QuarterNames.GhostNeighbourhood);
+
+            // starting with 1 because there is no 0 type quarters
+            for (var i = 1; i < types.Length; i++)
+            {
+                var type = types[i];
+
+                if (!quarters.Any(q => q.QuarterBase.Type == type))
+                {
+                    if (hasIndulgence)
+                    {
+                        hasIndulgence = false;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

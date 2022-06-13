@@ -6,6 +6,7 @@ using KCAA.Helpers;
 using KCAA.Models;
 using KCAA.Models.Characters;
 using KCAA.Models.MongoDB;
+using KCAA.Models.Quarters;
 using KCAA.Services.Interfaces;
 using KCAA.Settings.GameSettings;
 using Microsoft.AspNetCore.Mvc;
@@ -16,18 +17,21 @@ namespace KCAA.Controllers
     {
         private readonly ILobbyProvider _lobbyProvider;
         private readonly IPlayerProvider _playerProvider;
+        private readonly ICardFactory<Quarter> _quarterFactory;
         private readonly GameSettings _gameSettings;
         private readonly Random _random;
 
         public GameController(
-            ILobbyProvider lobbyProvider, 
-            IPlayerProvider playerProvider, 
-            GameSettings gameSettings)
+            ILobbyProvider lobbyProvider,
+            IPlayerProvider playerProvider,
+            GameSettings gameSettings,
+            ICardFactory<Quarter> quarterFactory)
         {
             _lobbyProvider = lobbyProvider;
             _playerProvider = playerProvider;
             _gameSettings = gameSettings;
             _random = new Random();
+            _quarterFactory = quarterFactory;
         }
 
         [HttpDelete]
@@ -76,6 +80,7 @@ namespace KCAA.Controllers
 
             lobby.GenerateBasicQuarterDeck();
             lobby.GenerateCharacterDeck();
+            lobby.QuarterDeck.AddRange(_quarterFactory.GetFilteredNames(q => q.Type == ColorType.Purple));
 
             var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
 
@@ -137,7 +142,7 @@ namespace KCAA.Controllers
                 .OrderBy(c => c.CharacterBase.Order)
                 .FirstOrDefault();
 
-            var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id);
+            var players = await _playerProvider.GetPlayersByLobbyId(lobby.Id, loadPlacedQuarters: true);
 
             // if no characters left selected, the turn cycle is over and we need to start character selection again or end the game
             if (character == null)
@@ -284,7 +289,7 @@ namespace KCAA.Controllers
             await _playerProvider.UpdatePlayer(player, x => x.Coins);
         }
 
-        private async Task SetPlayerActions(Character character, Player player)
+        private async Task SetPlayerActions(Character character, Player player) 
         {
             if (!string.IsNullOrWhiteSpace(character.CharacterBase.GameAction))
             {
@@ -297,6 +302,16 @@ namespace KCAA.Controllers
             }
 
             player.GameActions.Add(GameActionNames.BuildQuarter);
+
+            foreach (var placerQuarter in player.PlacedQuarters)
+            {
+                var gameAction = placerQuarter.QuarterBase.GameAction;
+
+                if (!string.IsNullOrWhiteSpace(gameAction))
+                {
+                    player.GameActions.Add(gameAction);
+                }
+            }
 
             await _playerProvider.UpdatePlayer(player, p => p.GameActions);
         }
