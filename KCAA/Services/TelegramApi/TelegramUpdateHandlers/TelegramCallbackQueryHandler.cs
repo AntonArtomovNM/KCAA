@@ -174,7 +174,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             var action = gameAction switch
             {
                 GameActionNames.TakeRevenue => HandleTakeRevenue(chatId, player, characterName, gameAction, additionalData),
-                GameActionNames.UseForge => HandleUseForge(chatId, player, lobby, characterName, gameAction),
+                GameActionNames.UseForge => HandleUseForge(chatId, player, lobby, characterName),
                 GameActionNames.BuildQuarter or GameActionNames.RebuildScaffolding => SendBuildQuarterKeyboard(lobby, player, characterName, gameAction),
                 GameActionNames.Kill or GameActionNames.Steal => SendCharacterKeyboard(chatId, lobby, player, characterName, gameAction),
                 GameActionNames.DiscardQuarters or GameActionNames.PutUnderMuseum or GameActionNames.UseLaboratoty => SendDiscardQuarterKeyboard(player, characterName, gameAction),
@@ -597,7 +597,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
             await DisplayAvailableGameActions(chatId, lobby.Id, characterName);
         }
 
-        private async Task HandleUseForge(long chatId, Player player, Lobby lobby, string characterName, string gameAction)
+        private async Task HandleUseForge(long chatId, Player player, Lobby lobby, string characterName)
         {
             player.Coins -= _gameSettings.CoinsPerForgeUse;
             player.GameActions.Remove(GameActionNames.UseForge);
