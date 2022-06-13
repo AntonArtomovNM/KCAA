@@ -14,8 +14,6 @@ namespace KCAA.Models.MongoDB
 
         public string LobbyId { get; set; } = Guid.Empty.ToString();
 
-        public bool IsHost { get; set; }
-
         public bool HasCrown { get; set; }
 
         /// <summary>
