@@ -269,10 +269,10 @@ namespace KCAA.Controllers
             await _playerProvider.UpdatePlayer(oldKing, p => p.HasCrown);
             await _playerProvider.UpdatePlayer(newKing, p => p.HasCrown);
 
-            var csorderDelta = newKing.CSOrder;
+            var kingsOldCSorder = newKing.CSOrder;
             var updateCsorderTasks = players.Select(async p =>
             {
-                p.CSOrder = p.CSOrder < csorderDelta ? p.CSOrder + csorderDelta : p.CSOrder - csorderDelta;
+                p.CSOrder = p.CSOrder < kingsOldCSorder ? p.CSOrder + players.Count - kingsOldCSorder : p.CSOrder - kingsOldCSorder;
                 await _playerProvider.UpdatePlayer(p, x => x.CSOrder);
             });
 
