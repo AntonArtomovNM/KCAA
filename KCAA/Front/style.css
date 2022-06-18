@@ -1,0 +1,217 @@
+html{
+    height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    background-image: url(imgs/totalBG.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: Candara;
+    color: #463124;
+}
+
+body{
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr 4fr 0.5fr 0.5fr;
+    grid-template-rows: 1fr 3fr;
+    grid-template-areas:    ". h h h ."
+                            ". . m . .";
+}
+
+header {
+    background-repeat: repeat;
+    background-size: 25%;
+    grid-area: h; 
+    z-index: 100;
+}
+
+article, section{
+    padding-bottom: 6vh;;
+}
+
+h1{
+    background-image: url(imgs/banner.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 40vw 22vh;
+    height: 22vh;
+    font-size: 4.4vw;
+    text-align: center;
+    margin: 1vh 0 1vh 0;
+    color: #f5d077;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#header{
+    position: sticky;
+}
+
+main{
+    grid-area: m;
+}
+footer{
+    grid-area: f;
+}
+
+a:link, a:visited, a:active, a:focus {
+    color: #463124;
+    text-decoration: none;
+}
+a:hover{
+    font-weight: bold;
+}
+
+#topMenu{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+#playBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.topMenuBtn:hover{
+    background-image: url(imgs/TopMenuBtnHover.png);
+}
+
+.topMenuBtn{
+    background-image: url(imgs/TopMenuBtn.png);
+    background-size: cover;
+    padding: 1vw;
+    width: 9.9vw;
+    height: 1.5vw;
+    text-align: center;
+    line-height: 1;
+    font-size: 1.4vw;
+}
+
+#topBaner img{
+    width: 30vw;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5vh;
+    margin-top: 1vh;
+}
+
+#navBaner img{
+    width: 100%;
+}
+
+#up{
+    background-image: url(imgs/pageUp.png);
+    background-size: cover;
+    position: fixed;
+    visibility: visible;
+    right: 4vw;
+    bottom: 2vh;
+    width: 6vw;
+    height: 6vw;
+}
+
+.botUrl{
+    position: fixed;
+    left: 2vw;
+    bottom: 0;
+    padding: 0.2rem 1rem 0.2rem 1rem ;
+    width: max-content;
+    height: max-content;
+    font-size: 1vw;
+    color: #f5d077;
+    background-color: #463124;
+    opacity: 0.6;
+}
+
+main{
+    margin-top: -3vh;
+    padding: 3vh 10vw;
+    font-size: 1.2vw;
+    background-image: url(imgs/bg.png);
+    background-size: 100%;
+    background-repeat: repeat-y;
+}
+
+.thin {
+    display: inline-block;
+    width: 3vw;
+  }
+
+main p{
+    text-align: justify;
+}
+
+#characters section{
+    height: 30vh;
+    padding: 3vh 0vh 3vh 0vh ;
+}
+
+tr, td, th{
+    padding: 1vw;
+}
+
+th{
+    padding: 1.5vw;
+    font-size: 4vh;
+}
+
+table {
+    width: 100%;
+    font-size: 3vh;
+}
+
+#characters img{
+    height: 20vw;
+    margin: 0vh 3vh 0vh 3vh;
+}
+
+.slideshow-container {
+    max-width: 1000px;
+    position: relative;
+    margin: auto;
+}
+
+.mySlides {
+    display: none;
+}
+
+.galBtn{
+    background-size: cover;
+    width: 4vw;
+    height: 4vw;
+}
+
+.prev{
+    background-image: url(imgs/left.png);
+}
+
+.next{
+    background-image: url(imgs/right.png);
+}
+
+
+
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+}

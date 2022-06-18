@@ -1,0 +1,288 @@
+[
+  {
+    "Name": "Y1",
+    "DisplayName": "Servant's house",
+    "Type": 1,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysub7-54f5e80e-97c7-49cd-b64e-0b88038e4183.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3ViNy01NGY1ZTgwZS05N2M3LTQ5Y2QtYjY0ZS0wYjg4MDM4ZTQxODMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.Ns2vD9XyMIQ0LZyWbNTJfIADIjXBKw3Iu3_L9nFbzLE",
+    "Cost": 1
+  },
+  {
+    "Name": "Y2",
+    "DisplayName": "Compound",
+    "Type": 1,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysuao-14aa052a-4983-4b21-b658-d2d1df6fb8d8.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3Vhby0xNGFhMDUyYS00OTgzLTRiMjEtYjY1OC1kMmQxZGY2ZmI4ZDgucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.lG_JTvF04P0fdV_yHittBph6s29sfGbHlOZuYA3L4Xo",
+    "Cost": 2
+  },
+  {
+    "Name": "Y3",
+    "DisplayName": "Manor",
+    "Type": 1,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysuaq-71f01176-ba0e-43bf-bea1-842b0b20daca.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3VhcS03MWYwMTE3Ni1iYTBlLTQzYmYtYmVhMS04NDJiMGIyMGRhY2EucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.vtunUf35_px2J0S9mmEOD7p7Mwg6E_t_GIC9fmeGkNM",
+    "Cost": 3
+  },
+  {
+    "Name": "Y4",
+    "DisplayName": "Castle",
+    "Type": 1,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysual-88d6d856-2a9c-4c9c-919d-fea920e0e14f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3VhbC04OGQ2ZDg1Ni0yYTljLTRjOWMtOTE5ZC1mZWE5MjBlMGUxNGYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.oV1jUe1U-Qs-Yw55l5-k5UD_xUMkhaS4iHpMuuf03KA",
+    "Cost": 4
+  },
+  {
+    "Name": "Y5",
+    "DisplayName": "Palace",
+    "Type": 1,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysuax-1aae7207-4575-48a9-8a76-e0516ca17f14.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3VheC0xYWFlNzIwNy00NTc1LTQ4YTktOGE3Ni1lMDUxNmNhMTdmMTQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.pQEwW9M4PMs8vqzity3ecnLOLxNOlKc3Oqfgn3PKZOc",
+    "Cost": 5
+  },
+  {
+    "Name": "B1",
+    "DisplayName": "Temple",
+    "Type": 2,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysuez-109b0b56-0f97-4022-b48c-b17e66623e4a.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3Vlei0xMDliMGI1Ni0wZjk3LTQwMjItYjQ4Yy1iMTdlNjY2MjNlNGEucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.a14tSt8jpGwhsPJjOANLK1jgv-b88Ry23Rl_X-27Yjw",
+    "Cost": 1
+  },
+  {
+    "Name": "B2",
+    "DisplayName": "Church",
+    "Type": 2,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysuep-cb78465c-e435-4120-9239-a2055db2d29f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3VlcC1jYjc4NDY1Yy1lNDM1LTQxMjAtOTIzOS1hMjA1NWRiMmQyOWYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.z67SHE2rBBJ-uc-qU16eVtqjHzwPdNNdnH_CuBVWOuY",
+    "Cost": 2
+  },
+  {
+    "Name": "B3",
+    "DisplayName": "Monastery",
+    "Type": 2,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysuer-31a5f8a1-c5fb-44e7-8a5a-b876e1c54235.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3Vlci0zMWE1ZjhhMS1jNWZiLTQ0ZTctOGE1YS1iODc2ZTFjNTQyMzUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.yMZ9KEY_eSn12ya5DkTqw_vpJ0mqc4U-1fUGjhlXeio",
+    "Cost": 3
+  },
+  {
+    "Name": "B4",
+    "DisplayName": "Chapel",
+    "Type": 2,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysueh-2444b485-72d6-4b4b-a601-c705846f92a2.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3VlaC0yNDQ0YjQ4NS03MmQ2LTRiNGItYTYwMS1jNzA1ODQ2ZjkyYTIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.3tiJ04sH5d8HPZrQWgGBLrG1ySJaME32Kp9VNpl5rW0",
+    "Cost": 4
+  },
+  {
+    "Name": "B5",
+    "DisplayName": "Cathedral",
+    "Type": 2,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysued-4030f526-472b-49d6-9532-5f464d584953.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3VlZC00MDMwZjUyNi00NzJiLTQ5ZDYtOTUzMi01ZjQ2NGQ1ODQ5NTMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.NtDBkcD3TZIQBVLt8E1fJyUvOw_n2igb0FVQ832OT5Q",
+    "Cost": 5
+  },
+  {
+    "Name": "G1",
+    "DisplayName": "Tavern",
+    "Type": 3,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deystfc-81677291-1b67-43b7-a272-d2aaac6fe231.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3RmYy04MTY3NzI5MS0xYjY3LTQzYjctYTI3Mi1kMmFhYWM2ZmUyMzEucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.CWgIg74IkPTxI3EfYn3dWhc1wQEPLi1uvBjsPCGmdNo",
+    "Cost": 1
+  },
+  {
+    "Name": "G2",
+    "DisplayName": "Market",
+    "Type": 3,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deystf7-7e498b8f-0d36-4ee0-acf6-1ac31f9799b1.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3RmNy03ZTQ5OGI4Zi0wZDM2LTRlZTAtYWNmNi0xYWMzMWY5Nzk5YjEucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.pdxWvV_LTlvCoqvuu12UTqqzYe6QA9ig8vgQvPX5FfI",
+    "Cost": 2
+  },
+  {
+    "Name": "G3",
+    "DisplayName": "Docks",
+    "Type": 3,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deystey-25a45c03-cfc9-4204-8e23-57d8b14f3203.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3RleS0yNWE0NWMwMy1jZmM5LTQyMDQtOGUyMy01N2Q4YjE0ZjMyMDMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.4DUY-rQj5tNpzeIY7Zb7I64jcvSY9oj5A7kkkn3gnoM",
+    "Cost": 3
+  },
+  {
+    "Name": "G4",
+    "DisplayName": "Harbor",
+    "Type": 3,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deystf4-7fbdd236-42ca-41ef-8071-f4cbe2151246.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3RmNC03ZmJkZDIzNi00MmNhLTQxZWYtODA3MS1mNGNiZTIxNTEyNDYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.8i7JxNAa0FyQD25i40AK0CUsheaJzMehH4cvHqugaFg",
+    "Cost": 4
+  },
+  {
+    "Name": "G5",
+    "DisplayName": "Town Hall",
+    "Type": 3,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deystfk-b9d246cc-d509-4d4b-b445-8efa0d9c60ec.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3Rmay1iOWQyNDZjYy1kNTA5LTRkNGItYjQ0NS04ZWZhMGQ5YzYwZWMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.AaHnabj0A5oSVHNbT6MkUCmIXhK6QnBzVBLf8hybBNo",
+    "Cost": 5
+  },
+  {
+    "Name": "R1",
+    "DisplayName": "Watchtower",
+    "Type": 4,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysu72-4df5fce5-0d45-4e97-907f-f05e7ff7dad0.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3U3Mi00ZGY1ZmNlNS0wZDQ1LTRlOTctOTA3Zi1mMDVlN2ZmN2RhZDAucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.LfxgkngPAMOEyrZccs77WcKkrSmFe4GNxPRv-PAV0Fc",
+    "Cost": 1
+  },
+  {
+    "Name": "R2",
+    "DisplayName": "Prison",
+    "Type": 4,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysu6m-98ba7795-0805-4f8e-b38f-ffaed438d9fc.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3U2bS05OGJhNzc5NS0wODA1LTRmOGUtYjM4Zi1mZmFlZDQzOGQ5ZmMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.Lgh4G1ZOGh_rHsQrRbdziO9unz3yiC6ErusdiFTgNHg",
+    "Cost": 2
+  },
+  {
+    "Name": "R3",
+    "DisplayName": "Barracks",
+    "Type": 4,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysu6c-4a3d612d-803e-4e06-81b8-024c787a4a31.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3U2Yy00YTNkNjEyZC04MDNlLTRlMDYtODFiOC0wMjRjNzg3YTRhMzEucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.LyO5b73RJJ098pQeBWfMGWD3VbRvNZZbZFtxOGZ1qr4",
+    "Cost": 3
+  },
+  {
+    "Name": "R4",
+    "DisplayName": "Stronghold",
+    "Type": 4,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysu6v-d1037264-f00c-493c-99ff-e2745ab62fd1.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3U2di1kMTAzNzI2NC1mMDBjLTQ5M2MtOTlmZi1lMjc0NWFiNjJmZDEucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.wf4furm1Hprid0MYf-HD91NB56mQtPoLm43xoUrd_6k",
+    "Cost": 4
+  },
+  {
+    "Name": "R5",
+    "DisplayName": "Fortress",
+    "Type": 4,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/deysu6i-3694c3ff-7a41-400b-ae13-77f261fe045c.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGV5c3U2aS0zNjk0YzNmZi03YTQxLTQwMGItYWUxMy03N2YyNjFmZTA0NWMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.LUyUVTJzvW44EIrhPZZ3jsbgxbF2wugcmwOMDdwgxoQ",
+    "Cost": 5
+  },
+  {
+    "Name": "sp-sh",
+    "DisplayName": "Secret Hideout",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8cl-14e8958c-6d37-46b5-a0b9-5c7a7c8dbcec.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThjbC0xNGU4OTU4Yy02ZDM3LTQ2YjUtYTBiOS01YzdhN2M4ZGJjZWMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.3uUN0sPcM3QvNU8ZDEK_IxT0qPnnnqHSuTcl1-9TFp4",
+    "Cost": 0,
+    "Description": "The Secret Hideout cannot be built. At the end of the game, score 3 extra points if the card is in your hand.",
+    "BonusScore": 3
+  },
+  {
+    "Name": "sp-gn",
+    "DisplayName": "Ghost Neighbourhood",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8ar-7b61ad2e-07d6-462a-b23d-de4ec9a23af0.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThhci03YjYxYWQyZS0wN2Q2LTQ2MmEtYjIzZC1kZTRlYzlhMjNhZjAucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.UcRVPKkbt1WnKPlDivFscD187dbe96TrygYxckz5ab0",
+    "Cost": 2,
+    "Description": "At the end of the game, the Ghost Neighbourhood counts as any quarter type of your choice."
+  },
+  {
+    "Name": "sp-st",
+    "DisplayName": "Stable",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8ct-4836028b-be6b-4ca7-b27d-db7df242a4ac.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThjdC00ODM2MDI4Yi1iZTZiLTRjYTctYjI3ZC1kYjdkZjI0MmE0YWMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.mTtln56zoSfWg0jI2hf1n3OJUVFxQkrlLg7LhqvCRc0",
+    "Cost": 2,
+    "Description": "You can build another quarter this turn."
+  },
+  {
+    "Name": "sp-fo",
+    "DisplayName": "Fort",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8ao-b9674d94-12ca-46c6-b54d-c3fe5ed0db6e.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThhby1iOTY3NGQ5NC0xMmNhLTQ2YzYtYjU0ZC1jM2ZlNWVkMGRiNmUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.bZtdhSQACQ_Psxl9-LaWYUqNg-aDCNtOcu3CcimQNw8",
+    "Cost": 3,
+    "Description": "The Fort cannot be destroyed by the Warlord."
+  },
+  {
+    "Name": "sp-gm",
+    "DisplayName": "Goldmine",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8b1-18817578-7674-4067-be77-8ca3c423376d.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThiMS0xODgxNzU3OC03Njc0LTQwNjctYmU3Ny04Y2EzYzQyMzM3NmQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.wxj0K-NRILtDgZOsASfz1ZBjfJTzaMAAL8zU86UsPDE",
+    "Cost": 6,
+    "Description": "If during resource acquisition you choose to receive gold, get 1 extra gold."
+  },
+  {
+    "Name": "sp-dg",
+    "DisplayName": "Dragon Gates",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8ag-11f3a145-65c7-401f-96e7-368c9fb6f065.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThhZy0xMWYzYTE0NS02NWM3LTQwMWYtOTZlNy0zNjhjOWZiNmYwNjUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.NDMA3uEnAxac1J_IxQUYONm5CQcULeyxm-Yl2p1Kxp0",
+    "Cost": 6,
+    "Description": "At the end of the game, score 2 extra points.",
+    "BonusScore": 2
+  },
+  {
+    "Name": "sp-it",
+    "DisplayName": "Imperial Treasury",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8ba-2fa6eaa7-0084-48f9-920a-6f9995513fd7.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThiYS0yZmE2ZWFhNy0wMDg0LTQ4ZjktOTIwYS02Zjk5OTU1MTNmZDcucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.Tjvp1nE-XB0nzJFchavKBA5yB5V7SRxK56Vkgm-iSrw",
+    "Cost": 5,
+    "Description": "At the end of the game, score 1 extra point for each gold in your stash."
+  },
+  {
+    "Name": "sp-ca",
+    "DisplayName": "Capitol",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8a6-63abf056-cf03-41b0-8aaa-49e48f349794.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThhNi02M2FiZjA1Ni1jZjAzLTQxYjAtOGFhYS00OWU0OGYzNDk3OTQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.d3KQ5F83vi7QgKVYMjDIVBGwJmZUPg8vMHQpkFky1k4",
+    "Cost": 5,
+    "Description": "If at the end of the game you have built at least 3 quarters of the same type, score 3 extra points.",
+    "BonusScore": 3
+  },
+  {
+    "Name": "sp-mr",
+    "DisplayName": "Map Room",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8bp-6989d0b4-53f4-4c58-80d2-17d406e792c8.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThicC02OTg5ZDBiNC01M2Y0LTRjNTgtODBkMi0xN2Q0MDZlNzkyYzgucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.V5XXcqmSzeXJ-ZiTAZbJeKTEI-cQUR60Wzbn7uy7R6c",
+    "Cost": 5,
+    "Description": "At the end of the game, score 1 extra point for each card in your hand."
+  },
+  {
+    "Name": "sp-ww",
+    "DisplayName": "Wishing Well",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8cx-9a6a82bb-64ed-4099-9919-1a9955bed8d0.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThjeC05YTZhODJiYi02NGVkLTQwOTktOTkxOS0xYTk5NTViZWQ4ZDAucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.VRu9XpxTY4at7WXTs9IbirlFEvSnWWCqS_gF9F-N2e8",
+    "Cost": 5,
+    "Description": "At the end of the game, score 1 extra point for each special quarter in your city."
+  },
+  {
+    "Name": "sp-fg",
+    "DisplayName": "Forge",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8al-f7e9b77a-e046-46d8-b1d0-b620549fb66f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThhbC1mN2U5Yjc3YS1lMDQ2LTQ2ZDgtYjFkMC1iNjIwNTQ5ZmI2NmYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.OeFhm9VjbZK5eh0IG67zD5HXJCJNqLvwdbk6EcK7NQs",
+    "Cost": 5,
+    "Description": "Once during your turn, you may pay two gold to draw three quarter cards.",
+    "GameAction": "forge"
+  },
+  {
+    "Name": "sp-la",
+    "DisplayName": "Laboratory",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8bh-a3865a8a-b984-4f45-83bc-f3d2ac3f797d.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThiaC1hMzg2NWE4YS1iOTg0LTRmNDUtODNiYy1mM2QyYWMzZjc5N2QucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.QGXhEdsgvgbpZ1-dDA94ikO_WmFWkfTcWHSyYJtQ2jU",
+    "Cost": 5,
+    "Description": "Once during your turn, you may discard a quarter card from your hand and receive two gold from the bank.",
+    "GameAction": "laboratory"
+  },
+  {
+    "Name": "sp-mu",
+    "DisplayName": "Museum",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8c1-6ab885c6-e114-4444-bdf5-6a4f888591eb.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThjMS02YWI4ODVjNi1lMTE0LTQ0NDQtYmRmNS02YTRmODg4NTkxZWIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.VMFfb2P4GEab16EbrG5t7XNhWM_xDiO39kvWggNAS_w",
+    "Cost": 4,
+    "Description": "Once during your turn, you may put 1 card under the museum card. At the end of the game, score 1 extra point for each card under the Museum.",
+    "GameAction": "museum"
+  },
+  {
+    "Name": "sp-ar",
+    "DisplayName": "Armory",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u89y-2bd595a4-9b6b-46c2-8507-43088279cb0f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dTg5eS0yYmQ1OTVhNC05YjZiLTQ2YzItODUwNy00MzA4ODI3OWNiMGYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.99D73FLxIGwDD9dQ_zGgc1QJBG3EVwRGaBEN5HxdWyM",
+    "Cost": 3,
+    "Description": "Destroy the Armory to destroy 1 enemy's quarter of your choice.",
+    "GameAction": "armory"
+  },
+  {
+    "Name": "sp-sc",
+    "DisplayName": "Scaffolding",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8c7-8376db01-edb7-45a9-a46a-8a47d3c49802.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThjNy04Mzc2ZGIwMS1lZGI3LTQ1YTktYTQ2YS04YTQ3ZDNjNDk4MDIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.BYd_pDx3DPOsR6fj3KWuOmmFyypsarEFu0csawobCoE",
+    "Cost": 3,
+    "Description": "You can build the quarter by destroying scaffolding instead of paying the cost of the selected quarter.",
+    "GameAction": "scaffolding"
+  },
+  {
+    "Name": "sp-mo",
+    "DisplayName": "Monument",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8bw-6ee5e809-6dc7-40b9-8aa6-e5d69ff58cc6.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThidy02ZWU1ZTgwOS02ZGM3LTQwYjktOGFhNi1lNWQ2OWZmNThjYzYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.SVUfbY6IGZu8jyFGb1_ol7iTXAQHXafaKAYIPoRCoDc",
+    "Cost": 3,
+    "Description": "If you have the crown at the end of the game, score 5 extra points.",
+    "BonusScore": 5
+  },
+  {
+    "Name": "sp-som",
+    "DisplayName": "School of Magic",
+    "Type": 5,
+    "PhotoUri": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/043f44b2-b066-4b63-8f66-e638b53ad745/df6u8cd-8b10f893-6a95-499b-a9fc-427d8e8b2770.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA0M2Y0NGIyLWIwNjYtNGI2My04ZjY2LWU2MzhiNTNhZDc0NVwvZGY2dThjZC04YjEwZjg5My02YTk1LTQ5OWItYTlmYy00MjdkOGU4YjI3NzAucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.oaCdW-iB_TKHj1Ybl3-hGkwTNKEiS5OYLOwI-5yd0gs",
+    "Cost": 6,
+    "Description": "For abilities that gain resources for your quarters, the School of Magic counts as the quarter type of your choice."
+  }
+]
+

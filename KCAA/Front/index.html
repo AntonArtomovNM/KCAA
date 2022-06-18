@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" type="module" defer></script>
+</head>
+<body>
+    <header>
+        <div id="topBaner">
+            <img src="imgs/headerLogo.png" alt="">
+        </div>
+
+        <div id="header">   
+            <nav id="topMenu">
+                <a href="#about">
+                    <div class="topMenuBtn">
+                        Project
+                    </div>
+                </a>
+                <a href="#rules">
+                    <div class="topMenuBtn">
+                        Rules
+                    </div>
+                </a>
+                <a href="#characters">
+                    <div class="topMenuBtn">
+                        Characters
+                    </div>
+                </a>
+                <a href="#quarters">
+                    <div class="topMenuBtn">
+                        Quarters
+                    </div>
+                </a>
+            </nav>
+    
+            <div id="navBaner">
+                <img src="imgs/header.png" alt="">
+            </div>
+        </div>
+        
+    </header>
+    <main>
+        <article id="about">
+            <h1>Well met, hero!</h1>
+            <p><span class=thin></span>Citadels is a KCAA team`s thesis project for SSS "KhCTPC NTU "KhPI"". It aims to create a full-fledged digital replacement for the "Citadels" board game as a Telegram bot.</p>
+            <p><span class=thin></span>Citadels is a game of nobles, intrigue and medieval cities. Each player leads a city and seeks to increase its prosperity by building new city quarters. Beware, it's not an easy task as you need to influence nobles, warlords, merchants and other powerful characters of your realm.</p>
+            <p><span class=thin></span>The hiring of different characters from architects, magicians, bishops to thieves, adds a decent level of strategy to the gameplay as each character has its own special ability. The usefulness of them depends on your situation and on your opponents. On your road to victory, you must also wisely spend your gold, bluff, intimidate and outmaneuver your rivals.</p>
+            <p><span class=thin></span>You can try out Citadels yourself right now in Telegram. Just enter the nickname of our bot <a href="https://t.me/CitadelsGameBot">@CitadelsGameBot</a> and write /start. Adventure awaits!</p>
+            <a href="https://t.me/CitadelsGameBot" id="playBtn">
+                <div class="topMenuBtn">
+                    Let`s go!
+                </div>
+            </a>
+        </article>
+        <article id="game">
+            <section id="rules">
+                <h1>Rules</h1>
+                <p><span class=thin></span>Citadels is played over a series of rounds, each round has four steps.</p>
+                <h2>Step One: Remove Characters</h2>
+                <p><span class=thin></span>First draw one random card from the Character Deck and set it facedown (without looking at it). This character will not be used this round.</p>
+                <p><span class=thin></span>Then draw a second set of cards from the Character Deck and set them faceup (openly). These characters also will not be used this round.</p>
+                <p>
+                    The number of removed characters depends on the players amount:
+                    <ul>
+                        <li>2-4 players: 2 openly & 1 without looking</li>
+                        <li>5-6 players: 1 openly & 1 without looking</li>
+                        <li>7-8 players: 0 openly & 1 without looking</li>
+                    </ul>
+                </p>
+                <h2>Step Two: Choose Characters</h2>
+                <p><span class=thin></span>The player who currently has the Crown (first to join) now looks at the Character Deck and secretly chooses a character from those available. They then pass the remaining character cards to the next player, who also secretly chooses a card and passes the remaining cards to the next, etc.</p>
+                <p><span class=thin></span>This process continues until each player has chosen one card from the Character Deck. After the last player has chosen, there should remain single unchosen card and other players won`t know which one it is.</p>
+                <h2>Step Three: Player Turns</h2>
+                <p><span class=thin></span>Once all players have chosen a character, game reveals players` characters one-at-a-time in the order of numerical rank (the Assassin (1), then the Thief (2), etc.). When your character is revealed you take your turn.</p>
+                <p>
+                    <span class=thin></span>On your turn, you must first take resources, after which you may build a quarter.
+                    <ol>
+                        <li>
+                            Gather resources:
+                            <p>
+                                You must gather resources in 1 of 2 ways:
+                                <ul>
+                                    <li>Take 2 coins from the bank</li>
+                                    <li>Draw 1 quarter card</li>
+                                </ul>
+                            </p>
+                        </li>
+                        <li>
+                            Build a quarter:
+                            <p>You may build 1 quarter by paying its cost.
+                                You cannot build a quarter like the one you already have (two "Castle" cards, two "Market" cards, etc.) in your city.</p>
+                        </li>
+                        <li>
+                            Use other abilities:
+                            <p>You may use each of your character`s and special card's abilities according to it's description on the card</p>
+                        </li>
+                    </ol>
+                </p>
+                <h2>Step Four: End of Round</h2>
+                <p><span class=thin></span>After all the characters have been called, each player returns his character card to the Character Deck and a new round begins.</p>
+                <h2>End of the game</h2>
+                <p><span class=thin></span>When a player builds his seventh quarter, the game ends after the current round is completed. Use this scoring process to determine how many points each player receives:
+                    <ul>
+                        <li>1 point per coin on your placed quarters.</li>
+                        <li>3 points for having at least 1 quarter of each type.</li>
+                        <li>4 points for the first player who completed their city.</li>
+                        <li>2 points for any other player who completed their city.</li>
+                    </ul>
+                </p>
+                <p>The winner of the game is the player with the most points.</p>
+                <p><b>Note:</b> Players may build more than seven quarters in their city if they have the means to do so.</p> 
+            </section>
+            <section id="characters">
+                <h1>Characters</h1>
+                <table id="chars">
+
+                </table>
+            </section>
+            <section id="quarters">
+                <h1>Quarters</h1>
+                <div id="slideshow-container">
+                    
+                </div>
+            </section>
+        </article>
+    </main>
+    <footer>
+        <nav>
+            <a href="#top">
+                <div id="up">
+                </div>
+            </a>
+            <a href="https://t.me/CitadelsGameBot">
+                <div class="botUrl">
+                    @CitadelsGameBot
+                </div>
+            </a>
+        </nav>
+    </footer>
+</body>
+</html>
