@@ -127,7 +127,7 @@ Use /create_lobby to make one";
 
 <b>1) Gather resources:</b>
 You must gather resources in 1 of 2 ways:
-  • Take 2 coins {GameSymbols.Coin} from the bank
+  • Take 2 coins { GameSymbols.Coin } from the bank
   • Draw 1 quarter card { GameSymbols.Card }
 
 <b>2) Build:</b>
@@ -150,7 +150,9 @@ When a city has <b>7 quarters</b>, the game ends after the current round, and yo
   • <b>1 point</b> per coin on your placed quarters.
   • <b>3 points</b> for having at least 1 quarter of each type.
   • <b>4 points</b> for the first player who completed their city.
-  • <b>2 points</b> for any other player who completed their city.";
+  • <b>2 points</b> for any other player who completed their city.
+
+For additional rules and other info visit: https://kcaa-citadels.ksieniiastarkov.repl.co/";
 
         public static string GetQuarterInfo(Quarter quarterData)
         {
