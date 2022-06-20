@@ -646,7 +646,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 {
                     buttonText = GameMessages.AlreadyPlacedQuarterError;
                 }
-                else if (quarter.Cost > player.Coins)
+                else if (quarter.Cost > player.Coins && gameAction != GameActionNames.RebuildScaffolding)
                 {
                     buttonText = GameMessages.CannotAffordQuarterError;
                 }
@@ -924,17 +924,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                     callbackData += $"_{revenueAmount}";
                     break;
 
-                case GameActionNames.DiscardQuarters:
-                    //No need to display action with no outcome
-                    if (!player.QuarterHand.Any())
-                    {
-                        return null;
-                    }
-
-                    break;
-
                 case GameActionNames.BuildQuarter:
-
                     //No need to display action with no outcome
                     if (!player.QuarterHand.Any())
                     {
@@ -945,6 +935,25 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                     if (quartersToBuild != 1)
                     {
                         actionDisplayName += $" ({(quartersToBuild > 0 ? quartersToBuild : "*")})";
+                    }
+
+                    break;
+
+                case GameActionNames.UseForge:
+                    //No need to display action with no coins to pay
+                    if (player.Coins < _gameSettings.CoinsPerForgeUse)
+                    {
+                        return null;
+                    }
+
+                    break;
+
+
+                case GameActionNames.DiscardQuarters or GameActionNames.UseLaboratoty or GameActionNames.PutUnderMuseum or GameActionNames.RebuildScaffolding:
+                    //No need to display action with no outcome
+                    if (!player.QuarterHand.Any())
+                    {
+                        return null;
                     }
 
                     break;
