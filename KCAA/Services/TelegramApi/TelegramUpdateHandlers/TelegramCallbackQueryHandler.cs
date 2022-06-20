@@ -646,7 +646,7 @@ namespace KCAA.Services.TelegramApi.TelegramUpdateHandlers
                 {
                     buttonText = GameMessages.AlreadyPlacedQuarterError;
                 }
-                else if (quarter.Cost > player.Coins)
+                else if (quarter.Cost > player.Coins && gameAction != GameActionNames.RebuildScaffolding)
                 {
                     buttonText = GameMessages.CannotAffordQuarterError;
                 }
